@@ -1,0 +1,32 @@
+.Wrapper {
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  margin: 0 auto;
+}
+
+.WorkspaceImg {
+  max-height: 550px;
+  width: auto;
+}
+
+.Heading {
+  font-weight: 700;
+  font-size: 85px;
+  line-height: 103px;
+  color: #1e1e1e;
+}
+
+.HeadingSpan {
+  background: linear-gradient(90.33deg, #374490 0.48%, #723b83 99.93%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ContentWrapper {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  align-content: center;
+  gap: 40px;
+}

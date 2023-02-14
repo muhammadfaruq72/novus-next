@@ -1,0 +1,20 @@
+.Wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+
+.ContentWrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.textWrapper {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 4px;
+}

@@ -1,0 +1,121 @@
+.greyText19px {
+  font-weight: 500;
+  font-size: 19px;
+  color: #5f5d61;
+  transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
+}
+
+.greyText19px:hover {
+  color: #000;
+}
+
+.greyBody17px {
+  font-weight: 500;
+  font-size: 17px;
+  color: #818386;
+}
+
+.blackHeading36px {
+  font-weight: 700;
+  font-size: 36px;
+  color: #1e1e1e;
+}
+
+.greyBody14px {
+  font-size: 14px;
+  font-weight: 400;
+  color: #818386;
+}
+.greyBody13px {
+  font-size: 13px;
+  font-weight: 400;
+  color: #818386;
+}
+
+.blackHeading21px {
+  font-weight: 700;
+  font-size: 21px;
+  color: #1e1e1e;
+}
+
+.blackBody14px {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.blackBody16px {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.blackBody15px {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.blackBody12px {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.greyBody14px {
+  font-size: 14px;
+  font-weight: 500;
+  color: #818386;
+}
+.greyBody11px {
+  font-size: 11px;
+  font-weight: 500;
+  color: #818386;
+}
+
+.lightBlack17px {
+  font-weight: 500;
+  font-size: 17px;
+  color: #404040;
+}
+
+.lightBlack14px {
+  font-weight: 500;
+  font-size: 14px;
+  color: #404040;
+}
+
+.lightBlack15px {
+  font-weight: 500;
+  font-size: 15px;
+  color: #404040;
+}
+
+.lightBlack16px {
+  font-weight: 300;
+  font-size: 16px;
+  color: #404040;
+  line-height: 1.5;
+}
+
+.lightBlack11px {
+  font-weight: 300;
+  font-size: 11px;
+  color: #404040;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  width: 200px;
+  height: 13px;
+}
+
+.lightBlack13px {
+  font-weight: 300;
+  font-size: 13px;
+  color: #404040;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+  max-width: 350px;
+}

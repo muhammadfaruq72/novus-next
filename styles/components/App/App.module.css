@@ -1,0 +1,140 @@
+.Wrapper {
+  margin-top: 60px !important;
+  max-width: 950px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+  display: grid;
+  grid-template-rows: repeat(4, auto);
+  gap: 40px;
+}
+
+.ContentWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+}
+
+.SubWrapper {
+  width: 454px;
+  height: 141px;
+  background: #f5f7f9;
+  box-shadow: 0 0.783403px 0.783403px 0 rgba(0, 0, 0, 0.004),
+    0 1.92107px 1.92107px 0 rgba(0, 0, 0, 0.01),
+    0 3.63429px 3.63429px 0 rgba(0, 0, 0, 0.024),
+    0 6.35486px 6.35486px 0 rgba(0, 0, 0, 0.04),
+    0 11.0474px 11.0474px 0 rgba(0, 0, 0, 0.07);
+  border-radius: 19px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.SubWrapper:hover {
+  background: #314491;
+}
+
+.ClientBg {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  width: 84px;
+  height: 84px;
+  background: #eeeeee;
+  border-radius: 10px;
+}
+
+.SubWrapper:hover .ClientBg {
+  background: rgba(226, 223, 231, 0.07);
+}
+
+.Heading24px {
+  font-weight: 700;
+  font-size: 24px;
+  color: #1e1e1e;
+}
+
+.SubWrapper:hover .Heading24px {
+  color: #fff;
+}
+
+.SubWrapper:hover .Svg {
+  fill: #fff;
+}
+
+.Svg {
+  fill: #1e1e1e;
+}
+
+.Body24px {
+  font-weight: 300;
+  font-size: 18px;
+  color: #818386;
+}
+.SubWrapper:hover .Body24px {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.TextWrapper {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  gap: 13px;
+}
+
+.Browse {
+  max-width: 950px;
+  height: 101px;
+  background: #f5f7f9;
+  box-shadow: 0 0.783403px 0.783403px 0 rgba(0, 0, 0, 0.004),
+    0 1.92107px 1.92107px 0 rgba(0, 0, 0, 0.01),
+    0 3.63429px 3.63429px 0 rgba(0, 0, 0, 0.024),
+    0 6.35486px 6.35486px 0 rgba(0, 0, 0, 0.04),
+    0 11.0474px 11.0474px 0 rgba(0, 0, 0, 0.07);
+  border-radius: 19px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.Launch {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 20px;
+}
+
+.LaunchTextWrapper {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  align-content: center;
+  gap: 13px;
+}
+
+.members {
+  display: grid;
+  grid-template-columns: auto;
+  justify-content: center;
+  align-items: center;
+  width: 108px;
+  height: 22px;
+  border-radius: 4px;
+  background-color: #e2dfe7;
+}
+
+.membersWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  gap: 20px;
+}
+
+.img {
+  width: 71px;
+  height: 71px;
+  border-radius: 10px;
+}

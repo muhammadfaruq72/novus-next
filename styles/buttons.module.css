@@ -1,0 +1,97 @@
+.ButtonBlack187x62 {
+  width: 187px;
+  height: 62px;
+  background-color: #1e1e1e;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+  font-size: 19px;
+  border-radius: 19px;
+  border: none;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.ButtonBlack187x62:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.Blue187x62 {
+  width: 187px;
+  height: 62px;
+  background-color: #364590;
+  color: white;
+  font-weight: 500;
+  font-size: 19px;
+  border-radius: 19px;
+  border: none;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.Blue187x62:hover {
+  box-shadow: rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px,
+    rgba(54, 69, 144, 0.2) 0px 10px 10px 0px;
+}
+
+.Red101x28 {
+  width: 101px;
+  height: 28px;
+  background-color: #ff5b5b;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.Red101x28:hover {
+  box-shadow: rgba(255, 0, 0, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(255, 0, 0, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(255, 0, 0, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(255, 0, 0, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(255, 0, 0, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(255, 0, 0, 0.125) 0px 5.249729px 5.249729px 0px,
+    rgba(255, 0, 0, 0.2) 0px 10px 10px 0px;
+}
+
+.Blue101x28 {
+  width: 101px;
+  height: 28px;
+  background-color: #364590;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.Blue101x28:hover {
+  box-shadow: rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px,
+    rgba(54, 69, 144, 0.2) 0px 10px 10px 0px;
+}
+
+.blueOutline101x28 {
+  width: 101px;
+  height: 28px;
+  background-color: #fff;
+  border: 1px solid #314491;
+  color: #314491;
+  border-radius: 6px;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.blueOutline101x28:hover {
+  background-color: #364590;
+  color: #fff;
+}
