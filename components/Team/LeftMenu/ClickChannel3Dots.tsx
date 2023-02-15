@@ -8,10 +8,11 @@ import { useEffect } from "react";
 interface props {
   setMenuIsOpen: any;
   HamburgerRef: any;
+  style3Dots: any;
 }
 
 export default function ClickChannel3Dots(Props: props) {
-  const { HamburgerRef, setMenuIsOpen } = Props;
+  const { HamburgerRef, setMenuIsOpen, style3Dots } = Props;
   interface MenuData {
     title: string;
     icon: any;
@@ -42,7 +43,7 @@ export default function ClickChannel3Dots(Props: props) {
   });
 
   return (
-    <div className={styles.Menu}>
+    <div style={style3Dots} className={styles.Menu}>
       {MenuData.map((item, index) => (
         <div key={index}>
           {" "}

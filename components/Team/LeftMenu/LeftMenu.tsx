@@ -226,6 +226,16 @@ export default function LeftMenu() {
   // Invite Modal for people in Channel
   const [inviteOpen, setInviteOpen] = useState<Boolean>(false);
 
+  const [style3Dots, setStyle3Dots] = useState({});
+
+  const clickPosition = (event: any) => {
+    console.log(event.pageY, event.pageX);
+    setStyle3Dots({
+      top: `${event.pageY}px`,
+      left: `${event.pageX}px`,
+    });
+  };
+
   return (
     <>
       <Invite setOpen={setInviteOpen} Open={inviteOpen} />
@@ -308,6 +318,13 @@ export default function LeftMenu() {
                 }
                 scrollableTarget="scrollableDiv"
               >
+                {menuIsOpen.Bool && (
+                  <ClickChannel3Dots
+                    HamburgerRef={ThreedotRef}
+                    setMenuIsOpen={setMenuIsOpen}
+                    style3Dots={style3Dots}
+                  />
+                )}
                 {ChannelsState.filter((obj: any, index) => {
                   return (
                     index ===
@@ -359,6 +376,7 @@ export default function LeftMenu() {
                           className={styles.ThreeDots_svg}
                           // ref={HamburgerRef}
                           onClick={(e: any) => {
+                            clickPosition(e);
                             handleThreedotRef(e.target);
                             setMenuIsOpen({
                               Bool: !menuIsOpen.Bool,
@@ -369,18 +387,13 @@ export default function LeftMenu() {
                       ) : (
                         <div></div>
                       )}
-                      {index === menuIsOpen.key && menuIsOpen.Bool && (
-                        <ClickChannel3Dots
-                          HamburgerRef={ThreedotRef}
-                          setMenuIsOpen={setMenuIsOpen}
-                        />
-                      )}
                     </div>
                   </div>
                 ))}
               </InfiniteScroll>
             </div>
           </div>
+
           <div
             className={miniComponents.lineGrey}
             style={{ margin: "20px 0px 10px 0px" }}

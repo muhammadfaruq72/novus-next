@@ -72,13 +72,14 @@
 
 .ChannelItems {
   /* padding: 8px 12px 5px 8px; */
-  max-height: 200px;
+  max-height: 300px;
   /* overflow: scroll;
   overflow-x: hidden;
   scrollbar-width: none; */
   overflow: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .ChannelItems::-webkit-scrollbar {
@@ -103,7 +104,7 @@
   } */
 
 .ThreeDots_svg {
-  position: relative;
+  /* position: relative; */
   width: 11px;
   height: 11px;
   border-radius: 4px;

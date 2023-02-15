@@ -1,7 +1,9 @@
 .Menu {
-  position: absolute;
-  margin-left: 20px;
-  margin-top: 24px;
+  position: fixed;
+  /* margin-left: 20px;
+  margin-top: 24px; */
+  /* top: 169px;
+  left: 218px; */
   z-index: 1;
   background-color: #f5f7f9;
   padding: 10px 10px;
@@ -25,8 +27,8 @@
 }
 
 .hidden {
-  position: absolute;
-  z-index: 300;
+  position: fixed;
+  /* z-index: 300; */
 }
 
 .MenuItem {
