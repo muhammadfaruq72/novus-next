@@ -6,6 +6,8 @@ interface typeContext {
   setIsLoggedIn?: any;
   userExistsInSpace?: any;
   setuserExistsInSpace?: any;
+  SelectedChannel?: any;
+  setSelectedChannel?: any;
 }
 
 const AuthContext = createContext<typeContext>({});
@@ -27,11 +29,20 @@ export const AuthProvider = ({ children }: Props) => {
   const [userExistsInSpace, setuserExistsInSpace] =
     useState<userExistsInSpace | null>(null);
 
+  // Selected channel item
+  const [SelectedChannel, setSelectedChannel] = useState({
+    Bool: false,
+    key: 0,
+    Name: null,
+  });
+
   let contextData = {
     isloggedIn: isloggedIn,
     setIsLoggedIn: setIsLoggedIn,
     userExistsInSpace: userExistsInSpace,
     setuserExistsInSpace: setuserExistsInSpace,
+    SelectedChannel: SelectedChannel,
+    setSelectedChannel: setSelectedChannel,
   };
 
   return (

@@ -32,6 +32,9 @@ export default function LogIn(Close: Close) {
           token
         }
         token {
+          payload {
+            username
+          }
           token
         }
         user {
@@ -53,6 +56,10 @@ export default function LogIn(Close: Close) {
           setWarningBool(false);
           localStorage.setItem("tokenAuth", JSON.stringify(data));
           localStorage.setItem("email", email);
+          localStorage.setItem(
+            "username",
+            data.tokenAuth.token.payload.username
+          );
           Close.closeLogIn(false);
           Close.setIsLoggedIn(true);
         }

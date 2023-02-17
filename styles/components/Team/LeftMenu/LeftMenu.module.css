@@ -72,14 +72,15 @@
 
 .ChannelItems {
   /* padding: 8px 12px 5px 8px; */
-  max-height: 300px;
+  max-height: 30vh;
   /* overflow: scroll;
   overflow-x: hidden;
   scrollbar-width: none; */
   overflow: auto;
   display: flex;
   flex-direction: column;
-  position: relative;
+  margin-top: 5px;
+  /* position: relative; */
 }
 
 .ChannelItems::-webkit-scrollbar {
@@ -132,11 +133,12 @@
 .MemberItems {
   display: grid;
   gap: 5px;
-  padding: 8px 12px 5px 8px;
-  max-height: 300px;
-  overflow: scroll;
-  overflow-x: hidden;
-  scrollbar-width: none;
+  /* padding: 8px 12px 5px 8px; */
+  max-height: 30vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
 }
 
 .MemberItems::-webkit-scrollbar {

@@ -78,7 +78,8 @@ let ThreedotRef: any;
 interface ChannelsState {}
 
 export default function LeftMenu() {
-  const { userExistsInSpace } = useContext(AuthContext);
+  const { userExistsInSpace, SelectedChannel, setSelectedChannel } =
+    useContext(AuthContext);
 
   const [ChannelsState, setChannelsState] = useState([]);
   const [page, setPage] = useState(1);
@@ -128,7 +129,7 @@ export default function LeftMenu() {
   });
 
   const fetchMoreData = () => {
-    console.log("fetchMoreData");
+    // console.log("fetchMoreData");
     setPage((prev) => prev + 1);
     ChannelsRefetch({
       Useremail: localStorage.getItem("email"),
@@ -151,8 +152,81 @@ export default function LeftMenu() {
   }, [ChannelsLoading]);
 
   useEffect(() => {
-    console.log("ChannelsState", ChannelsState, hasNextPage);
+    if (ChannelsState.length > 0) {
+      if (page === 1) {
+        let a: any = ChannelsState[0];
+        setSelectedChannel({
+          Bool: !SelectedChannel,
+          key: 0,
+          Name: a.Channel.Name,
+        });
+      }
+      // console.log("ChannelsState", ChannelsState, hasNextPage);
+    }
   }, [ChannelsState]);
+
+  const [MembersState, setMembersState] = useState([]);
+  const [memberpage, setmemberpage] = useState(1);
+  const [hasNextPagemember, sethasNextPagemember] = useState(false);
+  const [memberCount, setmemberCount] = useState(0);
+
+  const MemberssQUERY = gql`
+    query MyQuery($spaceId: String!, $page: Int!, $perPage: Int!) {
+      SpaceMembers(page: $page, perPage: $perPage, spaceId: $spaceId) {
+        hasNextPage
+        memberCount
+        items {
+          isAdmin
+          User {
+            username
+            Image {
+              url
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const {
+    data: MembersData,
+    loading: MembersLoading,
+    refetch: MembersRefetch,
+  } = useQuery(MemberssQUERY, {
+    variables: {
+      spaceId: userExistsInSpace.space_id,
+      page: memberpage,
+      perPage: 10,
+    },
+  });
+
+  const fetchMoreDataMembers = () => {
+    // console.log("fetchMoreDataMembers");
+    setmemberpage((prev) => prev + 1);
+    MembersRefetch({
+      spaceId: userExistsInSpace.space_id,
+      page: memberpage,
+      perPage: 10,
+    });
+  };
+
+  useEffect(() => {
+    // console.log(MembersData, "MembersData");
+    if (typeof MembersData !== "undefined") {
+      setMembersState(MembersState.concat(MembersData.SpaceMembers.items));
+      setmemberCount(MembersData.SpaceMembers.memberCount);
+      if (MembersData.SpaceMembers.hasNextPage === true) {
+        sethasNextPagemember(true);
+      } else {
+        sethasNextPagemember(false);
+      }
+    }
+  }, [MembersLoading]);
+
+  // useEffect(() => {
+  //   console.log("MembersState", MembersState, hasNextPagemember);
+
+  // }, [MembersState]);
 
   //Three Dots Show hide on Channel Hover
   const [isHoverChannelItemGrid, setisHoverChannelItemGrid] = useState<Hover>({
@@ -174,15 +248,48 @@ export default function LeftMenu() {
     setchannelOpen(!channelOpen);
   };
 
-  // Selected channel item
-  const [SelectedChannel, setSelectedChannel] = useState({
-    Bool: false,
-    key: null,
-  });
-  const handleSelectedChannel = (key: any) => {
-    // console.log(key);
-    setSelectedChannel({ Bool: !SelectedChannel, key: key });
+  // interface chatChannelCurrentPage {
+  //   channelName: string;
+  //   pageLeft: number;
+  //   chatHasNextpage: Boolean;
+  // }
+
+  // const [ChatChannelCurrentPage, setChatChannelCurrentPage] = useState<
+  //   chatChannelCurrentPage[]
+  // >([]);
+
+  const handleSelectedChannel = (key: any, Name: any) => {
+    setSelectedChannel({
+      Bool: !SelectedChannel,
+      key: key,
+      Name: Name,
+    });
+
+    // if (
+    //   ChatChannelCurrentPage.filter((o) => {
+    //     return o.channelName === Name;
+    //   }).length === 0
+    // ) {
+    //   setChatChannelCurrentPage((oldArray) => [
+    //     ...oldArray,
+    //     { channelName: Name, pageLeft: 1, chatHasNextpage: false },
+    //   ]);
+    // } else {
+    //   setChatChannelCurrentPage(
+    //     ChatChannelCurrentPage.map((o) => {
+    //       if (o.pageLeft === 1) {
+    //         return { ...o, pageLeft: 2, chatHasNextpage: true };
+    //       } else {
+    //         return o;
+    //       }
+    //     })
+    //   );
+    // }
   };
+
+  // useEffect(() => {
+  //   console.log("ChatChannelCurrentPage", ChatChannelCurrentPage);
+  // }, [ChatChannelCurrentPage]);
 
   //Cross Show hide on Member Hover
   const [isHoverMemberItemGrid, setisHoverMemberItemGrid] = useState<Hover>({
@@ -229,7 +336,7 @@ export default function LeftMenu() {
   const [style3Dots, setStyle3Dots] = useState({});
 
   const clickPosition = (event: any) => {
-    console.log(event.pageY, event.pageX);
+    // console.log(event.pageY, event.pageX);
     setStyle3Dots({
       top: `${event.pageY}px`,
       left: `${event.pageX}px`,
@@ -245,8 +352,15 @@ export default function LeftMenu() {
         Open={ChannelMembersOpen}
       />
       <ManageMembers setOpen={setOpen} Open={Open} />
+      {menuIsOpen.Bool && (
+        <ClickChannel3Dots
+          HamburgerRef={ThreedotRef}
+          setMenuIsOpen={setMenuIsOpen}
+          style3Dots={style3Dots}
+        />
+      )}
       <div className={styles.LeftMenu}>
-        <div>
+        <div className={styles.TopWrapper}>
           <div style={{ cursor: "default" }} className={styles.WrapperChannel}>
             <div className={styles.Channel}>
               <div className={styles.SubChannel}>
@@ -318,13 +432,6 @@ export default function LeftMenu() {
                 }
                 scrollableTarget="scrollableDiv"
               >
-                {menuIsOpen.Bool && (
-                  <ClickChannel3Dots
-                    HamburgerRef={ThreedotRef}
-                    setMenuIsOpen={setMenuIsOpen}
-                    style3Dots={style3Dots}
-                  />
-                )}
                 {ChannelsState.filter((obj: any, index) => {
                   return (
                     index ===
@@ -338,7 +445,9 @@ export default function LeftMenu() {
                     className={styles.ChannelItemGrid}
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={() => handleMouseOut(index)}
-                    onClick={() => handleSelectedChannel(index)}
+                    onClick={() =>
+                      handleSelectedChannel(index, Channel.Channel.Name)
+                    }
                     style={
                       SelectedChannel.Bool === true ||
                       index === SelectedChannel.key
@@ -394,13 +503,15 @@ export default function LeftMenu() {
             </div>
           </div>
 
-          <div
+          {/* <div
             className={miniComponents.lineGrey}
-            style={{ margin: "20px 0px 10px 0px" }}
-          ></div>
-          <></>
-          <></>
-          <div style={{ cursor: "default" }} className={styles.WrapperChannel}>
+            style={{ margin: "30px 0px 10px 0px" }}
+          ></div> */}
+
+          <div
+            style={{ cursor: "default", marginTop: "20px" }}
+            className={styles.WrapperChannel}
+          >
             <div className={styles.Channel}>
               <div className={styles.SubChannel}>
                 <DropMenu
@@ -422,7 +533,7 @@ export default function LeftMenu() {
                   className={styles.greyBody15px}
                   onClick={() => setOpen(true)}
                 >
-                  2
+                  {memberCount - 1}
                 </p>
               </div>
               <Plus
@@ -431,6 +542,7 @@ export default function LeftMenu() {
               />
             </div>
             <div
+              id="scrollableDivMember"
               className={styles.MemberItems}
               style={
                 memberOpen === true
@@ -442,30 +554,57 @@ export default function LeftMenu() {
                     }
               }
             >
-              {Members.map((Member: any, index: any) => (
-                <div
-                  key={index}
-                  className={styles.MemberItemGrid}
-                  onMouseEnter={() => MouseEnterMemberItemGrid(index)}
-                  onMouseLeave={() => MouseOutMemberItemGrid(index)}
-                >
-                  <div className={styles.imageWrapper}>
-                    <Image src={Member.image} alt="" height={22} width={22} />
-                    <div className={styles.greyBody15pxNoHover}>
-                      {Member.username}
+              <InfiniteScroll
+                dataLength={MembersState.length}
+                next={() => fetchMoreDataMembers()}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "8px 12px 5px 8px",
+                }}
+                inverse={false}
+                hasMore={hasNextPagemember}
+                loader={
+                  <div className={miniComponents.center}>
+                    <div className={miniComponents.loader}></div>
+                  </div>
+                }
+                scrollableTarget="scrollableDivMember"
+              >
+                {MembersState.map((Member: any, index: any) => (
+                  <div
+                    key={index}
+                    className={styles.MemberItemGrid}
+                    onMouseEnter={() => MouseEnterMemberItemGrid(index)}
+                    onMouseLeave={() => MouseOutMemberItemGrid(index)}
+                  >
+                    <div className={styles.imageWrapper}>
+                      <img
+                        style={{ borderRadius: "3px" }}
+                        src={
+                          process.env.NEXT_PUBLIC_BACKEND_GRAPHQL +
+                          Member.User.Image.url
+                        }
+                        alt=""
+                        height={22}
+                        width={22}
+                      />
+                      <div className={styles.greyBody15pxNoHover}>
+                        {Member.User.username}
+                      </div>
+                    </div>
+
+                    <div className={styles.MemberIconGrid}>
+                      {isHoverMemberItemGrid.Bool &&
+                      index === isHoverMemberItemGrid.key ? (
+                        <Plus className={styles.Cross_svg} />
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                   </div>
-
-                  <div className={styles.MemberIconGrid}>
-                    {isHoverMemberItemGrid.Bool &&
-                    index === isHoverMemberItemGrid.key ? (
-                      <Plus className={styles.Cross_svg} />
-                    ) : (
-                      <div></div>
-                    )}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </InfiniteScroll>
             </div>
           </div>
         </div>
