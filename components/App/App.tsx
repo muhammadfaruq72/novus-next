@@ -8,12 +8,15 @@ import Image from "next/image";
 import { use, useEffect, useState } from "react";
 import CreateWorkspace from "./CreateWorkspace";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface App {
   setIsLoggedIn: any;
 }
 
 export default function App(app: App) {
+  const router = useRouter();
   const { setIsLoggedIn } = app;
   const [Open, setOpen] = useState<Boolean>(false);
   const [recentSpaces, setRecentSpaces] = useState([]);
@@ -79,9 +82,19 @@ export default function App(app: App) {
     }
   }, [RecentlyLoading]);
 
-  useEffect(() => {
-    console.log(page);
-  }, [page]);
+  function requestPermission() {
+    if (!("Notification" in window)) {
+      alert("This browser does not support system notifications!");
+    } else if (Notification.permission === "granted") {
+      // sendNotification("message", "user");
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission((permission) => {
+        if (permission === "granted") {
+          // sendNotification("message", "user");
+        }
+      });
+    }
+  }
 
   return (
     <>
@@ -114,7 +127,9 @@ export default function App(app: App) {
         </div>
         <div className={styles.Browse}>
           <h1 className={styles.Heading24px}>Browse all Workspaces</h1>
-          <button className={buttons.Blue187x62}>Workspaces</button>
+          <button onClick={requestPermission} className={buttons.Blue187x62}>
+            Workspaces
+          </button>
         </div>
         {recentSpaces.map((Space: any, index: any) => (
           <div className={styles.Browse} key={index}>
@@ -140,7 +155,12 @@ export default function App(app: App) {
               </div>
             </div>
 
-            <button className={buttons.Blue187x62}>Launch</button>
+            <button
+              className={buttons.Blue187x62}
+              onClick={() => location.replace("/" + Space.workspace.spaceId)}
+            >
+              Launch
+            </button>
           </div>
         ))}
 

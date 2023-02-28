@@ -3,177 +3,233 @@ import fonts from "@/styles/fonts.module.css";
 import buttons from "@/styles/buttons.module.css";
 import miniComponents from "@/styles/miniComponents.module.css";
 import Plus from "@/public/Plus.svg";
-
-import User1 from "@/public/Temporary/image1.png";
-import User2 from "@/public/Temporary/image2.png";
-import User3 from "@/public/Temporary/image3.png";
-import User4 from "@/public/Temporary/image4.png";
-import User5 from "@/public/Temporary/image5.png";
+import Search from "@/public/search-icon.svg";
 import Image from "next/image";
 import DropDown from "./DropDown";
-import { useEffect, useState } from "react";
+import ThreeDots from "@/public/ThreeDots.svg";
+import ManageMembers3Dots from "./ManageMembers3Dots";
+import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useState, useRef, useEffect, useContext } from "react";
+import AuthContext from "@/components/CreateContext";
+import InfiniteScroll from "react-infinite-scroll-component";
+import AddChannelMembers from "./addChannelMembers";
 
-interface Members {
-  username: string;
-  email: string;
-  image: any;
-  status: any;
-}
-
-const Members: Members[] = [
-  {
-    username: "Justin_Willson",
-    email: "Justin_Willson@gmail.com",
-    image: User1,
-    status: "Remove",
-  },
-  {
-    username: "Dav_Espinosa",
-    email: "Dav_Espinosa@gmail.com",
-    image: User2,
-    status: "Remove",
-  },
-  {
-    username: "FlyingDucky",
-    email: "FlyingDucky@gmail.com",
-    image: User3,
-    status: "Add",
-  },
-  {
-    username: "Tebeloper",
-    email: "Tebeloper@gmail.com",
-    image: User4,
-    status: "Add",
-  },
-  {
-    username: "DanielLyons",
-    email: "DanielLyons@gmail.com",
-    image: User5,
-    status: "Add",
-  },
-  {
-    username: "Justin_Willson",
-    email: "Justin_Willson@gmail.com",
-    image: User1,
-    status: "Add",
-  },
-  {
-    username: "Dav_Espinosa",
-    email: "Dav_Espinosa@gmail.com",
-    image: User2,
-    status: "Add",
-  },
-  {
-    username: "FlyingDucky",
-    email: "FlyingDucky@gmail.com",
-    image: User3,
-    status: "Add",
-  },
-  {
-    username: "Tebeloper",
-    email: "Tebeloper@gmail.com",
-    image: User4,
-    status: "Add",
-  },
-  {
-    username: "DanielLyons",
-    email: "DanielLyons@gmail.com",
-    image: User5,
-    status: "Add",
-  },
-  {
-    username: "Justin_Willson",
-    email: "Justin_Willson@gmail.com",
-    image: User1,
-    status: "Remove",
-  },
-  {
-    username: "Dav_Espinosa",
-    email: "Dav_Espinosa@gmail.com",
-    image: User2,
-    status: "Remove",
-  },
-  {
-    username: "FlyingDucky",
-    email: "FlyingDucky@gmail.com",
-    image: User3,
-    status: "Add",
-  },
-  {
-    username: "Tebeloper",
-    email: "Tebeloper@gmail.com",
-    image: User4,
-    status: "Add",
-  },
-  {
-    username: "DanielLyons",
-    email: "DanielLyons@gmail.com",
-    image: User5,
-    status: "Add",
-  },
-  {
-    username: "Justin_Willson",
-    email: "Justin_Willson@gmail.com",
-    image: User1,
-    status: "Add",
-  },
-  {
-    username: "Dav_Espinosa",
-    email: "Dav_Espinosa@gmail.com",
-    image: User2,
-    status: "Add",
-  },
-  {
-    username: "FlyingDucky",
-    email: "FlyingDucky@gmail.com",
-    image: User3,
-    status: "Add",
-  },
-  {
-    username: "Tebeloper",
-    email: "Tebeloper@gmail.com",
-    image: User4,
-    status: "Add",
-  },
-  {
-    username: "DanielLyons",
-    email: "DanielLyons@gmail.com",
-    image: User5,
-    status: "Add",
-  },
-];
+let ThreedotRef: any;
 
 interface Close {
   setOpen: any;
   Open: any;
+  setMembersState: any;
+  MembersState: any;
+  setChannelsState?: any;
+  ChannelsState?: any;
 }
 
-let StyleBefore = {
-  backgroundColor: "#364590",
-  color: "#fff",
-  border: "1px solid #364590",
-};
-
-let StyleAfter = {
-  backgroundColor: "transparent",
-  color: "#364590",
-  border: "1px solid #364590",
-};
-
 export default function ChannelMembers(Close: Close) {
+  const {
+    userExistsInSpace,
+    SelectedChannel,
+    setSelectedChannel,
+    LoggedUser,
+    setLoggedUser,
+  } = useContext(AuthContext);
+
   const [isOpen, setisOpen] = useState({ Bool: false, key: null });
   const [filter, setFilter] = useState("");
-  const [onAdd, setOnAdd] = useState({
-    style: StyleBefore,
-    text: "Add",
-    key: null,
+
+  // On clicking three dots
+  const [menuIsOpen, setMenuIsOpen] = useState({ Bool: false, key: null });
+  const handleThreedotRef = (src: any) => {
+    ThreedotRef = src;
+  };
+
+  const [style3Dots, setStyle3Dots] = useState({});
+
+  const clickPosition = (event: any) => {
+    // console.log(event.pageY, event.pageX);
+    setStyle3Dots({
+      top: `${event.pageY - 80}px`,
+      left: `${event.pageX - 160}px`,
+    });
+  };
+
+  const [manageMembersState, setmanageMembersState] = useState([]);
+  const [managememberpage, setmanagememberpage] = useState(1);
+  const [managehasNextPagemember, setmanagehasNextPagemember] = useState(false);
+  const [styleSubmit, setStyleSubmit] = useState({});
+  const [isQuerySearch, setisQuerySearch] = useState({
+    Bool: false,
+    filter: "",
   });
+
+  const [chMember, setChMember] = useState(true);
+
+  const MembersQUERY = gql`
+    query MyQuery(
+      $ChMember: Boolean!
+      $page: Int!
+      $perPage: Int!
+      $spaceId: String!
+      $channelName: String!
+      $UserContains: String
+    ) {
+      QueryChannelMembers(
+        ChMember: $ChMember
+        page: $page
+        perPage: $perPage
+        spaceId: $spaceId
+        channelName: $channelName
+        UserContains: $UserContains
+      ) {
+        items {
+          User {
+            id
+            username
+            Image {
+              url
+            }
+          }
+          isAdded
+        }
+        hasNextPage
+      }
+    }
+  `;
+
+  const [
+    channelMembersQuery,
+    {
+      // data: manageMembersData,
+      loading: manageMembersLoading,
+      refetch: manageMembersRefetch,
+    },
+  ] = useLazyQuery(MembersQUERY, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+
+    onCompleted: (data) => {
+      if (typeof data !== "undefined") {
+        setmanageMembersState(
+          manageMembersState.concat(data.QueryChannelMembers.items)
+        );
+
+        if (isQuerySearch.Bool) {
+          setFilter(isQuerySearch.filter);
+          setisQuerySearch({ Bool: false, filter: "" });
+        } else {
+          if (data.QueryChannelMembers.hasNextPage === true) {
+            setmanagehasNextPagemember(true);
+          } else {
+            if (chMember === true) {
+              // console.log("chMember", chMember);
+              setChMember(false);
+
+              if (managememberpage !== 1) {
+                setmanagememberpage(1);
+              } else {
+                channelMembersQuery({
+                  variables: {
+                    ChMember: false,
+                    page: 1,
+                    perPage: 10,
+                    spaceId: userExistsInSpace.space_id,
+                    channelName: SelectedChannel.Name,
+                    UserContains: null,
+                  },
+                });
+              }
+            }
+            if (chMember === false) {
+              setmanagehasNextPagemember(false);
+            }
+          }
+          if (
+            data.QueryChannelMembers.hasNextPage === true &&
+            manageMembersState.length < 10
+          ) {
+            setmanagememberpage((prev) => prev + 1);
+          }
+        }
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (Close.Open === true) {
+      channelMembersQuery({
+        variables: {
+          ChMember: chMember,
+          page: managememberpage,
+          perPage: 10,
+          spaceId: userExistsInSpace.space_id,
+          channelName: SelectedChannel.Name,
+          UserContains: null,
+        },
+      });
+    }
+  }, [Close.Open]);
+
+  useEffect(() => {
+    // console.log("manageMembersState", manageMembersState);
+  }, [manageMembersState]);
+
+  const fetchMoreDataManageMembers = () => {
+    // console.log("fetchMoreDataManageMembers");
+    setmanagememberpage((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    // console.log("managememberpage", managememberpage);
+    channelMembersQuery({
+      variables: {
+        ChMember: chMember,
+        page: managememberpage,
+        perPage: 10,
+        spaceId: userExistsInSpace.space_id,
+        channelName: SelectedChannel.Name,
+        UserContains: null,
+      },
+    });
+  }, [managememberpage]);
+
+  useEffect(() => {
+    if (isQuerySearch.Bool === true) {
+      setStyleSubmit({
+        background: "rgba(0, 0, 0, 0.3)",
+        pointerEvents: "none",
+      });
+    }
+    if (isQuerySearch.Bool === false) {
+      setStyleSubmit({
+        background: "#364590",
+        pointerEvents: "auto",
+      });
+    }
+  }, [isQuerySearch]);
+
+  const handleSearch = (event: any) => {
+    event.preventDefault();
+    setisQuerySearch({ Bool: true, filter: event.target.text.value });
+    channelMembersQuery({
+      variables: {
+        ChMember: chMember,
+        page: 1,
+        perPage: 10,
+        spaceId: userExistsInSpace.space_id,
+        channelName: SelectedChannel.Name,
+        UserContains: event.target.text.value,
+      },
+    });
+  };
 
   return (
     <>
       <div
         onClick={() => {
           Close.setOpen(false);
+          setmanageMembersState([]);
+          setmanagememberpage(1);
+          setChMember(true);
           setisOpen({ Bool: false, key: null });
         }}
         className={`${styles.overlay} ${
@@ -191,6 +247,10 @@ export default function ChannelMembers(Close: Close) {
             onClick={(e: any) => {
               e.stopPropagation();
               setisOpen({ Bool: false, key: null });
+              setMenuIsOpen({
+                Bool: false,
+                key: null,
+              });
             }}
             className={styles.Wrapper}
           >
@@ -198,65 +258,125 @@ export default function ChannelMembers(Close: Close) {
               className={styles.SVGCross}
               onClick={() => {
                 Close.setOpen(false);
+                setmanageMembersState([]);
+                setmanagememberpage(1);
+                setChMember(true);
               }}
             />
 
             <div className={styles.ContentWrapper}>
-              <h1 className={fonts.blackHeading21px}># Marketing research</h1>
-              <p
-                style={{ marginTop: "-25px", maxWidth: "400px" }}
-                className={fonts.greyBody14px}
+              <div style={{ marginTop: "15px" }}>
+                <h1 className={fonts.blackHeading21px}>
+                  {SelectedChannel.Name}
+                </h1>
+                <p
+                  style={{ marginTop: "5px", maxWidth: "400px" }}
+                  className={fonts.greyBody14px}
+                >
+                  Members
+                </p>
+              </div>
+
+              <form
+                className={styles.forms}
+                onSubmit={(event: any) => {
+                  handleSearch(event);
+                }}
               >
-                Members
-              </p>
-              <form className={styles.forms}>
                 <input
                   name="text"
                   type={"text"}
                   required={true}
                   placeholder="Ex: David_Expinosa"
-                  onChange={(event) => setFilter(event.target.value)}
+                  onChange={(event) => {
+                    if (event.target.value === "") {
+                      setFilter("");
+                    }
+                  }}
                 ></input>
-              </form>
-              <div className={styles.MemberScroll}>
-                {Members.filter((value) => {
-                  if (filter === "") {
-                    return value;
-                  } else if (
-                    value.username.toLowerCase().includes(filter.toLowerCase())
-                  ) {
-                    return value;
-                  }
-                }).map((Member: any, index: any) => (
-                  <div className={styles.WrapperMembers} key={index}>
-                    <div className={styles.Members}>
-                      <Image src={Member.image} alt="" height={35} width={35} />
-                      <div className={styles.MembersData}>
-                        <div className={fonts.lightBlack15px}>
-                          {Member.username}
-                        </div>
-                        <div className={fonts.greyBody14px}>{Member.email}</div>
-                      </div>
-                    </div>
-                    {Member.status === "Add" ? (
-                      <button
-                        key={index}
-                        style={StyleBefore}
-                        className={buttons.Blue101x28}
-                      >
-                        {Member.status}
-                      </button>
-                    ) : (
-                      <button
-                        key={index}
-                        style={StyleAfter}
-                        className={buttons.Blue101x28}
-                      >
-                        {Member.status}
-                      </button>
-                    )}
+                <label>
+                  <input type="submit" style={{ display: "none" }}></input>
+                  <div className={styles.searchWrapper} style={styleSubmit}>
+                    <Search className={styles.search_svg} />
                   </div>
-                ))}
+                </label>
+              </form>
+              <div
+                id="scrollableDivChannelMember"
+                className={styles.MemberScroll}
+              >
+                <InfiniteScroll
+                  dataLength={manageMembersState.length}
+                  next={() => fetchMoreDataManageMembers()}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                  inverse={false}
+                  hasMore={managehasNextPagemember}
+                  loader={
+                    <div className={miniComponents.center}>
+                      <div className={miniComponents.loader}></div>
+                    </div>
+                  }
+                  scrollableTarget="scrollableDivChannelMember"
+                >
+                  {manageMembersState
+                    .filter((value: any, index) => {
+                      if (filter === "") {
+                        return (
+                          index ===
+                          manageMembersState.findIndex(
+                            (o: any) => value.User.username === o.User.username
+                          )
+                        );
+                      } else if (
+                        value.User.username
+                          .toLowerCase()
+                          .includes(filter.toLowerCase())
+                      ) {
+                        return (
+                          index ===
+                          manageMembersState.findIndex(
+                            (o: any) => value.User.username === o.User.username
+                          )
+                        );
+                      }
+                    })
+                    .map((Member: any, index: any) => (
+                      <div className={styles.WrapperMembers} key={index}>
+                        <div className={styles.Members}>
+                          <img
+                            style={{ borderRadius: "5px" }}
+                            src={
+                              process.env.NEXT_PUBLIC_BACKEND_GRAPHQL +
+                              Member.User.Image.url
+                            }
+                            alt=""
+                            height={35}
+                            width={35}
+                          />
+                          <div className={styles.manageMembersData}>
+                            <div className={fonts.lightBlack15px}>
+                              {Member.User.username}
+                            </div>
+                            <div className={fonts.greyBody13px}>
+                              {Member.isAdded ? "Member" : "Not a member"}
+                            </div>
+                          </div>
+                        </div>
+                        {LoggedUser.isAdmin && (
+                          <AddChannelMembers
+                            Member={Member}
+                            setmanageMembersState={setmanageMembersState}
+                            manageMembersState={manageMembersState}
+                            setChannelsState={Close.setChannelsState}
+                            ChannelsState={Close.ChannelsState}
+                          />
+                        )}
+                      </div>
+                    ))}
+                </InfiniteScroll>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import miniComponents from "@/styles/miniComponents.module.css";
 import Plus from "@/public/Plus.svg";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 interface Close {
   setOpen: any;
@@ -12,12 +13,13 @@ interface Close {
 }
 
 export default function CreateWorkspace(Close: Close) {
+  const router = useRouter();
   const [styleSubmit, setStyleSubmit] = useState({});
 
   const Mutation = gql`
     mutation MyMutation($email: String!, $Name: String!) {
       Workspace(email: $email, Name: $Name) {
-        message
+        spaceId
       }
     }
   `;
@@ -27,11 +29,13 @@ export default function CreateWorkspace(Close: Close) {
     {
       onCompleted(data) {
         console.log(data);
-        if (data.Workspace.message === "Success") {
-          console.log(data.Workspace.message);
+        if (data.Workspace !== null) {
+          console.log(data.Workspace.spaceId);
           Close.setOpen(false);
+          requestPermission();
+          router.push("/" + data.Workspace.spaceId);
         }
-        if (data.Workspace.message === "Failed") {
+        if (data.Workspace === null) {
           alert("This Workspace name already exits. Please try another name.");
         }
       },
@@ -59,6 +63,20 @@ export default function CreateWorkspace(Close: Close) {
       });
     }
   }, [loading]);
+
+  function requestPermission() {
+    if (!("Notification" in window)) {
+      alert("This browser does not support system notifications!");
+    } else if (Notification.permission === "granted") {
+      // sendNotification("message", "user");
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission((permission) => {
+        if (permission === "granted") {
+          // sendNotification("message", "user");
+        }
+      });
+    }
+  }
 
   return (
     <>

@@ -40,7 +40,7 @@
   background-color: yellow;
   height: 34px;
   width: 100%;
-  border-radius: 5px;
+  border-radius: 3px;
   background: #d9d9d9;
   display: grid;
   grid-template-columns: auto auto;
@@ -83,11 +83,10 @@
 }
 
 .svg_Plus {
-  width: 18px;
-  height: 18px;
+  width: 1rem;
+  height: 1rem;
   fill: #5f5d61;
-  margin: 0 auto;
-  padding: 10px;
+  padding: 0.4rem;
   transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -96,11 +95,11 @@
 }
 
 .svg_Send {
-  width: 18px;
-  height: 18px;
+  width: 1rem;
+  height: 1rem;
   fill: #5f5d61;
   margin: 0 auto;
-  padding: 10px;
+  padding: 0.4rem;
   transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
@@ -109,19 +108,22 @@
 }
 
 .SendBar textarea {
-  height: 22px;
+  /* height: 10px; */
   max-height: 250px;
   /* box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14); */
   border: none;
   background-color: transparent;
   outline: none;
   resize: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin: auto 0;
   caret-color: #5f5d61;
   color: #5f5d61;
-  /* padding-top: 10px; */
+  padding-top: 0.2rem;
+  /* margin-top: 10px; */
   /* margin-bottom: -30px; */
+  /* overflow-x: hidden; */
+  scrollbar-width: none;
 }
 
 .SendBar textarea::-webkit-scrollbar {
@@ -137,11 +139,13 @@
 } */
 
 .WrapperConversation {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 113px);
   /* display: grid;
   grid-template-columns: auto; */
 
   /* align-content: flex-end; */
+  overflow-x: hidden;
+  scrollbar-width: none;
   gap: 0px;
   overflow: auto;
   display: flex;
@@ -239,4 +243,109 @@
   border-left-width: 2px;
   border-bottom-color: rgba(217, 217, 217, 1);
   border-left-color: rgba(217, 217, 217, 1);
+}
+
+.attachmentWrapper {
+  display: grid;
+  grid-template-columns: auto;
+  padding: 10px;
+  height: 150px;
+  width: 100%;
+  background-color: #ededed;
+  border-radius: 3px;
+}
+
+.ImageWrapper {
+  position: relative;
+}
+
+.Image {
+  position: relative;
+  border-radius: 6px;
+  height: 130px;
+  width: auto;
+  /* margin: auto 0; */
+  /* z-index: 1; */
+}
+
+.CrossButton {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  /* right: 0vh; */
+
+  /* margin-left: -40px; */
+  /* z-index: 1; */
+  width: 24px;
+  height: 24px;
+  background: rgba(245, 245, 245);
+  border-radius: 50px;
+  box-shadow: 0px 0px 9px rgba(0, 0, 0, 0.4);
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.CrossButton:hover {
+  transform: rotate(-88deg);
+}
+
+.SVGCross {
+  fill: #868686;
+  width: 15px;
+  height: 15px;
+  transform: rotate(-44deg);
+}
+
+.MessageWrapper {
+  display: grid;
+  gap: 5px;
+}
+
+.ReplyAttachment {
+  display: grid;
+  grid-template-columns: auto auto;
+  /* justify-content: start;
+  align-items: start; */
+  gap: 10px;
+}
+
+.attachImage {
+  width: 300px;
+  border-radius: 10px;
+}
+
+.videoPlayer {
+  width: 500px;
+}
+
+/* .renderMode {
+  background-color: yellow;
+} */
+
+.NextArrow {
+  background: #364590;
+  height: 15px;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 0;
+}
+
+.PrevArrow {
+  background: #364590;
+  height: 15px;
+  padding: 5px;
+  border-radius: 5px;
+  transform: rotate(180deg);
+  z-index: 0;
+}
+
+.ArrowWrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5px;
+  justify-content: end;
+  margin-top: -30px;
+  margin-right: 5px;
 }

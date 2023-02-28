@@ -7,6 +7,7 @@ import Cross from "@/public/Cross.svg";
 import { useEffect, useContext } from "react";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
 
 var email: string;
 
@@ -22,6 +23,7 @@ export default function LogIn(Close: Close) {
   const [warningBool, setWarningBool] = useState(false);
   const [warningtext, setWarningText] = useState("This is a warning pop up!");
   const [styleSubmit, setStyleSubmit] = useState({});
+  const router = useRouter();
 
   const Mutation = gql`
     mutation MyMutation($email: String!, $password: String!) {
@@ -60,6 +62,12 @@ export default function LogIn(Close: Close) {
             "username",
             data.tokenAuth.token.payload.username
           );
+
+          if (localStorage.getItem("loginRequiredForInvite") !== null) {
+            router.push(localStorage.getItem("loginRequiredForInvite")!);
+            localStorage.removeItem("loginRequiredForInvite");
+          }
+
           Close.closeLogIn(false);
           Close.setIsLoggedIn(true);
         }

@@ -115,7 +115,7 @@ export default function ClickAddChannel(Props: props) {
 
   return (
     <div className={styles.Menu} onClick={(e: any) => e.stopPropagation()}>
-      <p className={fonts.lightBlack17px}>Create a FileSpace</p>
+      <p className={fonts.lightBlack14px}>Create a FileSpace</p>
       <form className={styles.Wrapper} onSubmit={CreateWorkSpace}>
         <input
           name="text"

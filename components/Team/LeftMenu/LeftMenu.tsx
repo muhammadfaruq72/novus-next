@@ -3,83 +3,34 @@ import miniComponents from "@/styles/miniComponents.module.css";
 import styles from "@/styles/components/Team/LeftMenu/LeftMenu.module.css";
 import ThreeDots from "@/public/ThreeDots.svg";
 import Plus from "@/public/Plus.svg";
-import Database from "@/public/Database.svg";
-import User1 from "@/public/Temporary/image1.png";
-import User2 from "@/public/Temporary/image2.png";
-import User3 from "@/public/Temporary/image3.png";
-import User4 from "@/public/Temporary/image4.png";
-import User5 from "@/public/Temporary/image5.png";
+import Lock from "@/public/Lock.svg";
 import DropMenu from "@/public/DropMenu.svg";
 import { useState, useRef, useEffect, useContext } from "react";
 import Image from "next/image";
 import ClickChannel3Dots from "./ClickChannel3Dots";
 import ClickAddChannel from "@/components/Team/LeftMenu/ClickAddChannel";
-import { Line } from "rc-progress";
 import ManageMembers from "./ManageMembers";
 import ChannelMembers from "./ChannelMembers";
 import Invite from "./Invite";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import AuthContext from "@/components/CreateContext";
 import InfiniteScroll from "react-infinite-scroll-component";
-
-const Channels: any = [
-  "Marketing Research",
-  "Email Compaign",
-  "Facebook Ads",
-  "TikTok ads",
-  "Marketing Research",
-  "Email Compaign",
-  "Facebook Ads",
-  "TikTok ads",
-  "Marketing Research",
-  "Email Compaign",
-  "Facebook Ads",
-  "TikTok ads",
-  "Marketing Research",
-  "Email Compaign",
-  "Facebook Ads",
-  "TikTok ads",
-];
-
-interface Members {
-  username: string;
-  image: any;
-}
-
-const Members: Members[] = [
-  { username: "Justin_Willson", image: User1 },
-  { username: "Dav_Espinosa", image: User2 },
-  { username: "FlyingDucky", image: User3 },
-  { username: "Tebeloper", image: User4 },
-  { username: "Justin_Willson", image: User1 },
-  { username: "Dav_Espinosa", image: User2 },
-  { username: "FlyingDucky", image: User3 },
-  { username: "Tebeloper", image: User4 },
-  { username: "Justin_Willson", image: User1 },
-  { username: "Dav_Espinosa", image: User2 },
-  { username: "FlyingDucky", image: User3 },
-  { username: "Tebeloper", image: User4 },
-];
+import Progressbar from "./Progressbar";
 
 interface Hover {
   Bool: Boolean;
   key: number;
 }
-// let ChannelItems = {
-//   cursor: "inline",
-// };
-
-// let DropMenu_svg = {
-//   transform: "rotate(0)",
-// };
-
 let ThreedotRef: any;
 
-interface ChannelsState {}
-
 export default function LeftMenu() {
-  const { userExistsInSpace, SelectedChannel, setSelectedChannel } =
-    useContext(AuthContext);
+  const {
+    userExistsInSpace,
+    SelectedChannel,
+    setSelectedChannel,
+    DeleteMembercount,
+    setDeleteMembercount,
+  } = useContext(AuthContext);
 
   const [ChannelsState, setChannelsState] = useState([]);
   const [page, setPage] = useState(1);
@@ -151,17 +102,21 @@ export default function LeftMenu() {
     }
   }, [ChannelsLoading]);
 
+  const [preventSelectedChannel, setpreventSelectedChannel] = useState(true);
+
   useEffect(() => {
-    if (ChannelsState.length > 0) {
-      if (page === 1) {
-        let a: any = ChannelsState[0];
-        setSelectedChannel({
-          Bool: !SelectedChannel,
-          key: 0,
-          Name: a.Channel.Name,
-        });
+    if (preventSelectedChannel === true) {
+      if (ChannelsState.length > 0) {
+        if (page === 1) {
+          let a: any = ChannelsState[0];
+          setSelectedChannel({
+            Bool: !SelectedChannel,
+            key: 0,
+            Name: a.Channel.Name,
+          });
+        }
+        // console.log("ChannelsState", ChannelsState, hasNextPage);
       }
-      // console.log("ChannelsState", ChannelsState, hasNextPage);
     }
   }, [ChannelsState]);
 
@@ -214,6 +169,7 @@ export default function LeftMenu() {
     // console.log(MembersData, "MembersData");
     if (typeof MembersData !== "undefined") {
       setMembersState(MembersState.concat(MembersData.SpaceMembers.items));
+      setDeleteMembercount(0);
       setmemberCount(MembersData.SpaceMembers.memberCount);
       if (MembersData.SpaceMembers.hasNextPage === true) {
         sethasNextPagemember(true);
@@ -248,48 +204,14 @@ export default function LeftMenu() {
     setchannelOpen(!channelOpen);
   };
 
-  // interface chatChannelCurrentPage {
-  //   channelName: string;
-  //   pageLeft: number;
-  //   chatHasNextpage: Boolean;
-  // }
-
-  // const [ChatChannelCurrentPage, setChatChannelCurrentPage] = useState<
-  //   chatChannelCurrentPage[]
-  // >([]);
-
-  const handleSelectedChannel = (key: any, Name: any) => {
+  const handleSelectedChannel = (key: any, Name: any, isPublic: boolean) => {
     setSelectedChannel({
       Bool: !SelectedChannel,
       key: key,
       Name: Name,
+      isPublic: isPublic,
     });
-
-    // if (
-    //   ChatChannelCurrentPage.filter((o) => {
-    //     return o.channelName === Name;
-    //   }).length === 0
-    // ) {
-    //   setChatChannelCurrentPage((oldArray) => [
-    //     ...oldArray,
-    //     { channelName: Name, pageLeft: 1, chatHasNextpage: false },
-    //   ]);
-    // } else {
-    //   setChatChannelCurrentPage(
-    //     ChatChannelCurrentPage.map((o) => {
-    //       if (o.pageLeft === 1) {
-    //         return { ...o, pageLeft: 2, chatHasNextpage: true };
-    //       } else {
-    //         return o;
-    //       }
-    //     })
-    //   );
-    // }
   };
-
-  // useEffect(() => {
-  //   console.log("ChatChannelCurrentPage", ChatChannelCurrentPage);
-  // }, [ChatChannelCurrentPage]);
 
   //Cross Show hide on Member Hover
   const [isHoverMemberItemGrid, setisHoverMemberItemGrid] = useState<Hover>({
@@ -350,13 +272,28 @@ export default function LeftMenu() {
       <ChannelMembers
         setOpen={setChannelMembersOpen}
         Open={ChannelMembersOpen}
+        setMembersState={setMembersState}
+        MembersState={MembersState}
+        setChannelsState={setChannelsState}
+        ChannelsState={ChannelsState}
       />
-      <ManageMembers setOpen={setOpen} Open={Open} />
+      <ManageMembers
+        setOpen={setOpen}
+        Open={Open}
+        setMembersState={setMembersState}
+        MembersState={MembersState}
+        setChannelsState={setChannelsState}
+        ChannelsState={ChannelsState}
+      />
       {menuIsOpen.Bool && (
         <ClickChannel3Dots
           HamburgerRef={ThreedotRef}
           setMenuIsOpen={setMenuIsOpen}
           style3Dots={style3Dots}
+          setChannelsState={setChannelsState}
+          ChannelsState={ChannelsState}
+          setpreventSelectedChannel={setpreventSelectedChannel}
+          setchannelCount={setchannelCount}
         />
       )}
       <div className={styles.LeftMenu}>
@@ -446,7 +383,11 @@ export default function LeftMenu() {
                     onMouseEnter={() => handleMouseEnter(index)}
                     onMouseLeave={() => handleMouseOut(index)}
                     onClick={() =>
-                      handleSelectedChannel(index, Channel.Channel.Name)
+                      handleSelectedChannel(
+                        index,
+                        Channel.Channel.Name,
+                        Channel.Channel.isPublic
+                      )
                     }
                     style={
                       SelectedChannel.Bool === true ||
@@ -458,19 +399,52 @@ export default function LeftMenu() {
                         : {}
                     }
                   >
-                    <p
-                      className={styles.greyBody15pxNoHover}
-                      style={
-                        SelectedChannel.Bool === true ||
-                        index === SelectedChannel.key
-                          ? {
-                              color: "#404040",
+                    <div className={styles.ChannelLock}>
+                      {Channel.Channel.isPublic ? (
+                        <div
+                          className={styles.greyBody15pxNoHover}
+                          style={
+                            SelectedChannel.Bool === true ||
+                            index === SelectedChannel.key
+                              ? {
+                                  color: "#404040",
+                                  fontSize: "19px",
+                                }
+                              : { fontSize: "19px" }
+                          }
+                        >
+                          #
+                        </div>
+                      ) : (
+                        <div>
+                          <Lock
+                            className={styles.Svg_lock}
+                            style={
+                              SelectedChannel.Bool === true ||
+                              index === SelectedChannel.key
+                                ? {
+                                    stroke: "#404040",
+                                  }
+                                : {}
                             }
-                          : {}
-                      }
-                    >
-                      #&nbsp;&nbsp;{Channel.Channel.Name}
-                    </p>
+                          />
+                        </div>
+                      )}
+                      <p
+                        className={styles.greyBody15pxNoHover}
+                        style={
+                          SelectedChannel.Bool === true ||
+                          index === SelectedChannel.key
+                            ? {
+                                color: "#404040",
+                                // display: "grid",
+                              }
+                            : {}
+                        }
+                      >
+                        {Channel.Channel.Name}
+                      </p>
+                    </div>
                     <div className={styles.ChannelIconGrid}>
                       <p
                         className={styles.greyBody15px}
@@ -483,7 +457,6 @@ export default function LeftMenu() {
                       (index === menuIsOpen.key && menuIsOpen.Bool) ? (
                         <ThreeDots
                           className={styles.ThreeDots_svg}
-                          // ref={HamburgerRef}
                           onClick={(e: any) => {
                             clickPosition(e);
                             handleThreedotRef(e.target);
@@ -533,7 +506,7 @@ export default function LeftMenu() {
                   className={styles.greyBody15px}
                   onClick={() => setOpen(true)}
                 >
-                  {memberCount - 1}
+                  {memberCount - DeleteMembercount}
                 </p>
               </div>
               <Plus
@@ -590,7 +563,13 @@ export default function LeftMenu() {
                         width={22}
                       />
                       <div className={styles.greyBody15pxNoHover}>
-                        {Member.User.username}
+                        {Member.User.username}{" "}
+                        {localStorage.getItem("username") ===
+                          Member.User.username && (
+                          <span style={{ fontSize: "11px", fontWeight: "200" }}>
+                            (you)
+                          </span>
+                        )}
                       </div>
                     </div>
 
@@ -608,19 +587,7 @@ export default function LeftMenu() {
             </div>
           </div>
         </div>
-        <div className={styles.Progress}>
-          <div className={styles.Database}>
-            <Database />
-            <p className={fonts.lightBlack14px}> 2 GB of 5 GB</p>
-          </div>
-          <Line
-            percent={60}
-            strokeWidth={1}
-            trailWidth={1}
-            strokeColor="#364590"
-            trailColor={"#E2DFE7"}
-          />
-        </div>
+        <Progressbar />
       </div>
     </>
   );

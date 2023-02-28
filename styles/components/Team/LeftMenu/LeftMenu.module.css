@@ -63,7 +63,7 @@
 
 .greyBody15pxNoHover {
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   color: #818386;
   white-space: nowrap;
   overflow: hidden !important;
@@ -73,9 +73,9 @@
 .ChannelItems {
   /* padding: 8px 12px 5px 8px; */
   max-height: 30vh;
-  /* overflow: scroll;
+  /* overflow: scroll; */
   overflow-x: hidden;
-  scrollbar-width: none; */
+  scrollbar-width: none;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -135,6 +135,8 @@
   gap: 5px;
   /* padding: 8px 12px 5px 8px; */
   max-height: 30vh;
+  overflow-x: hidden;
+  scrollbar-width: none;
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -190,16 +192,30 @@
 .Progress {
   /* margin-bottom: 60px; */
   display: grid;
-  grid-template-rows: auto auto;
-  justify-content: start;
-  align-content: start;
+  grid-template-columns: auto;
   gap: 7px;
   padding: 0 20px;
 }
 .Database {
   display: grid;
   grid-template-columns: auto auto;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   gap: 7px;
+}
+
+.ChannelLock {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.Svg_lock {
+  stroke: #818386;
+  height: 16px;
+}
+
+.ChannelItemGrid:hover .Svg_lock {
+  stroke: #404040;
 }
