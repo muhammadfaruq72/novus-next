@@ -15,7 +15,6 @@ interface props {
   style3Dots: any;
   setChannelsState?: any;
   ChannelsState?: any;
-  setpreventSelectedChannel?: any;
   setchannelCount?: any;
 }
 
@@ -34,7 +33,6 @@ export default function ClickChannel3Dots(Props: props) {
     style3Dots,
     setChannelsState,
     ChannelsState,
-    setpreventSelectedChannel,
     setchannelCount,
   } = Props;
   // interface MenuData {
@@ -96,7 +94,6 @@ export default function ClickChannel3Dots(Props: props) {
       onCompleted(data) {
         if (data.DeleteChannel !== null) {
           // console.log(data);
-          setpreventSelectedChannel(false);
           if (
             data.DeleteChannel.operation === "Public False" ||
             data.DeleteChannel.operation === "Public True"
@@ -137,6 +134,13 @@ export default function ClickChannel3Dots(Props: props) {
               )
             );
             setchannelCount((prev: any) => prev - 1);
+
+            let a: any = ChannelsState[0];
+            setSelectedChannel({
+              Bool: !SelectedChannel,
+              key: 0,
+              Name: a.Channel.Name,
+            });
           }
         } else {
           alert("You can't do this operation!");

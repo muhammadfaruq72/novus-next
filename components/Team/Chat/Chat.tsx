@@ -23,6 +23,7 @@ import crypto, { randomBytes } from "crypto";
 import { VideoPlayer } from "@videojs-player/react";
 import "video.js/dist/video-js.css";
 import { Document, Page, pdfjs } from "react-pdf";
+import Pdf from "./pdf";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
@@ -70,16 +71,6 @@ export default function Chat() {
 
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
-
-  const goToPrevPage = () =>
-    setPageNumber(pageNumber - 1 <= 1 ? 1 : pageNumber - 1);
-
-  const goToNextPage = () =>
-    setPageNumber(pageNumber + 1 >= numPages ? numPages : pageNumber + 1);
-
-  function onDocumentLoadSuccess({ numPages }: any) {
-    setNumPages(numPages);
-  }
 
   const ChatsQUERY = gql`
     query MyQuery(
@@ -494,59 +485,13 @@ export default function Chat() {
                                 false,
                                 true
                               ) && (
-                                <div className={styles.ResumeContainer}>
-                                  {
-                                    <Document
-                                      className={styles.PdfStyle}
-                                      loading=""
-                                      file={
-                                        process.env.NEXT_PUBLIC_AWS +
-                                        Chat.attachment.Key
-                                      }
-                                      onLoadSuccess={onDocumentLoadSuccess}
-                                      // renderMode="canvas"
-                                    >
-                                      <Page
-                                        pageNumber={pageNumber}
-                                        width={300}
-                                        loading=""
-                                        // scale={2.5}
-                                      />
-                                    </Document>
-                                  }
-                                  <div className={styles.ArrowWrapper}>
-                                    <NextArrow
-                                      className={styles.PrevArrow}
-                                      onClick={goToPrevPage}
-                                      style={
-                                        pageNumber <= 1
-                                          ? {
-                                              background: "rgba(0, 0, 0, 0.3)",
-                                              pointerEvents: "none",
-                                            }
-                                          : {
-                                              background: "#364590",
-                                              pointerEvents: "auto",
-                                            }
-                                      }
-                                    />
-                                    <NextArrow
-                                      className={styles.NextArrow}
-                                      onClick={goToNextPage}
-                                      style={
-                                        pageNumber >= numPages
-                                          ? {
-                                              background: "rgba(0, 0, 0, 0.3)",
-                                              pointerEvents: "none",
-                                            }
-                                          : {
-                                              background: "#364590",
-                                              pointerEvents: "auto",
-                                            }
-                                      }
-                                    />
-                                  </div>
-                                </div>
+                                <Pdf
+                                  Chat={Chat}
+                                  pageNumber={pageNumber}
+                                  setPageNumber={setPageNumber}
+                                  numPages={numPages}
+                                  setNumPages={setNumPages}
+                                />
                               )}
                           </div>
                         </div>

@@ -58,9 +58,9 @@ export const AuthProvider = ({ children }: Props) => {
     isPublic: null,
   });
 
-  // useEffect(() => {
-  //   console.log("...SelectedChannel", SelectedChannel);
-  // }, [SelectedChannel]);
+  useEffect(() => {
+    console.log("...SelectedChannel", SelectedChannel);
+  }, [SelectedChannel]);
 
   const [DeleteMembercount, setDeleteMembercount] = useState(0);
 

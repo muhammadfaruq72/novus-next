@@ -169,9 +169,9 @@ export default function ChannelMembers(Close: Close) {
     }
   }, [Close.Open]);
 
-  useEffect(() => {
-    // console.log("manageMembersState", manageMembersState);
-  }, [manageMembersState]);
+  // useEffect(() => {
+  //   console.log("manageMembersState", manageMembersState);
+  // }, [manageMembersState]);
 
   const fetchMoreDataManageMembers = () => {
     // console.log("fetchMoreDataManageMembers");
@@ -180,16 +180,18 @@ export default function ChannelMembers(Close: Close) {
 
   useEffect(() => {
     // console.log("managememberpage", managememberpage);
-    channelMembersQuery({
-      variables: {
-        ChMember: chMember,
-        page: managememberpage,
-        perPage: 10,
-        spaceId: userExistsInSpace.space_id,
-        channelName: SelectedChannel.Name,
-        UserContains: null,
-      },
-    });
+    if (Close.Open === true) {
+      channelMembersQuery({
+        variables: {
+          ChMember: chMember,
+          page: managememberpage,
+          perPage: 10,
+          spaceId: userExistsInSpace.space_id,
+          channelName: SelectedChannel.Name,
+          UserContains: null,
+        },
+      });
+    }
   }, [managememberpage]);
 
   useEffect(() => {

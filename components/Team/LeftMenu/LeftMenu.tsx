@@ -102,24 +102,6 @@ export default function LeftMenu() {
     }
   }, [ChannelsLoading]);
 
-  const [preventSelectedChannel, setpreventSelectedChannel] = useState(true);
-
-  useEffect(() => {
-    if (preventSelectedChannel === true) {
-      if (ChannelsState.length > 0) {
-        if (page === 1) {
-          let a: any = ChannelsState[0];
-          setSelectedChannel({
-            Bool: !SelectedChannel,
-            key: 0,
-            Name: a.Channel.Name,
-          });
-        }
-        // console.log("ChannelsState", ChannelsState, hasNextPage);
-      }
-    }
-  }, [ChannelsState]);
-
   const [MembersState, setMembersState] = useState([]);
   const [memberpage, setmemberpage] = useState(1);
   const [hasNextPagemember, sethasNextPagemember] = useState(false);
@@ -292,7 +274,6 @@ export default function LeftMenu() {
           style3Dots={style3Dots}
           setChannelsState={setChannelsState}
           ChannelsState={ChannelsState}
-          setpreventSelectedChannel={setpreventSelectedChannel}
           setchannelCount={setchannelCount}
         />
       )}

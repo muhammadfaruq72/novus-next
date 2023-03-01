@@ -23,6 +23,8 @@ interface AddChannelMembers {
   setChannelsState: any;
 }
 
+var SelectedChannelVar;
+
 export default function addChannelMembers(
   AddChannelMembers: AddChannelMembers
 ) {
@@ -99,6 +101,7 @@ export default function addChannelMembers(
             onClick={() => {
               if (LoggedUser.username !== Member.User.username) {
                 handleMember(false);
+
                 setChannelsState(
                   ChannelsState.map((Channel: any) => {
                     if (Channel.Channel.Name === SelectedChannel.Name) {
@@ -126,6 +129,7 @@ export default function addChannelMembers(
             className={buttons.Blue101x28}
             onClick={() => {
               handleMember(true);
+
               setChannelsState(
                 ChannelsState.map((Channel: any) => {
                   if (Channel.Channel.Name === SelectedChannel.Name) {
