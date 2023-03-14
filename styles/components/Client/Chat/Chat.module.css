@@ -1,9 +1,7 @@
 .ChatWrapper {
   position: relative;
   background: #ffffff;
-  box-shadow: -4px -3px 20px -1px rgba(0, 0, 0, 0.1);
-  border-radius: 30px 0px 0px 0px;
-  height: calc(100% - 0px);
+  /* height: calc(100% - 0px); */
   overflow: hidden;
 }
 

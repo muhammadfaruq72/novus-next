@@ -1,0 +1,231 @@
+.LeftMenu {
+  /* margin-top: 20px; */
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: space-between;
+  padding: 20px 0;
+}
+
+.Channel {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 0px 10px;
+}
+
+.SubChannel {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.DropMenu_svg {
+  width: 13px;
+  height: 13px;
+  border-radius: 4px;
+  padding: 4px;
+  fill: #404040;
+}
+.DropMenu_svg:hover {
+  background: #ffffff;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+}
+
+.Plus_svg {
+  border-radius: 4px;
+  padding: 4px;
+  fill: #818386;
+  width: 15px;
+  height: 15px;
+}
+
+.Plus_svg:hover {
+  background: #ffffff;
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+}
+.greyBody15px {
+  /* height: 20.5px; */
+  font-size: 15px;
+  font-weight: 500;
+  color: #818386;
+  border: 1px solid #818386;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.greyBody15px:hover {
+  color: #404040;
+  border: 1px solid #404040;
+}
+
+.greyBody15pxNoHover {
+  font-size: 15px;
+  font-weight: 400;
+  color: #818386;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.ChannelItems {
+  /* padding: 8px 12px 5px 8px; */
+  max-height: 30vh;
+  /* overflow: scroll; */
+  overflow-x: hidden;
+  scrollbar-width: none;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  /* position: relative; */
+}
+
+.ChannelItems::-webkit-scrollbar {
+  display: none;
+}
+
+.WrapperChannelItemGrid {
+  display: grid;
+  border-radius: 5px;
+  padding: 5px 8px;
+  gap: 5px;
+}
+
+.ChannelItemGrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2px;
+}
+
+.ChannelItemGrid:hover .greyBody15pxNoHover {
+  color: #404040;
+}
+
+/* .ChannelItemGrid:hover {
+  } */
+
+.ThreeDots_svg {
+  /* position: relative; */
+  width: 11px;
+  height: 11px;
+  border-radius: 4px;
+  padding: 4px;
+  fill: #818386;
+  border: 1px solid #818386;
+  pointer-events: auto;
+}
+
+.ThreeDots_svg:hover {
+  fill: #404040;
+  border: 1px solid #404040;
+}
+
+.ChannelIconGrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 3px;
+}
+
+/* .ChannelItems:hover .ThreeDots_svg {
+    display: block;
+  } */
+
+.MemberItems {
+  display: grid;
+  gap: 5px;
+  /* padding: 8px 12px 5px 8px; */
+  max-height: 30vh;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+}
+
+.MemberItems::-webkit-scrollbar {
+  display: none;
+}
+
+.MemberItemGrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px 8px;
+  gap: 2px;
+}
+.MemberItemGrid:hover {
+  background-color: #fbfbfb;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+}
+
+.MemberItemGrid:hover .greyBody15pxNoHover {
+  color: #404040;
+}
+
+.MemberIconGrid {
+  display: grid;
+  grid-template-columns: auto;
+}
+
+.Cross_svg {
+  width: 15px;
+  height: 15px;
+  fill: #818386;
+  transform: rotate(44deg);
+  padding: 3px;
+}
+
+.Cross_svg:hover {
+  fill: #404040;
+}
+
+.imageWrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.Progress {
+  /* margin-bottom: 60px; */
+  display: grid;
+  grid-template-columns: auto;
+  gap: 7px;
+  padding: 0 20px;
+}
+.Database {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  gap: 7px;
+}
+
+.ChannelLock {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.Svg_lock {
+  stroke: #818386;
+  height: 16px;
+}
+
+.ChannelItemGrid:hover .Svg_lock {
+  stroke: #404040;
+}
+
+.vericleProgress {
+  display: grid;
+  gap: 10px;
+}

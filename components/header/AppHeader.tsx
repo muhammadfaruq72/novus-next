@@ -13,6 +13,7 @@ interface AppHeader {
   setIsLoggedIn: any;
   spaceName?: string;
   spaceImage?: string;
+  isClient?: string;
 }
 
 interface customUser {
@@ -61,7 +62,9 @@ export default function AppHeader(Props: AppHeader) {
             />
             <div className={styles.textWrapper}>
               <h1 className={fonts.blackBody16px}>{Props.spaceName}</h1>
-              <p className={fonts.greyBody13px}>Team Workspace</p>
+              <p className={fonts.greyBody13px}>
+                {Props.isClient ? "Client Workspace" : "Team Workspace"}
+              </p>
             </div>
           </div>
         )}

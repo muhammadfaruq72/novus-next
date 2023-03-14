@@ -1,0 +1,89 @@
+.Menu {
+  position: absolute;
+  margin-left: 195px;
+  margin-top: 24px;
+  z-index: 1;
+  background-color: #f5f7f9;
+  padding: 10px 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 8px;
+  animation: fade-in linear 0.3s normal forwards !important;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.label {
+  height: auto;
+  background-color: #364590;
+  padding: 7px 10px;
+  border-radius: 5px;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  display: grid;
+  place-items: center;
+}
+
+.Svg {
+  height: 13px;
+  fill: white;
+}
+
+.label:hover {
+  box-shadow: rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px;
+}
+
+.Wrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.Wrapper input[type="text"] {
+  width: 200px;
+  height: 25px;
+  text-indent: 20px;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14);
+  border: 0px;
+  border-color: rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  background-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.Wrapper input[type="text"]:focus {
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px #364590,
+    rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px;
+  outline: none;
+  transition: 0.1s;
+}
+
+.Wrapper input[type="submit"] {
+  display: none;
+}

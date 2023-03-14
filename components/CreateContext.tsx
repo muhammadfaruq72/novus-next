@@ -16,6 +16,10 @@ interface typeContext {
   setSelectedImages?: any;
   selectedFilesArray?: any;
   setSelectedFilesArray?: any;
+  ClientselectedImages?: any;
+  setClientsSelectedImages?: any;
+  ClientsselectedFilesArray?: any;
+  setClientsSelectedFilesArray?: any;
 }
 
 const AuthContext = createContext<typeContext>({});
@@ -30,6 +34,7 @@ interface userExistsInSpace {
   spaceName: string;
   spaceImage: string;
   space_id: any;
+  isClient: any;
 }
 
 interface File {
@@ -54,13 +59,13 @@ export const AuthProvider = ({ children }: Props) => {
   const [SelectedChannel, setSelectedChannel] = useState({
     Bool: false,
     key: 0,
-    Name: null,
+    Name: "General",
     isPublic: null,
   });
 
-  useEffect(() => {
-    console.log("...SelectedChannel", SelectedChannel);
-  }, [SelectedChannel]);
+  // useEffect(() => {
+  //   console.log("...SelectedChannel", SelectedChannel);
+  // }, [SelectedChannel]);
 
   const [DeleteMembercount, setDeleteMembercount] = useState(0);
 
@@ -71,6 +76,13 @@ export const AuthProvider = ({ children }: Props) => {
 
   const [selectedImages, setSelectedImages] = useState(Array<ImagesOBJ>);
   const [selectedFilesArray, setSelectedFilesArray] = useState<File[]>([]);
+
+  const [ClientselectedImages, setClientsSelectedImages] = useState(
+    Array<ImagesOBJ>
+  );
+  const [ClientsselectedFilesArray, setClientsSelectedFilesArray] = useState<
+    File[]
+  >([]);
 
   let contextData = {
     isloggedIn: isloggedIn,
@@ -87,6 +99,10 @@ export const AuthProvider = ({ children }: Props) => {
     setSelectedImages: setSelectedImages,
     selectedFilesArray: selectedFilesArray,
     setSelectedFilesArray: setSelectedFilesArray,
+    ClientselectedImages: ClientselectedImages,
+    setClientsSelectedImages: setClientsSelectedImages,
+    ClientsselectedFilesArray: ClientsselectedFilesArray,
+    setClientsSelectedFilesArray: setClientsSelectedFilesArray,
   };
 
   return (

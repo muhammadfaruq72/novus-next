@@ -6,10 +6,27 @@ import Plus from "@/public/Plus.svg";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { S3 } from "@aws-sdk/client-s3";
+
+const CreateDirectory = (Directory: string) => {
+  const Obj = new S3({
+    credentials: {
+      accessKeyId: `${process.env.NEXT_PUBLIC_ACCESSKEY}`,
+      secretAccessKey: `${process.env.NEXT_PUBLIC_SECRETECCESSKEY}`,
+    },
+    region: `${process.env.NEXT_PUBLIC_REGION}`,
+  });
+
+  Obj.putObject({
+    Key: `${Directory}/`,
+    Bucket: "novus-bucket-by-the-handler",
+  });
+};
 
 interface Close {
   setOpen: any;
   Open: any;
+  IsClient: any;
 }
 
 export default function CreateWorkspace(Close: Close) {
@@ -17,8 +34,8 @@ export default function CreateWorkspace(Close: Close) {
   const [styleSubmit, setStyleSubmit] = useState({});
 
   const Mutation = gql`
-    mutation MyMutation($email: String!, $Name: String!) {
-      Workspace(email: $email, Name: $Name) {
+    mutation MyMutation($email: String!, $Name: String!, $isClient: Boolean) {
+      Workspace(email: $email, Name: $Name, isClient: $isClient) {
         spaceId
       }
     }
@@ -31,6 +48,7 @@ export default function CreateWorkspace(Close: Close) {
         console.log(data);
         if (data.Workspace !== null) {
           console.log(data.Workspace.spaceId);
+          CreateDirectory(data.Workspace.spaceId);
           Close.setOpen(false);
           requestPermission();
           router.push("/" + data.Workspace.spaceId);
@@ -46,7 +64,8 @@ export default function CreateWorkspace(Close: Close) {
     event.preventDefault();
     var Name = event.target.text.value;
     var email = localStorage.getItem("email");
-    mutate({ variables: { email, Name } });
+    var isClient: Boolean = Close.IsClient;
+    mutate({ variables: { email, Name, isClient } });
   };
 
   useEffect(() => {
@@ -108,14 +127,16 @@ export default function CreateWorkspace(Close: Close) {
 
             <div className={styles.ContentWrapper}>
               <h1 className={fonts.blackHeading21px}>
-                Create Client Workspace
+                {Close.IsClient
+                  ? "Create Client Workspace"
+                  : "Create Team Workspace"}
               </h1>
               <p
                 style={{ marginTop: "-30px", maxWidth: "400px" }}
                 className={fonts.greyBody14px}
               >
-                Write the name of your workspace - choose something that your
-                client will recognize.
+                Write the name of your workspace - choose something that users
+                will recognize.
               </p>
               <form className={miniComponents.forms} onSubmit={CreateWorkSpace}>
                 <input

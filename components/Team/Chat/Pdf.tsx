@@ -1,81 +1,64 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import styles from "@/styles/components/Team/Chat/Chat.module.css";
 import NextArrow from "@/public/NextArrow.svg";
+import { usePdf } from "@mikecousins/react-pdf";
 
 interface chat {
   Chat: any;
-  pageNumber: any;
-  setPageNumber: any;
-  numPages: any;
-  setNumPages: any;
 }
 
 export default function Pdf(Props: chat) {
-  const { Chat, pageNumber, setPageNumber, numPages, setNumPages } = Props;
+  const { Chat } = Props;
 
-  const goToPrevPage = () =>
-    setPageNumber(pageNumber - 1 <= 1 ? 1 : pageNumber - 1);
+  const [page, setPage] = useState(1);
+  const canvasRef = useRef(null);
 
-  const goToNextPage = () =>
-    setPageNumber(pageNumber + 1 >= numPages ? numPages : pageNumber + 1);
-
-  function onDocumentLoadSuccess({ numPages }: any) {
-    setNumPages(numPages);
-  }
+  const { pdfDocument, pdfPage } = usePdf({
+    file: `${process.env.NEXT_PUBLIC_AWS + Chat.attachment.Key}`,
+    page,
+    canvasRef,
+  });
 
   return (
     <>
-      {" "}
-      <div className={styles.ResumeContainer}>
-        {
-          <Document
-            className={styles.PdfStyle}
-            loading=""
-            file={process.env.NEXT_PUBLIC_AWS + Chat.attachment.Key}
-            onLoadSuccess={onDocumentLoadSuccess}
-            // renderMode="canvas"
-          >
-            <Page
-              pageNumber={pageNumber}
-              width={300}
-              loading=""
-              // scale={2.5}
+      <div className={styles.WrapperCanvas}>
+        {/* {!pdfDocument && <span>Loading...</span>} */}
+        <canvas className={styles.Canvas} ref={canvasRef} />
+        {Boolean(pdfDocument && pdfDocument.numPages) && (
+          <div className={styles.ArrowWrapper}>
+            <NextArrow
+              className={styles.PrevArrow}
+              onClick={() => setPage(page - 1)}
+              style={
+                page === 1
+                  ? {
+                      background: "rgba(0, 0, 0, 0.3)",
+                      pointerEvents: "none",
+                    }
+                  : {
+                      background: "#364590",
+                      pointerEvents: "auto",
+                    }
+              }
             />
-          </Document>
-        }
-        <div className={styles.ArrowWrapper}>
-          <NextArrow
-            className={styles.PrevArrow}
-            onClick={goToPrevPage}
-            style={
-              pageNumber <= 1
-                ? {
-                    background: "rgba(0, 0, 0, 0.3)",
-                    pointerEvents: "none",
-                  }
-                : {
-                    background: "#364590",
-                    pointerEvents: "auto",
-                  }
-            }
-          />
-          <NextArrow
-            className={styles.NextArrow}
-            onClick={goToNextPage}
-            style={
-              pageNumber >= numPages
-                ? {
-                    background: "rgba(0, 0, 0, 0.3)",
-                    pointerEvents: "none",
-                  }
-                : {
-                    background: "#364590",
-                    pointerEvents: "auto",
-                  }
-            }
-          />
-        </div>
+            <NextArrow
+              className={styles.NextArrow}
+              onClick={() => setPage(page + 1)}
+              style={
+                page === pdfDocument!.numPages
+                  ? {
+                      background: "rgba(0, 0, 0, 0.3)",
+                      pointerEvents: "none",
+                    }
+                  : {
+                      background: "#364590",
+                      pointerEvents: "auto",
+                    }
+              }
+            />
+          </div>
+        )}
       </div>
     </>
   );

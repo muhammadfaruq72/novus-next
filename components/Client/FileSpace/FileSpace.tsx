@@ -1,16 +1,12 @@
 import fonts from "@/styles/fonts.module.css";
-import buttons from "@/styles/buttons.module.css";
-import styles from "@/styles/components/Team/Chat/Chat.module.css";
+import styles from "@/styles/components/Client/FileSpace/Chat.module.css";
 import Plus from "@/public/Plus.svg";
 import Send from "@/public/Send.svg";
-import imgTemp from "@/public/favicon.png";
 import Attachment from "@/public/attachment.svg";
 import Pdf_SVG from "@/public/Pdf.svg";
-import NextArrow from "@/public/NextArrow.svg";
 import Reply from "@/public/Reply.svg";
 import useAutosizeTextArea from "./useAutosizeTextArea";
 import React, { useState, useEffect, useRef, useContext } from "react";
-import Image from "next/image";
 import AuthContext from "@/components/CreateContext";
 import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -23,7 +19,6 @@ import { S3Client, S3, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import crypto, { randomBytes } from "crypto";
 import { VideoPlayer } from "@videojs-player/react";
 import "video.js/dist/video-js.css";
-import Pdf from "./Pdf";
 import PdfPopup from "./PdfPopup";
 
 function splitLast(s: string, sep: string = " ") {
@@ -53,15 +48,15 @@ function CheckTypes(
   }
 }
 
-export default function Chat() {
+export default function FileSpace() {
   const {
     userExistsInSpace,
     SelectedChannel,
     setSelectedChannel,
-    selectedFilesArray,
-    setSelectedFilesArray,
-    setSelectedImages,
-    selectedImages,
+    ClientsselectedFilesArray,
+    setClientsSelectedFilesArray,
+    setClientsSelectedImages,
+    ClientselectedImages,
   } = useContext(AuthContext);
 
   const [ChatsState, setChatsState] = useState([]);
@@ -83,7 +78,7 @@ export default function Chat() {
       $spaceId: String!
       $AfterID: Int
     ) {
-      Chat(
+      FileSpace(
         ChannelName: $ChannelName
         page: $page
         perPage: $perPage
@@ -112,6 +107,7 @@ export default function Chat() {
           }
           attachment
           ReplyAttachment
+          isClient
         }
       }
     }
@@ -149,9 +145,9 @@ export default function Chat() {
 
   useEffect(() => {
     // console.log(ChatsData, "ChatsData");
-    if (typeof ChatsData !== "undefined" && ChatsData.Chat !== null) {
-      setChatsState(ChatsState.concat(ChatsData.Chat.items));
-      if (ChatsData.Chat.hasNextPage === true) {
+    if (typeof ChatsData !== "undefined" && ChatsData.FileSpace !== null) {
+      setChatsState(ChatsState.concat(ChatsData.FileSpace.items));
+      if (ChatsData.FileSpace.hasNextPage === true) {
         setNextPageChat(true);
       } else {
         setNextPageChat(false);
@@ -192,7 +188,7 @@ export default function Chat() {
   });
 
   const sendHandler = () => {
-    if (selectedFilesArray.length <= 0) {
+    if (ClientsselectedFilesArray.length <= 0) {
       console.log(textAreaRef.current?.value);
       sendJsonMessage({
         Channel: SelectedChannel.Name,
@@ -202,6 +198,7 @@ export default function Chat() {
         Reply: replyOpen.message,
         attachment: { Key: null, Name: null, No_Of_Files: null },
         ReplyAttachment: replyOpen.attachment,
+        isClient: true,
       });
       setValue("");
       setreplyOpen({
@@ -213,7 +210,7 @@ export default function Chat() {
     } else {
       const myPromise = new Promise(async function (Resolve, Reject) {
         setsendLoading(true);
-        let [left, right] = splitLast(selectedFilesArray[0].name, ".");
+        let [left, right] = splitLast(ClientsselectedFilesArray[0].name, ".");
         const ImageKey = crypto.randomBytes(16).toString("hex") + "." + right;
         const key = `${userExistsInSpace.space_id}/${SelectedChannel.Name}/${ImageKey}`;
 
@@ -231,7 +228,7 @@ export default function Chat() {
             params: {
               Bucket: "novus-bucket-by-the-handler",
               Key: key,
-              Body: selectedFilesArray[0],
+              Body: ClientsselectedFilesArray[0],
             },
 
             tags: [
@@ -263,10 +260,11 @@ export default function Chat() {
           Reply: replyOpen.message,
           attachment: {
             Key: `${value}`,
-            Name: selectedFilesArray[0].name,
-            No_Of_Files: selectedFilesArray.length,
+            Name: ClientsselectedFilesArray[0].name,
+            No_Of_Files: ClientsselectedFilesArray.length,
           },
           ReplyAttachment: replyOpen.attachment,
+          isClient: true,
         });
         setValue("");
         setreplyOpen({
@@ -275,8 +273,8 @@ export default function Chat() {
           message: null,
           attachment: null,
         });
-        setSelectedImages([]);
-        setSelectedFilesArray([]);
+        setClientsSelectedImages([]);
+        setClientsSelectedFilesArray([]);
         setsendLoading(false);
       });
     }
@@ -362,12 +360,12 @@ export default function Chat() {
       setConversationStyle({ height: "calc(100vh - 113px)" });
     }
 
-    if (replyOpen.Bool && selectedImages.length > 0) {
+    if (replyOpen.Bool && ClientselectedImages.length > 0) {
       setConversationStyle({ height: "calc(100vh - 113px - 34px - 150px)" });
-    } else if (selectedImages.length > 0) {
+    } else if (ClientselectedImages.length > 0) {
       setConversationStyle({ height: "calc(100vh - 113px - 150px)" });
     }
-  }, [replyOpen, selectedImages]);
+  }, [replyOpen, ClientselectedImages]);
 
   return (
     <>
@@ -379,7 +377,7 @@ export default function Chat() {
           {" "}
           <div className={styles.Conversation}>
             <div
-              id="scrollableDivChat"
+              id="scrollableDivFileSpace"
               className={styles.WrapperConversation}
               style={ConversationStyle}
             >
@@ -399,10 +397,13 @@ export default function Chat() {
                     <div className={miniComponents.loader}></div>
                   </div>
                 }
-                scrollableTarget="scrollableDivChat"
+                scrollableTarget="scrollableDivFileSpace"
               >
                 {ChatsState.filter((o: any) => {
-                  return o.Channel.Name === SelectedChannel.Name;
+                  return (
+                    o.Channel.Name === SelectedChannel.Name &&
+                    o.isClient === true
+                  );
                 }).map((Chat: any, index: any, { length }) => (
                   <div
                     className={styles.hoverMessage}
@@ -631,7 +632,7 @@ export default function Chat() {
                   onClick={() => {
                     if (
                       textAreaRef.current?.value === "" &&
-                      selectedFilesArray.length <= 0
+                      ClientsselectedFilesArray.length <= 0
                     ) {
                       console.log("Message is empty");
                     } else {

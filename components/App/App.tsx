@@ -17,6 +17,7 @@ interface App {
 
 export default function App(app: App) {
   const router = useRouter();
+  const [IsClient, setIsClient] = useState<Boolean>(false);
   const { setIsLoggedIn } = app;
   const [Open, setOpen] = useState<Boolean>(false);
   const [recentSpaces, setRecentSpaces] = useState([]);
@@ -54,7 +55,7 @@ export default function App(app: App) {
     variables: {
       FilterUserId: localStorage.getItem("email"),
       page: page,
-      perPage: 2,
+      perPage: 4,
     },
   });
 
@@ -98,11 +99,17 @@ export default function App(app: App) {
 
   return (
     <>
-      <CreateWorkspace setOpen={setOpen} Open={Open} />
+      <CreateWorkspace setOpen={setOpen} Open={Open} IsClient={IsClient} />
       <AppHeader spaceHeader={true} setIsLoggedIn={setIsLoggedIn} />
       <div className={styles.Wrapper}>
         <div className={styles.ContentWrapper}>
-          <div className={styles.SubWrapper} onClick={() => setOpen(true)}>
+          <div
+            className={styles.SubWrapper}
+            onClick={() => {
+              setOpen(true);
+              setIsClient(true);
+            }}
+          >
             <div className={styles.ClientBg}>
               <Client className={styles.Svg} />
             </div>
@@ -113,7 +120,13 @@ export default function App(app: App) {
               </p>
             </div>
           </div>
-          <div className={styles.SubWrapper} onClick={() => setOpen(true)}>
+          <div
+            className={styles.SubWrapper}
+            onClick={() => {
+              setOpen(true);
+              setIsClient(false);
+            }}
+          >
             <div className={styles.ClientBg}>
               <Team className={styles.Svg} />
             </div>
@@ -173,7 +186,7 @@ export default function App(app: App) {
                 recentlyRefetch({
                   FilterUserId: localStorage.getItem("email"),
                   page: page,
-                  perPage: 2,
+                  perPage: 4,
                 });
               }}
             >

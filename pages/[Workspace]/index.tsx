@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import AppHeader from "@/components/header/AppHeader";
 import Team from "@/components/Team/Team";
+import Client from "@/components/Client/Client";
 import { useState, useContext, useEffect } from "react";
 import AuthContext from "@/components/CreateContext";
 import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
@@ -20,6 +21,7 @@ export default function Space() {
           Image {
             url
           }
+          isClient
         }
         isAdmin
       }
@@ -54,6 +56,7 @@ export default function Space() {
           spaceName: checkMembers.checkMember.Workspace.Name,
           spaceImage: checkMembers.checkMember.Workspace.Image.url,
           space_id: query.Workspace,
+          isClient: checkMembers.checkMember.Workspace.isClient,
         });
         // console.log(
         //   checkMembers.checkMember.Workspace.Name,
@@ -79,8 +82,9 @@ export default function Space() {
             setIsLoggedIn={setIsLoggedIn}
             spaceName={userExistsInSpace.spaceName}
             spaceImage={userExistsInSpace.spaceImage}
+            isClient={userExistsInSpace.isClient}
           />
-          <Team />
+          {userExistsInSpace.isClient ? <Client /> : <Team />}
         </div>
       )}
     </>

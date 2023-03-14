@@ -1,16 +1,13 @@
 import fonts from "@/styles/fonts.module.css";
 import buttons from "@/styles/buttons.module.css";
-import styles from "@/styles/components/Team/Chat/Chat.module.css";
+import styles from "@/styles/components/Client/Chat/Chat.module.css";
 import Plus from "@/public/Plus.svg";
 import Send from "@/public/Send.svg";
-import imgTemp from "@/public/favicon.png";
 import Attachment from "@/public/attachment.svg";
 import Pdf_SVG from "@/public/Pdf.svg";
-import NextArrow from "@/public/NextArrow.svg";
 import Reply from "@/public/Reply.svg";
 import useAutosizeTextArea from "./useAutosizeTextArea";
 import React, { useState, useEffect, useRef, useContext } from "react";
-import Image from "next/image";
 import AuthContext from "@/components/CreateContext";
 import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -23,7 +20,6 @@ import { S3Client, S3, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import crypto, { randomBytes } from "crypto";
 import { VideoPlayer } from "@videojs-player/react";
 import "video.js/dist/video-js.css";
-import Pdf from "./Pdf";
 import PdfPopup from "./PdfPopup";
 
 function splitLast(s: string, sep: string = " ") {
@@ -112,6 +108,7 @@ export default function Chat() {
           }
           attachment
           ReplyAttachment
+          isClient
         }
       }
     }
@@ -202,6 +199,7 @@ export default function Chat() {
         Reply: replyOpen.message,
         attachment: { Key: null, Name: null, No_Of_Files: null },
         ReplyAttachment: replyOpen.attachment,
+        isClient: false,
       });
       setValue("");
       setreplyOpen({
@@ -267,6 +265,7 @@ export default function Chat() {
             No_Of_Files: selectedFilesArray.length,
           },
           ReplyAttachment: replyOpen.attachment,
+          isClient: false,
         });
         setValue("");
         setreplyOpen({
@@ -333,8 +332,8 @@ export default function Chat() {
   };
 
   // useEffect(() => {
-  //   console.log("value", value);
-  // }, [value]);
+  //   console.log("ChatsState", ChatsState);
+  // }, [ChatsState]);
 
   const {
     sendMessage,
@@ -402,7 +401,10 @@ export default function Chat() {
                 scrollableTarget="scrollableDivChat"
               >
                 {ChatsState.filter((o: any) => {
-                  return o.Channel.Name === SelectedChannel.Name;
+                  return (
+                    o.Channel.Name === SelectedChannel.Name &&
+                    o.isClient === false
+                  );
                 }).map((Chat: any, index: any, { length }) => (
                   <div
                     className={styles.hoverMessage}

@@ -31,30 +31,30 @@ function CheckTypes(
 
 export default function AttachmentArea() {
   const {
-    selectedImages,
-    setSelectedImages,
-    selectedFilesArray,
-    setSelectedFilesArray,
+    ClientselectedImages,
+    setClientsSelectedImages,
+    ClientsselectedFilesArray,
+    setClientsSelectedFilesArray,
   } = useContext(AuthContext);
 
   return (
     <>
-      {selectedImages.length > 0 && (
+      {ClientselectedImages.length > 0 && (
         <div className={styles.attachmentWrapper}>
           <div className={styles.ImageWrapper}>
             {CheckTypes(
-              selectedImages[0].Imagename.split(".")[1],
+              ClientselectedImages[0].Imagename.split(".")[1],
               true,
               false,
               false
             ) && (
               <img
                 className={styles.Image}
-                src={selectedImages[0].originalImage}
+                src={ClientselectedImages[0].originalImage}
               ></img>
             )}
             {CheckTypes(
-              selectedImages[0].Imagename.split(".")[1],
+              ClientselectedImages[0].Imagename.split(".")[1],
               false,
               true,
               false
@@ -65,7 +65,7 @@ export default function AttachmentArea() {
               >
                 <video style={{ height: "130px" }} controls>
                   <source
-                    src={selectedImages[0].originalImage}
+                    src={ClientselectedImages[0].originalImage}
                     type="video/mp4"
                   />
                 </video>
@@ -73,7 +73,7 @@ export default function AttachmentArea() {
             )}
 
             {CheckTypes(
-              selectedImages[0].Imagename.split(".")[1],
+              ClientselectedImages[0].Imagename.split(".")[1],
               false,
               false,
               true
@@ -82,7 +82,7 @@ export default function AttachmentArea() {
                 <Document
                   className={styles.PdfStyle}
                   loading=""
-                  file={selectedImages[0].originalImage}
+                  file={ClientselectedImages[0].originalImage}
                 >
                   <Page pageNumber={1} height={130} loading="" />
                 </Document>
@@ -91,14 +91,15 @@ export default function AttachmentArea() {
             <div
               className={styles.CrossButton}
               onClick={() => {
-                setSelectedImages(
-                  selectedImages.filter(
-                    (e: any) => e.Imagename !== selectedImages[0].Imagename
+                setClientsSelectedImages(
+                  ClientselectedImages.filter(
+                    (e: any) =>
+                      e.Imagename !== ClientselectedImages[0].Imagename
                   )
                 );
-                setSelectedFilesArray(
-                  selectedFilesArray.filter(
-                    (e: any) => e.name !== selectedFilesArray[0].name
+                setClientsSelectedFilesArray(
+                  ClientsselectedFilesArray.filter(
+                    (e: any) => e.name !== ClientsselectedFilesArray[0].name
                   )
                 );
               }}

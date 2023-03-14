@@ -10,10 +10,10 @@ interface ImagesOBJ {
 
 export default function InputFiles() {
   const {
-    selectedImages,
-    setSelectedImages,
-    selectedFilesArray,
-    setSelectedFilesArray,
+    ClientselectedImages,
+    setClientsSelectedImages,
+    ClientsselectedFilesArray,
+    setClientsSelectedFilesArray,
   } = useContext(AuthContext);
 
   async function ManupulateFiles(Files: any) {
@@ -33,8 +33,10 @@ export default function InputFiles() {
     //   alert(`You can only add 1 File at a time.`);
     // }
 
-    setSelectedFilesArray(selectedFilesArray.concat(selectedFiles));
-    //selectedFilesArray = selectedFilesArray.concat(selectedFiles);
+    setClientsSelectedFilesArray(
+      ClientsselectedFilesArray.concat(selectedFiles)
+    );
+    //ClientsselectedFilesArray = ClientsselectedFilesArray.concat(selectedFiles);
 
     const imagesArray: Array<ImagesOBJ> = selectedFiles.map((image: any) => {
       return {
@@ -44,7 +46,7 @@ export default function InputFiles() {
     });
 
     selectedFiles = [];
-    setSelectedImages(selectedImages.concat(imagesArray));
+    setClientsSelectedImages(ClientselectedImages.concat(imagesArray));
   }
 
   const onSelectFile = async (event: any) => {
@@ -52,16 +54,16 @@ export default function InputFiles() {
   };
 
   // useEffect(() => {
-  //   console.log(selectedImages, selectedFilesArray);
-  // }, [selectedImages, selectedFilesArray]);
+  //   console.log(ClientselectedImages, ClientsselectedFilesArray);
+  // }, [ClientselectedImages, ClientsselectedFilesArray]);
 
   return (
     <>
       <label
         style={{ margin: "0 auto" }}
         onClick={() => {
-          setSelectedImages([]);
-          setSelectedFilesArray([]);
+          setClientsSelectedImages([]);
+          setClientsSelectedFilesArray([]);
         }}
       >
         <Plus className={styles.svg_Plus} />
