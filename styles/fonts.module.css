@@ -99,6 +99,15 @@
   line-height: 1.5;
 }
 
+@media (max-width: 600px) {
+  .lightBlack14px {
+    font-weight: 300;
+    font-size: 16px;
+    color: #404040;
+    line-height: 1;
+  }
+}
+
 .lightBlack11px {
   font-weight: 300;
   font-size: 11px;
@@ -118,4 +127,11 @@
   overflow: hidden !important;
   text-overflow: ellipsis;
   max-width: 350px;
+}
+
+@media (max-width: 600px) {
+  .greyText19px {
+    font-weight: 400;
+    font-size: 16px;
+  }
 }

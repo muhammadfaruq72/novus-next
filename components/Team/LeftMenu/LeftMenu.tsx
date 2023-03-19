@@ -186,12 +186,14 @@ export default function LeftMenu() {
     setchannelOpen(!channelOpen);
   };
 
-  const handleSelectedChannel = (key: any, Name: any, isPublic: boolean) => {
+  const handleSelectedChannel = (key: any, Name: any, isPublic: boolean, members: any ) => {
     setSelectedChannel({
       Bool: !SelectedChannel,
       key: key,
       Name: Name,
       isPublic: isPublic,
+      members: members,
+      MobileBool: true
     });
   };
 
@@ -238,12 +240,21 @@ export default function LeftMenu() {
   const [inviteOpen, setInviteOpen] = useState<Boolean>(false);
 
   const [style3Dots, setStyle3Dots] = useState({});
+  const [clickAddchannel, setclickAddchannel] = useState({});
 
   const clickPosition = (event: any) => {
     // console.log(event.pageY, event.pageX);
     setStyle3Dots({
       top: `${event.pageY}px`,
-      left: `${event.pageX}px`,
+      left: `${event.pageX - 180}px`,
+    });
+  };
+
+  const clickPositionAddChannel = (event: any) => {
+    // console.log(event.pageY, event.pageX);
+    setclickAddchannel({
+      top: `${event.pageY + 3}px`,
+      left: `${event.pageX - 205}px`,
     });
   };
 
@@ -277,7 +288,7 @@ export default function LeftMenu() {
           setchannelCount={setchannelCount}
         />
       )}
-      <div className={styles.LeftMenu}>
+      <div className={SelectedChannel.MobileBool ? styles.LeftMenuOnClick  : styles.LeftMenu} >
         <div className={styles.TopWrapper}>
           <div style={{ cursor: "default" }} className={styles.WrapperChannel}>
             <div className={styles.Channel}>
@@ -309,6 +320,7 @@ export default function LeftMenu() {
                 onClick={(e: any) => {
                   setAddChannelOpen(!AddChannelOpen);
                   handleThreedotRef(e.target);
+                  clickPositionAddChannel(e)
                 }}
               />
               {AddChannelOpen && (
@@ -317,6 +329,7 @@ export default function LeftMenu() {
                   setMenuIsOpen={setAddChannelOpen}
                   setChannelsState={setChannelsState}
                   setchannelCount={setchannelCount}
+                  clickAddchannel={clickAddchannel}
                 />
               )}
             </div>
@@ -367,7 +380,8 @@ export default function LeftMenu() {
                       handleSelectedChannel(
                         index,
                         Channel.Channel.Name,
-                        Channel.Channel.isPublic
+                        Channel.Channel.isPublic,
+                        Channel.memberCount
                       )
                     }
                     style={
@@ -426,16 +440,31 @@ export default function LeftMenu() {
                         {Channel.Channel.Name}
                       </p>
                     </div>
-                    <div className={styles.ChannelIconGrid}>
+                    <div className={styles.ChannelIconGrid} onClick={(e)=> e.stopPropagation()}>
                       <p
                         className={styles.greyBody15px}
                         onClick={() => setChannelMembersOpen(true)}
                       >
                         {Channel.memberCount}
                       </p>
-                      {(isHoverChannelItemGrid.Bool &&
+                         {(isHoverChannelItemGrid.Bool &&
                         index === isHoverChannelItemGrid.key) ||
                       (index === menuIsOpen.key && menuIsOpen.Bool) ? (
+                        <ThreeDots
+                          className={styles.ThreeDots_svg_None}
+                          onClick={(e: any) => {
+                            clickPosition(e);
+                            handleThreedotRef(e.target);
+                            setMenuIsOpen({
+                              Bool: !menuIsOpen.Bool,
+                              key: index,
+                            });
+                          }}
+                        />
+                      ) : (
+                        <></>
+                      )}
+                     {(
                         <ThreeDots
                           className={styles.ThreeDots_svg}
                           onClick={(e: any) => {
@@ -447,9 +476,8 @@ export default function LeftMenu() {
                             });
                           }}
                         />
-                      ) : (
-                        <div></div>
                       )}
+                      
                     </div>
                   </div>
                 ))}

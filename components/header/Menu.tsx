@@ -3,6 +3,8 @@ import fonts from "@/styles/fonts.module.css";
 import Setting from "@/public/Setting.svg";
 import LogOut from "@/public/LogOut.svg";
 import { useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface props {
   menuIsOpen: any;
@@ -12,6 +14,7 @@ interface props {
 }
 
 export default function Menu(Props: props) {
+  const { pathname } = useRouter();
   interface MenuData {
     title: string;
     icon: any;
@@ -21,13 +24,16 @@ export default function Menu(Props: props) {
   const Clicked = () => {
     alert("Button triggered");
   };
+  let Details = () => {
+    alert("This feature is Coming Soon");
+  };
   let LogOutUser = () => {
     localStorage.removeItem("email");
     Props.setIsLoggedIn(false);
   };
   const MenuData: MenuData[] = [
     { title: "Account details", icon: Setting, click: Clicked },
-    { title: "Log out", icon: LogOut, click: Clicked },
+    { title: "Exit Space", icon: LogOut, click: Clicked },
   ];
 
   useEffect(() => {
@@ -47,26 +53,47 @@ export default function Menu(Props: props) {
     <div
       className={`${Props.menuIsOpen === true ? styles.Menu : styles.hidden}`}
     >
-      {MenuData.map((item, index) => (
-        <div key={index}>
-          {" "}
-          <div
-            className={styles.MenuItem}
-            onClick={() => {
-              if (item.title === "Log out") {
-                LogOutUser();
-              }
-            }}
-          >
-            <item.icon style={{ width: "36px" }} className={styles.Svg} />
+      <div>
+        {" "}
+        <div
+          className={styles.MenuItem}
+          onClick={() => {
+            Details();
+          }}
+        >
+          <Setting style={{ width: "36px" }} className={styles.Svg} />
 
-            <p className={styles.greyBody16px}>{item.title}</p>
-          </div>
-          <div
-            className={`${index !== MenuData.length - 1 && styles.Divider}`}
-          ></div>
+          <p className={styles.greyBody16px}>Account details</p>
         </div>
-      ))}
+        <div
+        // className={`${index !== MenuData.length - 1 && styles.Divider}`}
+        ></div>
+      </div>
+      {pathname === "/" && (
+        <div onClick={LogOutUser}>
+          {" "}
+          <div className={styles.MenuItem}>
+            <LogOut style={{ width: "36px" }} className={styles.Svg} />
+
+            <p className={styles.greyBody16px}>Exit Space</p>
+          </div>
+          <div className={`${styles.Divider}`}></div>
+        </div>
+      )}
+      {pathname !== "/" && (
+        <Link href="/">
+          {" "}
+          <div>
+            {" "}
+            <div className={styles.MenuItem}>
+              <LogOut style={{ width: "36px" }} className={styles.Svg} />
+
+              <p className={styles.greyBody16px}>Log out</p>
+            </div>
+            <div className={`${styles.Divider}`}></div>
+          </div>
+        </Link>
+      )}
     </div>
   );
 }

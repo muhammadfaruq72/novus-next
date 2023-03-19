@@ -7,7 +7,7 @@ import AuthContext from "@/components/CreateContext";
 import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
 
 export default function Space() {
-  const { isloggedIn, setIsLoggedIn, userExistsInSpace, setuserExistsInSpace } =
+  const { isloggedIn, setIsLoggedIn, userExistsInSpace, setuserExistsInSpace, SelectedChannel } =
     useContext(AuthContext);
 
   const { query } = useRouter();

@@ -4,9 +4,10 @@ import Marketing from "@/public/Marketing.png";
 import styles from "@/styles/components/header/AppHeader.module.css";
 import Image from "next/image";
 import Menu from "@/components/header/Menu";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import fonts from "@/styles/fonts.module.css";
 import { gql, useMutation, useQuery } from "@apollo/client";
+import AuthContext from "@/components/CreateContext";
 
 interface AppHeader {
   spaceHeader: Boolean;
@@ -23,6 +24,7 @@ interface customUser {
 export default function AppHeader(Props: AppHeader) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [CustomUser, setCustomUser] = useState<customUser | null>(null);
+  const { SelectedChannel } = useContext(AuthContext);
 
   const CustomUserQUERY = gql`
     query MyQuery($Useremail: String!) {
@@ -52,7 +54,11 @@ export default function AppHeader(Props: AppHeader) {
   const HamburgerRef: any = useRef();
   return (
     <>
-      <header className={styles.Wrapper}>
+      <header
+        className={
+          SelectedChannel.MobileBool ? styles.WrapperOnClick : styles.Wrapper
+        }
+      >
         {!Props.spaceHeader && (
           <div className={styles.ContentWrapper}>
             <img
@@ -68,7 +74,7 @@ export default function AppHeader(Props: AppHeader) {
             </div>
           </div>
         )}
-        {Props.spaceHeader && <Logo />}
+        {Props.spaceHeader && <Logo className={styles.LOGO} />}
         {CustomUser !== null && (
           <img
             onClick={() => setMenuIsOpen(!menuIsOpen)}

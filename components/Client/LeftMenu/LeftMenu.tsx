@@ -19,6 +19,7 @@ import Progressbar from "./Progressbar";
 import AddSpaceMembers from "./AddSpaceMembers";
 import TotalProgess from "./TotalProgess";
 import { Line } from "rc-progress";
+import Tasks from "./Tasks";
 
 interface Hover {
   Bool: Boolean;
@@ -58,6 +59,7 @@ export default function LeftMenu() {
         channelCount
         items {
           memberCount
+          progress
           Channel {
             Name
             Workspace {
@@ -105,6 +107,10 @@ export default function LeftMenu() {
       }
     }
   }, [ChannelsLoading]);
+
+  useEffect(() => {
+    console.log(ChannelsState, "ChannelsState");
+  }, [ChannelsState]);
 
   const [MembersState, setMembersState] = useState([]);
   const [memberpage, setmemberpage] = useState(1);
@@ -189,12 +195,19 @@ export default function LeftMenu() {
     setchannelOpen(!channelOpen);
   };
 
-  const handleSelectedChannel = (key: any, Name: any, isPublic: boolean) => {
+  const handleSelectedChannel = (
+    key: any,
+    Name: any,
+    isPublic: boolean,
+    members: any
+  ) => {
     setSelectedChannel({
       Bool: !SelectedChannel,
       key: key,
       Name: Name,
       isPublic: isPublic,
+      members: members,
+      MobileBool: true,
     });
   };
 
@@ -240,13 +253,24 @@ export default function LeftMenu() {
   // Invite Modal for people in Channel
   const [inviteOpen, setInviteOpen] = useState<Boolean>(false);
 
+  const [Taskopen, setTaskOpen] = useState<Boolean>(false);
+
   const [style3Dots, setStyle3Dots] = useState({});
+  const [clickAddchannel, setclickAddchannel] = useState({});
 
   const clickPosition = (event: any) => {
     // console.log(event.pageY, event.pageX);
     setStyle3Dots({
       top: `${event.pageY}px`,
-      left: `${event.pageX}px`,
+      left: `${event.pageX - 180}px`,
+    });
+  };
+
+  const clickPositionAddChannel = (event: any) => {
+    // console.log(event.pageY, event.pageX);
+    setclickAddchannel({
+      top: `${event.pageY + 3}px`,
+      left: `${event.pageX - 205}px`,
     });
   };
 
@@ -281,6 +305,12 @@ export default function LeftMenu() {
         setChannelsState={setChannelsState}
         ChannelsState={ChannelsState}
       />
+      <Tasks
+        setOpen={setTaskOpen}
+        Open={Taskopen}
+        setChannelsState={setChannelsState}
+        ChannelsState={ChannelsState}
+      />
       {menuIsOpen.Bool && (
         <ClickChannel3Dots
           HamburgerRef={ThreedotRef}
@@ -289,9 +319,14 @@ export default function LeftMenu() {
           setChannelsState={setChannelsState}
           ChannelsState={ChannelsState}
           setchannelCount={setchannelCount}
+          setTaskOpen={setTaskOpen}
         />
       )}
-      <div className={styles.LeftMenu}>
+      <div
+        className={
+          SelectedChannel.MobileBool ? styles.LeftMenuOnClick : styles.LeftMenu
+        }
+      >
         <div className={styles.TopWrapper}>
           <div style={{ cursor: "default" }} className={styles.WrapperChannel}>
             <div className={styles.Channel}>
@@ -323,6 +358,7 @@ export default function LeftMenu() {
                 onClick={(e: any) => {
                   setAddChannelOpen(!AddChannelOpen);
                   handleThreedotRef(e.target);
+                  clickPositionAddChannel(e);
                 }}
               />
               {AddChannelOpen && (
@@ -331,6 +367,7 @@ export default function LeftMenu() {
                   setMenuIsOpen={setAddChannelOpen}
                   setChannelsState={setChannelsState}
                   setchannelCount={setchannelCount}
+                  clickAddchannel={clickAddchannel}
                 />
               )}
             </div>
@@ -381,7 +418,8 @@ export default function LeftMenu() {
                       handleSelectedChannel(
                         index,
                         Channel.Channel.Name,
-                        Channel.Channel.isPublic
+                        Channel.Channel.isPublic,
+                        Channel.memberCount
                       )
                     }
                     style={
@@ -441,7 +479,10 @@ export default function LeftMenu() {
                           {Channel.Channel.Name}
                         </p>
                       </div>
-                      <div className={styles.ChannelIconGrid}>
+                      <div
+                        className={styles.ChannelIconGrid}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <p
                           className={styles.greyBody15px}
                           onClick={() => setChannelMembersOpen(true)}
@@ -451,6 +492,21 @@ export default function LeftMenu() {
                         {(isHoverChannelItemGrid.Bool &&
                           index === isHoverChannelItemGrid.key) ||
                         (index === menuIsOpen.key && menuIsOpen.Bool) ? (
+                          <ThreeDots
+                            className={styles.ThreeDots_svg_None}
+                            onClick={(e: any) => {
+                              clickPosition(e);
+                              handleThreedotRef(e.target);
+                              setMenuIsOpen({
+                                Bool: !menuIsOpen.Bool,
+                                key: index,
+                              });
+                            }}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                        {
                           <ThreeDots
                             className={styles.ThreeDots_svg}
                             onClick={(e: any) => {
@@ -462,19 +518,21 @@ export default function LeftMenu() {
                               });
                             }}
                           />
-                        ) : (
-                          <div></div>
-                        )}
+                        }
                       </div>
                     </div>
-                    <Line
-                      style={{ width: "100%" }}
-                      percent={30}
-                      strokeWidth={1.3}
-                      trailWidth={1}
-                      strokeColor="#364590"
-                      trailColor={"#E2DFE7"}
-                    />
+                    {Channel.progress !== 0 ? (
+                      <Line
+                        style={{ width: "100%" }}
+                        percent={Channel.progress}
+                        strokeWidth={0.8}
+                        trailWidth={1}
+                        strokeColor="#364590"
+                        trailColor={"#E2DFE7"}
+                      />
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ))}
               </InfiniteScroll>

@@ -51,7 +51,7 @@ export default function Header(header: Header) {
       )}
 
       <header className={styles.Wrapper}>
-        <Logo />
+        <Logo className={styles.LOGO} />
         <div className={styles.menuButton}>
           <p className={fonts.greyText19px}>Pricing</p>
           <p className={fonts.greyText19px}>Features</p>

@@ -14,7 +14,7 @@ import { useState, useRef, useEffect, useContext } from "react";
 import AuthContext from "@/components/CreateContext";
 
 export default function Team() {
-  const { userExistsInSpace, LoggedUser, setLoggedUser } =
+  const { userExistsInSpace, LoggedUser, setLoggedUser, SelectedChannel } =
     useContext(AuthContext);
 
   const checkMembersQUERY = gql`
@@ -54,7 +54,7 @@ export default function Team() {
 
   return (
     <>
-      <div className={styles.Wrapper}>
+      <div className={ SelectedChannel.MobileBool ? styles.Wrapper  : styles.WrapperOnClick}>
         <LeftMenu />
         <Chat />
       </div>

@@ -3,6 +3,8 @@
   display: grid;
   grid-template-columns: repeat(2, auto);
   margin: 0 auto;
+  padding: 10px 10px;
+  overflow: hidden;
 }
 
 .WorkspaceImg {
@@ -29,4 +31,16 @@
   grid-template-rows: repeat(3, auto);
   align-content: center;
   gap: 40px;
+}
+
+@media (max-width: 600px) {
+  .Heading {
+    font-weight: 700;
+    font-size: 35px;
+    line-height: 45px;
+    color: #1e1e1e;
+  }
+  .WorkspaceImg {
+    max-height: 250px;
+  }
 }

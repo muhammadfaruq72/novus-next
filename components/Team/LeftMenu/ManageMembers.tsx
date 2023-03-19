@@ -8,7 +8,7 @@ import Image from "next/image";
 import DropDown from "./DropDown";
 import ThreeDots from "@/public/ThreeDots.svg";
 import ManageMembers3Dots from "./ManageMembers3Dots";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import { useState, useRef, useEffect, useContext } from "react";
 import AuthContext from "@/components/CreateContext";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -88,52 +88,69 @@ export default function ManageMembers(Close: Close) {
     }
   `;
 
-  const {
-    data: manageMembersData,
-    loading: manageMembersLoading,
-    refetch: manageMembersRefetch,
-  } = useQuery(MembersQUERY, {
-    variables: {
-      spaceId: userExistsInSpace.space_id,
-      page: managememberpage,
-      perPage: 10,
-      UserContains: null,
+  const [
+    manageMembersRefetch,
+    {
+      // data: manageMembersData,
+      loading: manageMembersLoading,
+    },
+  ] = useLazyQuery(MembersQUERY, {
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: "network-only",
+
+    onCompleted: (data) => {
+      if (typeof data !== "undefined") {
+        // console.log("manageMembersLoading", manageMembersLoading);
+
+        setmanageMembersState(
+          manageMembersState.concat(data.QuerySpaceMembers.items)
+        );
+
+        if (isQuerySearch.Bool) {
+          setFilter(isQuerySearch.filter);
+          setisQuerySearch({ Bool: false, filter: "" });
+        } else {
+          if (data.QuerySpaceMembers.hasNextPage === true) {
+            setmanagehasNextPagemember(true);
+          } else {
+            setmanagehasNextPagemember(false);
+          }
+        }
+      }
     },
   });
 
   const fetchMoreDataManageMembers = () => {
     // console.log("fetchMoreDataManageMembers");
     setmanagememberpage((prev) => prev + 1);
-    manageMembersRefetch({
-      spaceId: userExistsInSpace.space_id,
-      page: managememberpage,
-      perPage: 10,
-      UserContains: null,
-    });
   };
 
   useEffect(() => {
-    // console.log(manageMembersData, "manageMembersData");
-
-    if (typeof manageMembersData !== "undefined") {
-      // console.log("manageMembersLoading", manageMembersLoading);
-
-      setmanageMembersState(
-        manageMembersState.concat(manageMembersData.QuerySpaceMembers.items)
-      );
-
-      if (isQuerySearch.Bool) {
-        setFilter(isQuerySearch.filter);
-        setisQuerySearch({ Bool: false, filter: "" });
-      } else {
-        if (manageMembersData.QuerySpaceMembers.hasNextPage === true) {
-          setmanagehasNextPagemember(true);
-        } else {
-          setmanagehasNextPagemember(false);
-        }
-      }
+    if (Close.Open === true) {
+      manageMembersRefetch({
+        variables: {
+          spaceId: userExistsInSpace.space_id,
+          page: managememberpage,
+          perPage: 10,
+          UserContains: null,
+        },
+      });
     }
-  }, [manageMembersData]);
+  }, [Close.Open]);
+
+  useEffect(() => {
+    // console.log("managememberpage", managememberpage);
+    if (Close.Open === true) {
+      manageMembersRefetch({
+        variables: {
+          spaceId: userExistsInSpace.space_id,
+          page: managememberpage,
+          perPage: 10,
+          UserContains: null,
+        },
+      });
+    }
+  }, [managememberpage]);
 
   useEffect(() => {
     if (isQuerySearch.Bool === true) {
@@ -150,18 +167,16 @@ export default function ManageMembers(Close: Close) {
     }
   }, [isQuerySearch]);
 
-  useEffect(() => {
-    // console.log("manageMembersData", manageMembersData);
-  }, [manageMembersData]);
-
   const handleSearch = (event: any) => {
     event.preventDefault();
     setisQuerySearch({ Bool: true, filter: event.target.text.value });
     manageMembersRefetch({
-      spaceId: userExistsInSpace.space_id,
-      page: 1,
-      perPage: 20,
-      UserContains: event.target.text.value,
+      variables: {
+        spaceId: userExistsInSpace.space_id,
+        page: managememberpage,
+        perPage: 10,
+        UserContains: null,
+      },
     });
   };
 

@@ -95,3 +95,13 @@
   background-color: #364590;
   color: #fff;
 }
+
+@media (max-width: 600px) {
+  .ButtonBlack187x62 {
+    width: 90px;
+    height: 42px;
+    font-weight: 400;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+}

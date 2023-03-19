@@ -16,6 +16,7 @@ interface props {
   setChannelsState?: any;
   ChannelsState?: any;
   setchannelCount?: any;
+  setTaskOpen?: any;
 }
 
 export default function ClickChannel3Dots(Props: props) {
@@ -34,6 +35,7 @@ export default function ClickChannel3Dots(Props: props) {
     setChannelsState,
     ChannelsState,
     setchannelCount,
+    setTaskOpen
   } = Props;
   // interface MenuData {
   //   title: string;
@@ -190,6 +192,13 @@ export default function ClickChannel3Dots(Props: props) {
 
   return (
     <div style={style3Dots} className={styles.Menu}>
+      <div onClick={() => setTaskOpen(true)}>
+        {" "}
+        <div className={styles.MenuItem}>
+          <Plus className={styles.Svg} />
+          <p className={styles.greyBody16px}>Task List</p>
+        </div>
+      </div>
       {LoggedUser.isAdmin && (
         <div>
           {SelectedChannel.isPublic ? (

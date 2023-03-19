@@ -13,3 +13,20 @@
   align-items: center;
   gap: 30px;
 }
+
+.LOGO {
+  width: 123px;
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  .LOGO {
+    width: 90px;
+  }
+  .Wrapper {
+    padding: 10px 10px;
+  }
+  .menuButton {
+    gap: 10px;
+  }
+}

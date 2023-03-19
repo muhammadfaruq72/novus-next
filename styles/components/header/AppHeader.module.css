@@ -6,6 +6,20 @@
   padding: 12px;
 }
 
+.WrapperOnClick {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+
+@media (max-width: 600px) {
+  .WrapperOnClick {
+    display: none;
+  }
+}
+
 .ContentWrapper {
   display: grid;
   grid-template-columns: auto auto;
@@ -17,4 +31,15 @@
   display: grid;
   grid-template-rows: auto auto;
   gap: 4px;
+}
+
+.LOGO {
+  width: 123px;
+  height: auto;
+}
+
+@media (max-width: 600px) {
+  .LOGO {
+    width: 100px;
+  }
 }

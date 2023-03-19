@@ -20,6 +20,8 @@ import crypto, { randomBytes } from "crypto";
 import { VideoPlayer } from "@videojs-player/react";
 import "video.js/dist/video-js.css";
 import PdfPopup from "./PdfPopup";
+import BackArrow from "@/public/BackArrow.svg";
+import Progress from "@/public/progress.svg";
 
 function splitLast(s: string, sep: string = " ") {
   let right = s.split(sep).pop();
@@ -48,7 +50,13 @@ function CheckTypes(
   }
 }
 
-export default function FileSpace() {
+interface fileSpace {
+  setShowSpace: any;
+  showSpace: any;
+}
+
+export default function FileSpace(Props: fileSpace) {
+  const { setShowSpace, showSpace } = Props;
   const {
     userExistsInSpace,
     SelectedChannel,
@@ -349,38 +357,83 @@ export default function FileSpace() {
     onMessage: (event: WebSocketEventMap["message"]) => processMessages(event),
   });
 
-  const [ConversationStyle, setConversationStyle] = useState({
-    height: "calc(100vh - 113px)",
-  });
+  const [ConversationStyle, setConversationStyle] = useState(
+    styles.WrapperConversation
+  );
 
   useEffect(() => {
     if (replyOpen.Bool) {
-      setConversationStyle({ height: "calc(100vh - 113px - 34px)" });
+      setConversationStyle(styles.WrapperConversationReplyTrue);
     } else {
-      setConversationStyle({ height: "calc(100vh - 113px)" });
+      setConversationStyle(styles.WrapperConversation);
     }
-
     if (replyOpen.Bool && ClientselectedImages.length > 0) {
-      setConversationStyle({ height: "calc(100vh - 113px - 34px - 150px)" });
+      setConversationStyle(styles.WrapperConversationReplyAndselectedImages);
     } else if (ClientselectedImages.length > 0) {
-      setConversationStyle({ height: "calc(100vh - 113px - 150px)" });
+      setConversationStyle(styles.WrapperConversationselectedImages);
     }
   }, [replyOpen, ClientselectedImages]);
 
+  const [windowSize, setWindowSize] = useState(getWindowSize());
+
+  useEffect(() => {
+    function handleWindowResize() {
+      setWindowSize(getWindowSize());
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  function getWindowSize() {
+    const { innerWidth, innerHeight } = window;
+    return { innerWidth, innerHeight };
+  }
+
   return (
     <>
-      <div className={styles.ChatWrapper}>
+      <div
+        className={
+          SelectedChannel.MobileBool && showSpace === "FileSpace"
+            ? styles.ChatWrapperOnClick
+            : styles.ChatWrapper
+        }
+      >
+        <div className={styles.ChatHeader}>
+          <div className={styles.ContentWrapper}>
+            <BackArrow
+              className={styles.BackArrow_svg}
+              onClick={() =>
+                setSelectedChannel((prev: any) => ({
+                  ...prev,
+                  MobileBool: false,
+                }))
+              }
+            />
+            <div className={styles.textWrapper}>
+              <h1 className={fonts.blackBody15px}>Filespace</h1>
+              {SelectedChannel.members !== 0 && (
+                <p className={fonts.greyBody13px}># {SelectedChannel.Name}</p>
+              )}
+            </div>
+          </div>
+          <Progress
+            className={styles.Progress_svg}
+            onClick={() => {
+              setShowSpace("Chat");
+            }}
+          />
+        </div>
         {PdfPopupOpen.Bool && (
           <PdfPopup setOpen={setPdfPopup} Open={PdfPopupOpen} />
         )}
         <div className={styles.Chat}>
           {" "}
           <div className={styles.Conversation}>
-            <div
-              id="scrollableDivFileSpace"
-              className={styles.WrapperConversation}
-              style={ConversationStyle}
-            >
+            <div id="scrollableDivFileSpace" className={ConversationStyle}>
               <InfiniteScroll
                 dataLength={ChatsState.length}
                 next={() => {
@@ -444,14 +497,12 @@ export default function FileSpace() {
                     <div className={styles.Messagereply} key={index}>
                       <div className={styles.massage}>
                         <img
+                          className={styles.ProfileImage}
                           src={
                             process.env.NEXT_PUBLIC_BACKEND_GRAPHQL +
                             Chat.Username.Image.url
                           }
                           alt=""
-                          height={35}
-                          width={35}
-                          style={{ borderRadius: "5px" }}
                         />
                         <div className={styles.messageText}>
                           <div className={fonts.blackBody15px}>
@@ -461,70 +512,82 @@ export default function FileSpace() {
                             <div className={fonts.lightBlack16px}>
                               {Chat.Message}
                             </div>
-                            {Chat.attachment.Key !== null &&
-                              CheckTypes(
-                                Chat.attachment.Key.split(".")[1],
-                                true,
-                                false,
-                                false
-                              ) && (
-                                <img
-                                  className={styles.attachImage}
-                                  src={
-                                    process.env.NEXT_PUBLIC_AWS +
-                                    Chat.attachment.Key
-                                  }
-                                  alt=""
-                                />
-                              )}
-                            {Chat.attachment.Key !== null &&
-                              CheckTypes(
-                                Chat.attachment.Key.split(".")[1],
-                                false,
-                                true,
-                                false
-                              ) && (
-                                <div
-                                  className={styles.videoPlayer}
-                                  onContextMenu={(e) => e.preventDefault()}
-                                >
-                                  <VideoPlayer
+                            <div
+                              style={{
+                                width: `${
+                                  windowSize.innerWidth > 600
+                                    ? 400
+                                    : windowSize.innerWidth - 55
+                                }px`,
+                              }}
+                            >
+                              {Chat.attachment.Key !== null &&
+                                CheckTypes(
+                                  Chat.attachment.Key.split(".")[1],
+                                  true,
+                                  false,
+                                  false
+                                ) && (
+                                  <img
+                                    className={styles.attachImage}
                                     src={
                                       process.env.NEXT_PUBLIC_AWS +
                                       Chat.attachment.Key
                                     }
-                                    controls
-                                    loop={false}
-                                    volume={0.6}
-                                    fluid={true}
+                                    alt=""
                                   />
-                                </div>
-                              )}
-                            {Chat.attachment.Key !== null &&
-                              CheckTypes(
-                                Chat.attachment.Key.split(".")[1],
-                                false,
-                                false,
-                                true
-                              ) && (
-                                <div
-                                  className={styles.DocAttaachment}
-                                  onClick={() =>
-                                    setPdfPopup({
-                                      Bool: true,
-                                      attachment: Chat.attachment,
-                                    })
-                                  }
-                                >
-                                  <Pdf_SVG />
-                                  <div style={{ display: "grid", gap: "6px" }}>
-                                    <p className={styles.lightBlack15px}>
-                                      {Chat.attachment.Name}
-                                    </p>
-                                    <p className={fonts.greyBody13px}>PDF</p>
+                                )}
+                              {Chat.attachment.Key !== null &&
+                                CheckTypes(
+                                  Chat.attachment.Key.split(".")[1],
+                                  false,
+                                  true,
+                                  false
+                                ) && (
+                                  <div
+                                    className={styles.videoPlayer}
+                                    onContextMenu={(e) => e.preventDefault()}
+                                  >
+                                    <VideoPlayer
+                                      src={
+                                        process.env.NEXT_PUBLIC_AWS +
+                                        Chat.attachment.Key
+                                      }
+                                      controls
+                                      loop={false}
+                                      volume={0.6}
+                                      fluid={true}
+                                    />
                                   </div>
-                                </div>
-                              )}
+                                )}
+                              {Chat.attachment.Key !== null &&
+                                CheckTypes(
+                                  Chat.attachment.Key.split(".")[1],
+                                  false,
+                                  false,
+                                  true
+                                ) && (
+                                  <div
+                                    className={styles.DocAttaachment}
+                                    onClick={() =>
+                                      setPdfPopup({
+                                        Bool: true,
+                                        attachment: Chat.attachment,
+                                      })
+                                    }
+                                  >
+                                    <Pdf_SVG />
+                                    <div
+                                      style={{ display: "grid", gap: "6px" }}
+                                    >
+                                      <p className={styles.lightBlack15px}>
+                                        {Chat.attachment.Name}
+                                      </p>
+                                      <p className={fonts.greyBody13px}>PDF</p>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
                           </div>
                         </div>
                       </div>

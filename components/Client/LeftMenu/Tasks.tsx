@@ -1,4 +1,4 @@
-import styles from "@/styles/components/Team/LeftMenu/ManageMembers.module.css";
+import styles from "@/styles/components/Client/LeftMenu/ManageMembers.module.css";
 import fonts from "@/styles/fonts.module.css";
 import buttons from "@/styles/buttons.module.css";
 import miniComponents from "@/styles/miniComponents.module.css";
@@ -18,13 +18,11 @@ let ThreedotRef: any;
 interface Close {
   setOpen: any;
   Open: any;
-  setMembersState: any;
-  MembersState: any;
   setChannelsState?: any;
   ChannelsState?: any;
 }
-
-export default function ManageMembers(Close: Close) {
+let currentDate: string = "";
+export default function Tasks(Close: Close) {
   const {
     userExistsInSpace,
     SelectedChannel,
@@ -34,7 +32,7 @@ export default function ManageMembers(Close: Close) {
   } = useContext(AuthContext);
 
   const [isOpen, setisOpen] = useState({ Bool: false, key: null });
-  const [filter, setFilter] = useState("");
+  //   const [filter, setFilter] = useState("");
 
   // On clicking three dots
   const [menuIsOpen, setMenuIsOpen] = useState({ Bool: false, key: null });
@@ -63,54 +61,51 @@ export default function ManageMembers(Close: Close) {
 
   const MembersQUERY = gql`
     query MyQuery(
+      $ChannelName: String!
       $spaceId: String!
       $page: Int!
       $perPage: Int!
-      $UserContains: String
     ) {
-      QuerySpaceMembers(
+      Tasks(
+        ChannelName: $ChannelName
         page: $page
         perPage: $perPage
         spaceId: $spaceId
-        UserContains: $UserContains
       ) {
         hasNextPage
         items {
-          isAdmin
-          User {
-            username
-            Image {
-              url
-            }
-          }
+          task
+          Status
+          ExpiryDate
+          CreatedOnDate
+          id
         }
       }
     }
   `;
 
   const [
-    manageMembersRefetch,
+    TasksQuery,
     {
       // data: manageMembersData,
       loading: manageMembersLoading,
+      refetch: manageMembersRefetch,
     },
   ] = useLazyQuery(MembersQUERY, {
     notifyOnNetworkStatusChange: true,
     fetchPolicy: "network-only",
 
-    onCompleted: (data) => {
+    onCompleted: (data: any) => {
       if (typeof data !== "undefined") {
         // console.log("manageMembersLoading", manageMembersLoading);
 
-        setmanageMembersState(
-          manageMembersState.concat(data.QuerySpaceMembers.items)
-        );
+        setmanageMembersState(manageMembersState.concat(data.Tasks.items));
 
         if (isQuerySearch.Bool) {
-          setFilter(isQuerySearch.filter);
+          // setFilter(isQuerySearch.filter);
           setisQuerySearch({ Bool: false, filter: "" });
         } else {
-          if (data.QuerySpaceMembers.hasNextPage === true) {
+          if (data.Tasks.hasNextPage === true) {
             setmanagehasNextPagemember(true);
           } else {
             setmanagehasNextPagemember(false);
@@ -126,31 +121,31 @@ export default function ManageMembers(Close: Close) {
   };
 
   useEffect(() => {
-    if (Close.Open === true) {
-      manageMembersRefetch({
-        variables: {
-          spaceId: userExistsInSpace.space_id,
-          page: managememberpage,
-          perPage: 10,
-          UserContains: null,
-        },
-      });
-    }
-  }, [Close.Open]);
-
-  useEffect(() => {
     // console.log("managememberpage", managememberpage);
     if (Close.Open === true) {
-      manageMembersRefetch({
+      TasksQuery({
         variables: {
           spaceId: userExistsInSpace.space_id,
           page: managememberpage,
           perPage: 10,
-          UserContains: null,
+          ChannelName: SelectedChannel.Name,
         },
       });
     }
   }, [managememberpage]);
+
+  useEffect(() => {
+    if (Close.Open === true) {
+      TasksQuery({
+        variables: {
+          spaceId: userExistsInSpace.space_id,
+          page: managememberpage,
+          perPage: 10,
+          ChannelName: SelectedChannel.Name,
+        },
+      });
+    }
+  }, [Close.Open]);
 
   useEffect(() => {
     if (isQuerySearch.Bool === true) {
@@ -167,24 +162,111 @@ export default function ManageMembers(Close: Close) {
     }
   }, [isQuerySearch]);
 
-  const handleSearch = (event: any) => {
-    event.preventDefault();
-    setisQuerySearch({ Bool: true, filter: event.target.text.value });
-    manageMembersRefetch({
-      variables: {
-        spaceId: userExistsInSpace.space_id,
-        page: managememberpage,
-        perPage: 10,
-        UserContains: null,
+  const [DropWown, setDropWown] = useState<Boolean>(false);
+
+  const Mutation = gql`
+    mutation MyMutation(
+      $ChannelName: String!
+      $option: String!
+      $spaceId: String!
+      $task: String!
+      $ExpiryDate: String
+      $id: Int
+      $Status: String
+    ) {
+      Task(
+        ChannelName: $ChannelName
+        option: $option
+        spaceId: $spaceId
+        ExpiryDate: $ExpiryDate
+        task: $task
+        id: $id
+        Status: $Status
+      )
+    }
+  `;
+
+  const object = useRef({});
+
+  const [mutate, { loading, error, data: mutateResponse }] = useMutation(
+    Mutation,
+    {
+      onCompleted(data) {
+        if (data.Task !== "delete" && data.Task !== "status") {
+          const bar = { ...object.current, ...{ ["id"]: data.Task } };
+          var ARRR: any = [];
+          ARRR.push(bar);
+          setmanageMembersState(manageMembersState.concat(ARRR));
+          object.current = {};
+        }
       },
+    }
+  );
+
+  const [date, setDate] = useState(
+    `${`${new Date().getFullYear()}`}-${`${
+      new Date().getMonth() + 1
+    }`}-${`${new Date().getDate()}`}`
+  );
+  const [value, setValue] = useState("");
+  let CreateWorkSpace = (event: any) => {
+    event.preventDefault();
+    var ChannelName = SelectedChannel.Name;
+    var option = "add";
+    var spaceId = userExistsInSpace.space_id;
+    var ExpiryDate = date;
+    var task = event.target.text.value;
+    var id = null;
+    var Status = null;
+    object.current = {
+      CreatedOnDate: `${`${new Date().getFullYear()}`}-${`${
+        new Date().getMonth() + 1
+      }`}-${`${new Date().getDate()}`}`,
+      ExpiryDate: date,
+      Status: "In Queue",
+      task: event.target.text.value,
+    };
+    setValue("");
+    mutate({
+      variables: { ChannelName, option, spaceId, ExpiryDate, task, id, Status },
     });
   };
 
-  const [threeDots, setThreeDots] = useState({ username: null, isAdmin: null });
+  let Delete = (event: any, ID: any) => {
+    event.preventDefault();
+    var ChannelName = SelectedChannel.Name;
+    var option = "delete";
+    var spaceId = userExistsInSpace.space_id;
+    var ExpiryDate = null;
+    var task = "";
+    var id: any = parseInt(ID);
+    var Status = null;
+    setmanageMembersState(
+      manageMembersState.filter((item: any) => item.id !== ID)
+    );
+    mutate({
+      variables: { ChannelName, option, spaceId, ExpiryDate, task, id, Status },
+    });
+  };
+
+  useEffect(() => {
+    if (loading === true) {
+      setStyleSubmit({
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
+        pointerEvents: "none",
+      });
+    }
+    if (loading === false) {
+      setStyleSubmit({
+        backgroundColor: "#364590",
+        pointerEvents: "auto",
+      });
+    }
+  }, [loading]);
 
   return (
     <>
-      {menuIsOpen.Bool && (
+      {/* {menuIsOpen.Bool && (
         <ManageMembers3Dots
           HamburgerRef={ThreedotRef}
           setMenuIsOpen={setMenuIsOpen}
@@ -197,11 +279,14 @@ export default function ManageMembers(Close: Close) {
           setChannelsState={Close.setChannelsState}
           ChannelsState={Close.ChannelsState}
         />
-      )}
+      )} */}
       <div
         onClick={() => {
           Close.setOpen(false);
           setisOpen({ Bool: false, key: null });
+          setDropWown(false);
+          setmanageMembersState([]);
+          setmanagememberpage(1);
         }}
         className={`${styles.overlay} ${
           Close.Open === true ? styles.visible : styles.hidden
@@ -222,6 +307,7 @@ export default function ManageMembers(Close: Close) {
                 Bool: false,
                 key: null,
               });
+              setDropWown(false);
             }}
             className={styles.Wrapper}
           >
@@ -229,47 +315,70 @@ export default function ManageMembers(Close: Close) {
               className={styles.SVGCross}
               onClick={() => {
                 Close.setOpen(false);
+                setmanageMembersState([]);
+                setmanagememberpage(1);
               }}
             />
 
             <div className={styles.ContentWrapper}>
               <div style={{ marginTop: "15px" }}>
-                <h1 className={fonts.blackHeading21px}>Manage members</h1>
+                <h1 className={fonts.blackHeading21px}>Create New Task</h1>
                 <p
                   style={{ marginTop: "5px", maxWidth: "400px" }}
                   className={fonts.greyBody14px}
                 >
-                  Permanently delete a user or assign roles to a user
+                  You can create new task in here.
                 </p>
               </div>
 
-              <form
-                className={styles.forms}
-                onSubmit={(event: any) => {
-                  handleSearch(event);
-                }}
-              >
-                <input
-                  name="text"
-                  type={"text"}
-                  required={true}
-                  placeholder="Ex: David_Expinosa"
-                  onChange={(event) => {
-                    if (event.target.value === "") {
-                      setFilter("");
-                    }
+              {LoggedUser.isAdmin && (
+                <form
+                  className={styles.forms}
+                  style={{
+                    gridTemplateColumns: "calc(55%) calc(25%) calc(15%)",
                   }}
-                ></input>
-                <label>
-                  <input type="submit" style={{ display: "none" }}></input>
-                  <div className={styles.searchWrapper} style={styleSubmit}>
-                    <Search className={styles.search_svg} />
-                  </div>
-                </label>
-              </form>
+                  onSubmit={(event: any) => {
+                    CreateWorkSpace(event);
+                  }}
+                >
+                  <input
+                    name="text"
+                    type={"text"}
+                    required={true}
+                    placeholder="Ex: Digital Marketing"
+                    value={value}
+                    onChange={(event) => {
+                      setValue(event.target.value);
+                    }}
+                  ></input>
+                  <input
+                    type="date"
+                    name="date"
+                    onChange={(event) => {
+                      setDate(event.target.value);
+                    }}
+                  ></input>
+
+                  <label>
+                    <input type="submit" style={{ display: "none" }}></input>
+                    <div className={styles.searchWrapper} style={styleSubmit}>
+                      <Plus className={styles.search_svg} />
+                    </div>
+                  </label>
+                </form>
+              )}
               <div
-                id="scrollableDivManageMember"
+                id="scrollableTasks"
                 className={styles.MemberScroll}
+                style={
+                  LoggedUser.isAdmin
+                    ? {
+                        height: "min(100% - 0px, 405px)",
+                      }
+                    : {
+                        height: "min(100% - 0px, 460px)",
+                      }
+                }
               >
                 <InfiniteScroll
                   dataLength={manageMembersState.length}
@@ -285,34 +394,13 @@ export default function ManageMembers(Close: Close) {
                       <div className={miniComponents.loader}></div>
                     </div>
                   }
-                  scrollableTarget="scrollableDivManageMember"
+                  scrollableTarget="scrollableTasks"
                 >
-                  {manageMembersState
-                    .filter((value: any, index) => {
-                      if (filter === "") {
-                        return (
-                          index ===
-                          manageMembersState.findIndex(
-                            (o: any) => value.User.username === o.User.username
-                          )
-                        );
-                      } else if (
-                        value.User.username
-                          .toLowerCase()
-                          .includes(filter.toLowerCase())
-                      ) {
-                        return (
-                          index ===
-                          manageMembersState.findIndex(
-                            (o: any) => value.User.username === o.User.username
-                          )
-                        );
-                      }
-                    })
-                    .map((Member: any, index: any) => (
+                  {manageMembersState.map(
+                    (Member: any, index: any, { length }) => (
                       <div className={styles.WrapperMembers} key={index}>
                         <div className={styles.Members}>
-                          <img
+                          {/* <img
                             style={{ borderRadius: "5px" }}
                             src={
                               process.env.NEXT_PUBLIC_BACKEND_GRAPHQL +
@@ -321,17 +409,40 @@ export default function ManageMembers(Close: Close) {
                             alt=""
                             height={35}
                             width={35}
-                          />
+                          /> */}
                           <div className={styles.manageMembersData}>
-                            <div className={fonts.lightBlack15px}>
-                              {Member.User.username}
+                            <div className={fonts.lightBlack16px}>
+                              {Member.task}
                             </div>
                             <div className={fonts.greyBody13px}>
-                              {Member.isAdmin ? "Admin Role" : "Member Role"}
+                              {Member.CreatedOnDate} - {Member.ExpiryDate}
                             </div>
                           </div>
                         </div>
-                        {LoggedUser.isAdmin && (
+                        <div className={styles.DropDownTask}>
+                          <DropDown
+                            Member={Member}
+                            isOpen={DropWown}
+                            setisOpen={setDropWown}
+                            index={index}
+                            mutate={mutate}
+                            setmanageMembersState={setmanageMembersState}
+                            manageMembersState={manageMembersState}
+                          />
+                          {LoggedUser.isAdmin && (
+                            <Plus
+                              className={styles.SVGCrossTask}
+                              onClick={(event: any) => {
+                                Delete(event, Member.id);
+                              }}
+                            />
+                          )}
+                        </div>
+
+                        {index == length - 1 && (
+                          <div style={{ height: "100px" }}></div>
+                        )}
+                        {/* {LoggedUser.isAdmin && (
                           <div className={styles.MembeButtons}>
                             <ThreeDots
                               className={styles.ThreeDots_svg}
@@ -351,9 +462,10 @@ export default function ManageMembers(Close: Close) {
                               }}
                             />
                           </div>
-                        )}
+                        )} */}
                       </div>
-                    ))}
+                    )
+                  )}
                 </InfiniteScroll>
               </div>
             </div>

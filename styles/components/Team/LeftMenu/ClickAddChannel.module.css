@@ -1,7 +1,7 @@
 .Menu {
   position: absolute;
-  margin-left: 195px;
-  margin-top: 24px;
+  /* margin-left: 195px;
+  margin-top: 24px; */
   z-index: 1;
   background-color: #f5f7f9;
   padding: 10px 10px;
@@ -57,7 +57,7 @@
 }
 
 .Wrapper input[type="text"] {
-  width: 200px;
+  width: 150px;
   height: 25px;
   text-indent: 20px;
   border-radius: 3px;

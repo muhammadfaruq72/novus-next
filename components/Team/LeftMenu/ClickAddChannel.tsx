@@ -12,13 +12,19 @@ interface props {
   HamburgerRef: any;
   setChannelsState: any;
   setchannelCount: any;
+  clickAddchannel: any;
 }
 
 export default function ClickAddChannel(Props: props) {
   const [styleSubmit, setStyleSubmit] = useState({});
   const { userExistsInSpace } = useContext(AuthContext);
-  const { HamburgerRef, setMenuIsOpen, setChannelsState, setchannelCount } =
-    Props;
+  const {
+    HamburgerRef,
+    setMenuIsOpen,
+    setChannelsState,
+    setchannelCount,
+    clickAddchannel,
+  } = Props;
   interface MenuData {
     title: string;
     icon: any;
@@ -114,14 +120,18 @@ export default function ClickAddChannel(Props: props) {
   }, [loading]);
 
   return (
-    <div className={styles.Menu} onClick={(e: any) => e.stopPropagation()}>
-      <p className={fonts.lightBlack14px}>Create a FileSpace</p>
+    <div
+      className={styles.Menu}
+      style={clickAddchannel}
+      onClick={(e: any) => e.stopPropagation()}
+    >
+      <p className={fonts.lightBlack14px}>Create a Channel</p>
       <form className={styles.Wrapper} onSubmit={CreateWorkSpace}>
         <input
           name="text"
           type={"text"}
           required={true}
-          placeholder="Ex: Digital Marketing"
+          placeholder="Ex: Marketing"
         ></input>
         <label className={styles.label} style={styleSubmit}>
           <input type="submit" />

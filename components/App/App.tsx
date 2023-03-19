@@ -38,6 +38,7 @@ export default function App(app: App) {
           workspace {
             Name
             spaceId
+            isClient
             Image {
               url
             }
@@ -97,6 +98,10 @@ export default function App(app: App) {
     }
   }
 
+  const Clicked = () => {
+    alert("Button triggered");
+  };
+
   return (
     <>
       <CreateWorkspace setOpen={setOpen} Open={Open} IsClient={IsClient} />
@@ -140,7 +145,13 @@ export default function App(app: App) {
         </div>
         <div className={styles.Browse}>
           <h1 className={styles.Heading24px}>Browse all Workspaces</h1>
-          <button onClick={requestPermission} className={buttons.Blue187x62}>
+          <button
+            onClick={() => {
+              Clicked();
+              requestPermission();
+            }}
+            className={styles.Blue187x62}
+          >
             Workspaces
           </button>
         </div>
@@ -158,9 +169,11 @@ export default function App(app: App) {
               <div className={styles.LaunchTextWrapper}>
                 <h1 className={styles.Heading24px}>{Space.workspace.Name}</h1>
                 <div className={styles.membersWrapper}>
-                  <p className={styles.Body24px}>Team Workspace</p>
+                  <p className={styles.Body24px}>
+                    {Space.workspace.isClient ? "Client Space" : "Team Space"}
+                  </p>
                   <div className={styles.members}>
-                    <p style={{ fontSize: "16px", color: "#404040" }}>
+                    <p className={styles.BodyMembers}>
                       {Space.count} {Space.count <= 1 ? "member" : "members"}
                     </p>
                   </div>
@@ -169,7 +182,7 @@ export default function App(app: App) {
             </div>
 
             <button
-              className={buttons.Blue187x62}
+              className={styles.Blue187x62}
               onClick={() => location.replace("/" + Space.workspace.spaceId)}
             >
               Launch

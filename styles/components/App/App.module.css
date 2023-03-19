@@ -1,6 +1,7 @@
 .Wrapper {
   margin-top: 60px !important;
   max-width: 950px;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 30px;
   display: grid;
@@ -10,12 +11,11 @@
 
 .ContentWrapper {
   display: grid;
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(2, calc(50% - 20px));
   justify-content: space-between;
 }
 
 .SubWrapper {
-  width: 454px;
   height: 141px;
   background: #f5f7f9;
   box-shadow: 0 0.783403px 0.783403px 0 rgba(0, 0, 0, 0.004),
@@ -121,8 +121,9 @@
   grid-template-columns: auto;
   justify-content: center;
   align-items: center;
-  width: 108px;
+  width: auto;
   height: 22px;
+  padding: 0px 13px;
   border-radius: 4px;
   background-color: #e2dfe7;
 }
@@ -138,4 +139,115 @@
   width: 71px;
   height: 71px;
   border-radius: 10px;
+}
+
+.BodyMembers {
+  font-weight: 300;
+  font-size: 16px;
+  color: #404040;
+}
+
+.Blue187x62 {
+  width: 187px;
+  height: 62px;
+  background-color: #364590;
+  color: white;
+  font-weight: 500;
+  font-size: 19px;
+  border-radius: 19px;
+  border: none;
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.Blue187x62:hover {
+  box-shadow: rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px,
+    rgba(54, 69, 144, 0.2) 0px 10px 10px 0px;
+}
+
+@media (max-width: 940px) {
+  .Wrapper {
+    gap: 20px;
+  }
+  .ContentWrapper {
+    grid-template-columns: 100%;
+    justify-items: center;
+  }
+  .SubWrapper {
+    height: 80px;
+    width: calc(100% - 10px);
+    border-radius: 10px;
+    gap: 10px;
+    /* padding: 10px 8px; */
+    margin-top: 10px;
+    justify-content: start;
+  }
+  .Browse {
+    max-width: 950px;
+    height: 55px;
+    padding: 0px 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: grid;
+  }
+
+  .Heading24px {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+  }
+
+  .Body24px {
+    font-size: 11px;
+  }
+
+  .img {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+  }
+  .BodyMembers {
+    font-size: 11px;
+  }
+  .members {
+    width: auto;
+    height: 14px;
+    padding: 0px 9px;
+  }
+
+  .Blue187x62 {
+    width: 75px;
+    height: 40px;
+    font-weight: 400;
+    font-size: 11px;
+    border-radius: 5px;
+  }
+  .Launch {
+    gap: 10px;
+  }
+  .membersWrapper {
+    gap: 10px;
+  }
+  .LaunchTextWrapper {
+    gap: 8px;
+  }
+  .ClientBg {
+    width: 54px;
+    height: 54px;
+    border-radius: 5px;
+  }
+  .Svg {
+    fill: #1e1e1e;
+    width: 36px;
+  }
+
+  .TextWrapper {
+    gap: 8px;
+  }
 }

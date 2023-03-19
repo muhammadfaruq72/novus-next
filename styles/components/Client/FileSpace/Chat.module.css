@@ -2,8 +2,69 @@
   position: relative;
   background: #ffffff;
   border-left: 1px solid rgba(217, 217, 217, 0.7);
-  /* height: calc(100% - 0px); */
   overflow: hidden;
+}
+
+.ChatWrapperOnClick {
+  position: relative;
+  background: #ffffff;
+  border-left: 1px solid rgba(217, 217, 217, 0.7);
+  overflow: hidden;
+}
+
+.ChatHeader {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid rgba(217, 217, 217, 0.7);
+  padding-left: 20px;
+  padding-right: 20px;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.ContentWrapper {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: start;
+  gap: 20px;
+}
+
+.textWrapper {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 4px;
+}
+
+.BackArrow_svg {
+  height: 18px;
+  width: auto;
+  stroke: #818386;
+  transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  display: none;
+  padding: 10px 15px;
+}
+
+.BackArrow_svg:hover {
+  cursor: pointer;
+  stroke: #1e1e1e;
+}
+
+.Progress_svg {
+  height: 18px;
+  width: auto;
+  stroke: #818386;
+  transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  padding: 10px 15px;
+  display: none;
+}
+
+.Progress_svg:hover {
+  cursor: pointer;
+  stroke: #1e1e1e;
 }
 
 .Chat {
@@ -30,6 +91,7 @@
   width: calc(100% - 40px);
   margin-left: 20px;
   bottom: calc(0% + 20px);
+  z-index: 1;
   /* margin-top: -200px; */
   /* height: calc(100vh - 120px); */
   /* margin-bottom: 200px !important; */
@@ -129,16 +191,8 @@
   display: none;
 }
 
-/* .SendBar textarea::placeholder {
-  transform: translateY(10px);
-}
-
-.SendBar textarea::-input-placeholder {
-  transform: translateY(10px);
-} */
-
 .WrapperConversation {
-  height: calc(100vh - 113px);
+  height: calc(100vh - 113px - 50px);
   /* display: grid;
   grid-template-columns: auto; */
 
@@ -155,12 +209,59 @@
   display: none;
 }
 
+.WrapperConversationReplyTrue {
+  height: calc(100vh - 113px - 50px - 34px);
+  overflow-x: hidden;
+  scrollbar-width: none;
+  gap: 0px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.WrapperConversationReplyTrue::-webkit-scrollbar {
+  display: none;
+}
+
+.WrapperConversationReplyAndselectedImages {
+  height: calc(100vh - 113px - 50px - 34px - 150px);
+  overflow-x: hidden;
+  scrollbar-width: none;
+  gap: 0px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.WrapperConversationReplyAndselectedImages::-webkit-scrollbar {
+  display: none;
+}
+
+.WrapperConversationselectedImages {
+  height: calc(100vh - 113px - 50px - 150px);
+  overflow-x: hidden;
+  scrollbar-width: none;
+  gap: 0px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.WrapperConversationselectedImages::-webkit-scrollbar {
+  display: none;
+}
 .massage {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: start;
   align-items: flex-start;
   gap: 20px;
+}
+
+.ProfileImage {
+  width: 35px;
+  height: 35px;
+  border-radius: 5px;
 }
 
 .messageText {
@@ -200,7 +301,7 @@
   border-radius: 3px;
   fill: #818386;
   transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
-  z-index: 100;
+  z-index: 1;
   display: none;
   /* border: 1px solid grey; */
 }
@@ -311,16 +412,16 @@
 }
 
 .attachImage {
-  width: 300px;
+  width: 100%;
   border-radius: 10px;
 }
 
 .videoPlayer {
-  width: 500px;
+  width: 100%;
 }
 
 .DocAttaachment {
-  width: 300px;
+  width: min(100%, 300px);
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
@@ -337,4 +438,64 @@
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+
+.lightBlack16px {
+  font-weight: 300;
+  font-size: 16px;
+  color: #404040;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .ChatWrapper {
+    display: none;
+  }
+  .BackArrow_svg {
+    display: block;
+    padding: 10px 0px;
+  }
+  .Progress_svg {
+    display: block;
+    padding: 10px 0px;
+  }
+  .WrapperConversation {
+    height: calc(100vh - 113px - 50px + 60px);
+  }
+  .WrapperConversationReplyTrue {
+    height: calc(100vh - 113px - 50px - 34px + 60px);
+  }
+  .WrapperConversationReplyAndselectedImages {
+    height: calc(100vh - 113px - 50px - 34px - 150px + 60px);
+  }
+  .WrapperConversationselectedImages {
+    height: calc(100vh - 113px - 50px - 150px + 60px);
+  }
+  .ChatWrapperOnClick {
+    border-radius: 0;
+  }
+  .svg_Reply {
+    display: block;
+    background: transparent;
+    padding: 0px;
+    border: none;
+    margin-top: 0px;
+  }
+  .massage {
+    gap: 10px;
+  }
+  .ProfileImage {
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+  }
+  .Messagereply {
+    position: relative;
+    padding: 10px 10px;
+    display: grid;
+    justify-content: start;
+  }
+  .lightBlack16px {
+    font-size: 15px;
+  }
 }

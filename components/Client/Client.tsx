@@ -15,7 +15,7 @@ import AuthContext from "@/components/CreateContext";
 import FileSpace from "./FileSpace/FileSpace";
 
 export default function Client() {
-  const { userExistsInSpace, LoggedUser, setLoggedUser } =
+  const { userExistsInSpace, LoggedUser, setLoggedUser, SelectedChannel } =
     useContext(AuthContext);
 
   const checkMembersQUERY = gql`
@@ -53,13 +53,29 @@ export default function Client() {
     }
   }, [MembersLoading]);
 
+  const [showSpace, setShowSpace] = useState("Chat");
+
+  useEffect(() => {
+    console.log("showSpace", showSpace);
+  }, [showSpace]);
+
   return (
     <>
-      <div className={styles.Wrapper}>
+      <div
+        className={
+          SelectedChannel.MobileBool ? styles.Wrapper : styles.WrapperOnClick
+        }
+      >
         <LeftMenu />
-        <div className={styles.SubWrapper}>
-          <Chat />
-          <FileSpace />
+        <div
+          className={
+            SelectedChannel.MobileBool
+              ? styles.SubWrapper
+              : styles.SubWrapperOnClick
+          }
+        >
+          <Chat setShowSpace={setShowSpace} showSpace={showSpace} />
+          <FileSpace setShowSpace={setShowSpace} showSpace={showSpace} />
         </div>
       </div>
     </>

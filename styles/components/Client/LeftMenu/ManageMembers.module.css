@@ -46,6 +46,27 @@
   fill: #1e1e1e;
 }
 
+.SVGCrossTask {
+  z-index: 1;
+  transition: 0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transform: rotate(-44deg);
+  fill: #818386;
+  width: 18px;
+  height: 18px;
+}
+
+.SVGCrossTask:hover {
+  fill: #1e1e1e;
+}
+
+.DropDownTask {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
 .Wrapper {
   position: absolute;
   top: 0;
@@ -80,6 +101,12 @@
   gap: 10px;
 }
 
+@media (max-width: 600px) {
+  .forms {
+    gap: 5px;
+  }
+}
+
 .forms input[type="text"] {
   height: 35px;
   text-indent: 20px;
@@ -94,6 +121,33 @@
 }
 
 .forms input[type="text"]:focus {
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px #364590,
+    rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
+    rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
+    rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
+    rgba(54, 69, 144, 0.04) 0px 6.35486px 6.35486px 0px,
+    rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
+    rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px;
+  outline: none;
+  transition: 0.1s;
+}
+
+.forms input[type="date"] {
+  height: 35px;
+  /* text-indent: 20px; */
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14);
+  border: 0px;
+  border-color: rgba(0, 0, 0, 0.14);
+  font-size: 12px;
+  background-color: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.forms input[type="date"]:focus {
   border: none;
   border-radius: 6px;
   box-shadow: 0 0 0 1px #364590,
@@ -150,6 +204,7 @@
   grid-template-columns: auto auto;
   align-items: center;
   justify-content: space-between;
+  padding: 0px 4px;
 }
 
 .searchWrapper {

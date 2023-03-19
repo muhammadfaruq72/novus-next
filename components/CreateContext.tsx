@@ -61,6 +61,9 @@ export const AuthProvider = ({ children }: Props) => {
     key: 0,
     Name: "General",
     isPublic: null,
+    members: 0,
+    MobileBool: false,
+
   });
 
   // useEffect(() => {

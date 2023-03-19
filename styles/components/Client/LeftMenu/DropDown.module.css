@@ -10,7 +10,7 @@
   position: relative;
   width: 101px;
   height: 28px;
-  background-color: #364590;
+  background-color: black;
   border-radius: 6px;
   cursor: pointer;
 
@@ -18,9 +18,10 @@
   align-items: center;
   justify-content: center;
   transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+  scrollbar-width: none;
 }
 
-.Wrapper:hover {
+/* .Wrapper:hover {
   box-shadow: rgba(54, 69, 144, 0.004) 0px 0.783403px 0.783403px 0px,
     rgba(54, 69, 144, 0.01) 0px 1.92107px 1.92107px 0px,
     rgba(54, 69, 144, 0.024) 0px 3.63429px 3.63429px 0px,
@@ -28,7 +29,7 @@
     rgba(54, 69, 144, 0.07) 0px 11.0474px 11.0474px 0px,
     rgba(54, 69, 144, 0.125) 0px 5.249729px 5.249729px 0px,
     rgba(54, 69, 144, 0.2) 0px 10px 10px 0px;
-}
+} */
 
 .Options {
   position: absolute;
@@ -46,6 +47,7 @@
   cursor: pointer;
   padding: 5px 0;
   z-index: 1;
+  scrollbar-width: none;
 }
 /* @media (max-width: 450px) {
   .DropArrow {
@@ -59,9 +61,9 @@
   }
 } */
 .dropdownItem {
-  font-weight: 400;
-  font-size: 14px;
-  padding: 10px 19px;
+  font-weight: 300;
+  font-size: 12px;
+ 
   /* margin: 12px 0px; */
   color: #818386;
   transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -72,13 +74,31 @@
 
 .dropdownItemSelected {
   /* background-color: #364590; */
-  border-radius: 6px;
+ 
   color: #1e1e1e;
-  background: #fbfbfb;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  
 }
 
 .functionStack {
   display: grid;
   grid-template-columns: 61px auto;
+}
+
+.WrapperCircle {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  gap: 5px;
+  padding: 5px 6px;
+}
+.WrapperCircleSelected {
+  background: #fbfbfb;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+.circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
 }
