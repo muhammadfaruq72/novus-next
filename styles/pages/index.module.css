@@ -33,6 +33,14 @@
   gap: 40px;
 }
 
+.greyBody17px {
+  font-weight: 500;
+  font-size: 17px;
+  color: #818386;
+  line-height: 20px;
+  margin-top: -30px;
+}
+
 @media (max-width: 600px) {
   .Heading {
     font-weight: 700;
@@ -42,5 +50,11 @@
   }
   .WorkspaceImg {
     max-height: 250px;
+  }
+  .ContentWrapper {
+    gap: 20px;
+  }
+  .greyBody17px {
+    margin-top: 0px;
   }
 }

@@ -33,12 +33,12 @@ export default function Home() {
             <title>NOVUS | Create Your Custom Workspace</title>
             <link rel="apple-touch-icon" href="/favicon.png"></link>
             <link rel="apple-touch-startup-image" href="/favicon.png"></link>
-            <meta
-              name="apple-mobile-web-app-title"
-              content="NOVUS Designed for Clients and Agencies"
-            ></meta>
+            <meta name="apple-mobile-web-app-title" content="NOVUS"></meta>
             <meta name="apple-mobile-web-app-capable" content="yes"></meta>
-            {/* <meta name="apple-mobile-web-app-status-bar-style" content="black"></meta> */}
+            <meta
+              name="apple-mobile-web-app-status-bar-style"
+              content="white"
+            ></meta>
             <meta
               name="description"
               content="Designed for Clients and Agencies"
@@ -56,10 +56,7 @@ export default function Home() {
                 Create Your Custom{" "}
                 <span className={styles.HeadingSpan}>Workspace</span>
               </h1>
-              <p
-                className={fonts.greyBody17px}
-                style={{ marginTop: "-30px", lineHeight: "20px" }}
-              >
+              <p className={styles.greyBody17px}>
                 Designed for Clients and Agencies
               </p>
               <button className={buttons.Blue187x62}>Explore</button>
