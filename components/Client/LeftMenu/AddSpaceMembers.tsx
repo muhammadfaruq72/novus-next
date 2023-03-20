@@ -135,7 +135,8 @@ export default function AddSpaceMembers(Close: Close) {
     setmanagememberpage((prev) => prev + 1);
     spaceQuery({
       variables: {
-        FilterUserId: localStorage.getItem("email"),
+        FilterUserId:
+          typeof window !== "undefined" ? localStorage.getItem("email") : null,
         page: managememberpage,
         perPage: 10,
         SpaceContains: null,
@@ -171,7 +172,8 @@ export default function AddSpaceMembers(Close: Close) {
     setisQuerySearch({ Bool: true, filter: event.target.text.value });
     spaceQuery({
       variables: {
-        FilterUserId: localStorage.getItem("email"),
+        FilterUserId:
+          typeof window !== "undefined" ? localStorage.getItem("email") : null,
         page: 1,
         perPage: 20,
         SpaceContains: event.target.text.value,

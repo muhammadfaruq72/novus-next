@@ -78,7 +78,8 @@ export default function LeftMenu() {
     refetch: ChannelsRefetch,
   } = useQuery(ChannelsQUERY, {
     variables: {
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
       spaceId: userExistsInSpace.space_id,
       page: page,
       perPage: 10,
@@ -89,7 +90,8 @@ export default function LeftMenu() {
     // console.log("fetchMoreData");
     setPage((prev) => prev + 1);
     ChannelsRefetch({
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
       spaceId: userExistsInSpace.space_id,
       page: page,
       perPage: 10,
@@ -633,12 +635,15 @@ export default function LeftMenu() {
                       />
                       <div className={styles.greyBody15pxNoHover}>
                         {Member.User.username}{" "}
-                        {localStorage.getItem("username") ===
-                          Member.User.username && (
-                          <span style={{ fontSize: "11px", fontWeight: "200" }}>
-                            (you)
-                          </span>
-                        )}
+                        {typeof window !== "undefined"
+                          ? localStorage.getItem("username")
+                          : null === Member.User.username && (
+                              <span
+                                style={{ fontSize: "11px", fontWeight: "200" }}
+                              >
+                                (you)
+                              </span>
+                            )}
                       </div>
                     </div>
 

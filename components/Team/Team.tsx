@@ -39,7 +39,8 @@ export default function Team() {
   } = useQuery(checkMembersQUERY, {
     variables: {
       spaceId: userExistsInSpace.space_id,
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
     },
   });
 
@@ -54,7 +55,11 @@ export default function Team() {
 
   return (
     <>
-      <div className={ SelectedChannel.MobileBool ? styles.Wrapper  : styles.WrapperOnClick}>
+      <div
+        className={
+          SelectedChannel.MobileBool ? styles.Wrapper : styles.WrapperOnClick
+        }
+      >
         <LeftMenu />
         <Chat />
       </div>

@@ -7,8 +7,13 @@ import AuthContext from "@/components/CreateContext";
 import { gql, useMutation, useQuery, useLazyQuery } from "@apollo/client";
 
 export default function Space() {
-  const { isloggedIn, setIsLoggedIn, userExistsInSpace, setuserExistsInSpace, SelectedChannel } =
-    useContext(AuthContext);
+  const {
+    isloggedIn,
+    setIsLoggedIn,
+    userExistsInSpace,
+    setuserExistsInSpace,
+    SelectedChannel,
+  } = useContext(AuthContext);
 
   const { query } = useRouter();
 
@@ -40,7 +45,10 @@ export default function Space() {
     if (typeof query.Workspace !== "undefined") {
       checkMembersQuery({
         variables: {
-          UserEmail: localStorage.getItem("email"),
+          UserEmail:
+            typeof window !== "undefined"
+              ? localStorage.getItem("email")
+              : null,
           space_id: query.Workspace,
         },
       });

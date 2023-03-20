@@ -72,7 +72,8 @@ export default function LeftMenu() {
     refetch: ChannelsRefetch,
   } = useQuery(ChannelsQUERY, {
     variables: {
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
       spaceId: userExistsInSpace.space_id,
       page: page,
       perPage: 10,
@@ -83,7 +84,8 @@ export default function LeftMenu() {
     // console.log("fetchMoreData");
     setPage((prev) => prev + 1);
     ChannelsRefetch({
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
       spaceId: userExistsInSpace.space_id,
       page: page,
       perPage: 10,
@@ -186,14 +188,19 @@ export default function LeftMenu() {
     setchannelOpen(!channelOpen);
   };
 
-  const handleSelectedChannel = (key: any, Name: any, isPublic: boolean, members: any ) => {
+  const handleSelectedChannel = (
+    key: any,
+    Name: any,
+    isPublic: boolean,
+    members: any
+  ) => {
     setSelectedChannel({
       Bool: !SelectedChannel,
       key: key,
       Name: Name,
       isPublic: isPublic,
       members: members,
-      MobileBool: true
+      MobileBool: true,
     });
   };
 
@@ -288,7 +295,11 @@ export default function LeftMenu() {
           setchannelCount={setchannelCount}
         />
       )}
-      <div className={SelectedChannel.MobileBool ? styles.LeftMenuOnClick  : styles.LeftMenu} >
+      <div
+        className={
+          SelectedChannel.MobileBool ? styles.LeftMenuOnClick : styles.LeftMenu
+        }
+      >
         <div className={styles.TopWrapper}>
           <div style={{ cursor: "default" }} className={styles.WrapperChannel}>
             <div className={styles.Channel}>
@@ -320,7 +331,7 @@ export default function LeftMenu() {
                 onClick={(e: any) => {
                   setAddChannelOpen(!AddChannelOpen);
                   handleThreedotRef(e.target);
-                  clickPositionAddChannel(e)
+                  clickPositionAddChannel(e);
                 }}
               />
               {AddChannelOpen && (
@@ -440,14 +451,17 @@ export default function LeftMenu() {
                         {Channel.Channel.Name}
                       </p>
                     </div>
-                    <div className={styles.ChannelIconGrid} onClick={(e)=> e.stopPropagation()}>
+                    <div
+                      className={styles.ChannelIconGrid}
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <p
                         className={styles.greyBody15px}
                         onClick={() => setChannelMembersOpen(true)}
                       >
                         {Channel.memberCount}
                       </p>
-                         {(isHoverChannelItemGrid.Bool &&
+                      {(isHoverChannelItemGrid.Bool &&
                         index === isHoverChannelItemGrid.key) ||
                       (index === menuIsOpen.key && menuIsOpen.Bool) ? (
                         <ThreeDots
@@ -464,7 +478,7 @@ export default function LeftMenu() {
                       ) : (
                         <></>
                       )}
-                     {(
+                      {
                         <ThreeDots
                           className={styles.ThreeDots_svg}
                           onClick={(e: any) => {
@@ -476,8 +490,7 @@ export default function LeftMenu() {
                             });
                           }}
                         />
-                      )}
-                      
+                      }
                     </div>
                   </div>
                 ))}
@@ -573,12 +586,15 @@ export default function LeftMenu() {
                       />
                       <div className={styles.greyBody15pxNoHover}>
                         {Member.User.username}{" "}
-                        {localStorage.getItem("username") ===
-                          Member.User.username && (
-                          <span style={{ fontSize: "11px", fontWeight: "200" }}>
-                            (you)
-                          </span>
-                        )}
+                        {typeof window !== "undefined"
+                          ? localStorage.getItem("username")
+                          : null === Member.User.username && (
+                              <span
+                                style={{ fontSize: "11px", fontWeight: "200" }}
+                              >
+                                (you)
+                              </span>
+                            )}
                       </div>
                     </div>
 

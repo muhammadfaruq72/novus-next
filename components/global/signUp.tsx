@@ -67,7 +67,9 @@ export default function SignUp(Close: Close) {
       setWarningText("These fields are required.");
     } else {
       mutate({ variables: { email, password } });
-      localStorage.setItem("loginRequired", "Please, login!");
+      typeof window !== "undefined"
+        ? localStorage.setItem("loginRequired", "Please, login!")
+        : null;
     }
   }
 

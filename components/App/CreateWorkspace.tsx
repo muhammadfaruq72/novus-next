@@ -63,7 +63,8 @@ export default function CreateWorkspace(Close: Close) {
   let CreateWorkSpace = (event: any) => {
     event.preventDefault();
     var Name = event.target.text.value;
-    var email = localStorage.getItem("email");
+    var email =
+      typeof window !== "undefined" ? localStorage.getItem("email") : null;
     var isClient: Boolean = Close.IsClient;
     mutate({ variables: { email, Name, isClient } });
   };

@@ -99,7 +99,8 @@ export default function ClickAddChannel(Props: props) {
   let CreateWorkSpace = (event: any) => {
     event.preventDefault();
     var ChannelName = event.target.text.value;
-    var CreatorEmail = localStorage.getItem("email");
+    var CreatorEmail =
+      typeof window !== "undefined" ? localStorage.getItem("email") : null;
     var spaceId = userExistsInSpace.space_id;
     mutate({ variables: { CreatorEmail, ChannelName, spaceId } });
   };

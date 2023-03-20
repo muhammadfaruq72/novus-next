@@ -13,7 +13,11 @@ export default function Home() {
   const { isloggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    if (localStorage.getItem("email") !== null) {
+    if (
+      typeof window !== "undefined"
+        ? localStorage.getItem("email")
+        : null !== null
+    ) {
       // console.log("Email exitss");
       setIsLoggedIn(true);
     } else {

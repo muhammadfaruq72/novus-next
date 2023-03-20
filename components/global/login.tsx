@@ -56,16 +56,19 @@ export default function LogIn(Close: Close) {
         }
         if (data.tokenAuth.errors === null) {
           setWarningBool(false);
-          localStorage.setItem("tokenAuth", JSON.stringify(data));
-          localStorage.setItem("email", email);
-          localStorage.setItem(
-            "username",
-            data.tokenAuth.token.payload.username
-          );
 
-          if (localStorage.getItem("loginRequiredForInvite") !== null) {
-            router.push(localStorage.getItem("loginRequiredForInvite")!);
-            localStorage.removeItem("loginRequiredForInvite");
+          if (typeof window !== "undefined") {
+            localStorage.setItem("tokenAuth", JSON.stringify(data));
+            localStorage.setItem("email", email);
+            localStorage.setItem(
+              "username",
+              data.tokenAuth.token.payload.username
+            );
+
+            if (localStorage.getItem("loginRequiredForInvite") !== null) {
+              router.push(localStorage.getItem("loginRequiredForInvite")!);
+              localStorage.removeItem("loginRequiredForInvite");
+            }
           }
 
           Close.closeLogIn(false);

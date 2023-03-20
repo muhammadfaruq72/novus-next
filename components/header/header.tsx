@@ -23,10 +23,12 @@ export default function Header(header: Header) {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("loginRequired") && UpOrIn === null) {
-      setUpOrIn("login");
-      setLogIn(true);
-      localStorage.removeItem("loginRequired");
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("loginRequired") && UpOrIn === null) {
+        setUpOrIn("login");
+        setLogIn(true);
+        localStorage.removeItem("loginRequired");
+      }
     }
   });
 

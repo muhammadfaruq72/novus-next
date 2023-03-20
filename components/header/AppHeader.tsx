@@ -41,7 +41,10 @@ export default function AppHeader(Props: AppHeader) {
   const { data: CustomUserSpace, loading: CustomUserLoading } = useQuery(
     CustomUserQUERY,
     {
-      variables: { Useremail: localStorage.getItem("email") },
+      variables: {
+        Useremail:
+          typeof window !== "undefined" ? localStorage.getItem("email") : null,
+      },
     }
   );
 

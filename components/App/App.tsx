@@ -54,7 +54,8 @@ export default function App(app: App) {
     refetch: recentlyRefetch,
   } = useQuery(RecentlyOpenedQUERY, {
     variables: {
-      FilterUserId: localStorage.getItem("email"),
+      FilterUserId:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
       page: page,
       perPage: 4,
     },
@@ -197,7 +198,10 @@ export default function App(app: App) {
               onClick={() => {
                 setPage((prev) => prev + 1);
                 recentlyRefetch({
-                  FilterUserId: localStorage.getItem("email"),
+                  FilterUserId:
+                    typeof window !== "undefined"
+                      ? localStorage.getItem("email")
+                      : null,
                   page: page,
                   perPage: 4,
                 });

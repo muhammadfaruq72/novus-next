@@ -196,7 +196,10 @@ export default function Chat() {
       console.log(textAreaRef.current?.value);
       sendJsonMessage({
         Channel: SelectedChannel.Name,
-        username: localStorage.getItem("username"),
+        username:
+          typeof window !== "undefined"
+            ? localStorage.getItem("username")
+            : null,
         Message: textAreaRef.current?.value,
         ReplyUsername: replyOpen.username,
         Reply: replyOpen.message,
@@ -258,7 +261,10 @@ export default function Chat() {
         console.log(textAreaRef.current?.value);
         sendJsonMessage({
           Channel: SelectedChannel.Name,
-          username: localStorage.getItem("username"),
+          username:
+            typeof window !== "undefined"
+              ? localStorage.getItem("username")
+              : null,
           Message: textAreaRef.current?.value,
           ReplyUsername: replyOpen.username,
           Reply: replyOpen.message,
@@ -321,7 +327,11 @@ export default function Chat() {
 
   const processMessages = (event: any) => {
     var notification: any = JSON.parse(event.data).message;
-    if (localStorage.getItem("username") !== notification.Username.username) {
+    if (
+      typeof window !== "undefined"
+        ? localStorage.getItem("username")
+        : null !== notification.Username.username
+    ) {
       requestPermission(
         notification.Message,
         notification.Username.username,

@@ -32,27 +32,29 @@ export default function InviteCheck() {
     if (typeof query.Invite !== "undefined") {
       console.log(query);
 
-      if (localStorage.getItem("email") === null) {
+      if (
+        typeof window !== "undefined"
+          ? localStorage.getItem("email")
+          : null === null
+      ) {
         router.push("/");
-        localStorage.setItem("loginRequired", "Please, login!");
-        localStorage.setItem(
-          "loginRequiredForInvite",
-          "/" + query.Workspace + "/" + query.Invite
-        );
+        if (typeof window !== "undefined") {
+          localStorage.setItem("loginRequired", "Please, login!");
+          localStorage.setItem(
+            "loginRequiredForInvite",
+            "/" + query.Workspace + "/" + query.Invite
+          );
+        }
       } else {
-        console.log(localStorage.getItem("email"));
-        var email = localStorage.getItem("email");
+        console.log(
+          typeof window !== "undefined" ? localStorage.getItem("email") : null
+        );
+        var email =
+          typeof window !== "undefined" ? localStorage.getItem("email") : null;
         var spaceId = query.Workspace;
         var uuid = query.Invite;
         mutate({ variables: { email, spaceId, uuid } });
       }
-
-      //   checkMembersQuery({
-      //     variables: {
-      //       UserEmail: localStorage.getItem("email"),
-      //       space_id: query.Workspace,
-      //     },
-      //   });
     }
   }, [query]);
 

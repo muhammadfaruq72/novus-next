@@ -40,7 +40,8 @@ export default function Client() {
   } = useQuery(checkMembersQUERY, {
     variables: {
       spaceId: userExistsInSpace.space_id,
-      Useremail: localStorage.getItem("email"),
+      Useremail:
+        typeof window !== "undefined" ? localStorage.getItem("email") : null,
     },
   });
 

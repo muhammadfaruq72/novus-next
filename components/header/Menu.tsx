@@ -28,7 +28,10 @@ export default function Menu(Props: props) {
     alert("This feature is Coming Soon");
   };
   let LogOutUser = () => {
-    localStorage.removeItem("email");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("email");
+    }
+
     Props.setIsLoggedIn(false);
   };
   const MenuData: MenuData[] = [
