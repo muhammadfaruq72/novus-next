@@ -37,7 +37,7 @@ export default function Home() {
             <meta name="apple-mobile-web-app-capable" content="yes"></meta>
             <meta
               name="apple-mobile-web-app-status-bar-style"
-              content="white"
+              content="default"
             ></meta>
             <meta
               name="description"
