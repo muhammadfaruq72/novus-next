@@ -360,7 +360,7 @@ export default function Chat(Props: chat) {
     lastJsonMessage,
     readyState,
     getWebSocket,
-  } = useWebSocket("ws://127.0.0.1:8000/chat/", {
+  } = useWebSocket(`${process.env.NEXT_PUBLIC_WSS}`, {
     onOpen: () => console.log("WebSocket connection opened."),
     protocols: userExistsInSpace.space_id,
     onClose: () => console.log("WebSocket connection closed."),
