@@ -17,7 +17,7 @@ export default function InputFiles() {
   } = useContext(AuthContext);
 
   async function ManupulateFiles(Files: any) {
-    console.log("ManupulateFiles");
+    // console.log("ManupulateFiles");
     var selectedFiles: File[] = Array.from(Files);
     // for (const File of selectedFiles) {
     //   if (File.size > 1024000) {

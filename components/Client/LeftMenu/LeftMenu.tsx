@@ -110,9 +110,9 @@ export default function LeftMenu() {
     }
   }, [ChannelsLoading]);
 
-  useEffect(() => {
-    console.log(ChannelsState, "ChannelsState");
-  }, [ChannelsState]);
+  // useEffect(() => {
+  //   console.log(ChannelsState, "ChannelsState");
+  // }, [ChannelsState]);
 
   const [MembersState, setMembersState] = useState([]);
   const [memberpage, setmemberpage] = useState(1);
@@ -635,15 +635,13 @@ export default function LeftMenu() {
                       />
                       <div className={styles.greyBody15pxNoHover}>
                         {Member.User.username}{" "}
-                        {typeof window !== "undefined"
+                        {(typeof window !== "undefined"
                           ? localStorage.getItem("username")
-                          : null === Member.User.username && (
-                              <span
-                                style={{ fontSize: "11px", fontWeight: "200" }}
-                              >
-                                (you)
-                              </span>
-                            )}
+                          : null) === Member.User.username && (
+                          <span style={{ fontSize: "11px", fontWeight: "200" }}>
+                            (you)
+                          </span>
+                        )}
                       </div>
                     </div>
 

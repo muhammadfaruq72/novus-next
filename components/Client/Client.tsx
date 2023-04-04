@@ -56,9 +56,9 @@ export default function Client() {
 
   const [showSpace, setShowSpace] = useState("Chat");
 
-  useEffect(() => {
-    console.log("showSpace", showSpace);
-  }, [showSpace]);
+  // useEffect(() => {
+  //   console.log("showSpace", showSpace);
+  // }, [showSpace]);
 
   return (
     <>

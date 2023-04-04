@@ -8,6 +8,7 @@ import WorkspaceImg from "@/public/WorkSpaceImg.png";
 import App from "@/components/App/App";
 import { useState, useEffect, useContext } from "react";
 import AuthContext from "@/components/CreateContext";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 export default function Home() {
   const { isloggedIn, setIsLoggedIn } = useContext(AuthContext);
@@ -24,6 +25,20 @@ export default function Home() {
       setIsLoggedIn(false);
     }
   });
+
+  const TEST = gql`
+    query MyQuery {
+      TestApi
+    }
+  `;
+
+  const { data: TESTData, loading: Loading, refetch: Refetch } = useQuery(TEST);
+
+  useEffect(() => {
+    if (typeof TESTData !== "undefined") {
+      console.log(TESTData);
+    }
+  }, [Loading]);
 
   return (
     <>

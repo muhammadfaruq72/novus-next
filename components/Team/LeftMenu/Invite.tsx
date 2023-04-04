@@ -41,7 +41,7 @@ export default function Invite(Close: Close) {
     Mutation,
     {
       onCompleted(data) {
-        console.log(data);
+        // console.log(data);
 
         if (data.CreateInviteLink !== null) {
           setIsLinkCreated(true);
@@ -67,7 +67,7 @@ export default function Invite(Close: Close) {
       var spaceId = userExistsInSpace.space_id;
       mutate({ variables: { spaceId, TotalPeople } });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

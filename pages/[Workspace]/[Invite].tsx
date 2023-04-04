@@ -16,7 +16,7 @@ export default function InviteCheck() {
     Mutation,
     {
       onCompleted(data) {
-        console.log(data);
+        // console.log(data);
         if (data.addMemberThroughInviteLink === null) {
           alert(
             "The invitation Link is Expired or you are already a member of this Workspace."
@@ -30,7 +30,7 @@ export default function InviteCheck() {
 
   useEffect(() => {
     if (typeof query.Invite !== "undefined") {
-      console.log(query);
+      // console.log(query);
 
       if (
         typeof window !== "undefined"
@@ -46,9 +46,9 @@ export default function InviteCheck() {
           );
         }
       } else {
-        console.log(
-          typeof window !== "undefined" ? localStorage.getItem("email") : null
-        );
+        // console.log(
+        //   typeof window !== "undefined" ? localStorage.getItem("email") : null
+        // );
         var email =
           typeof window !== "undefined" ? localStorage.getItem("email") : null;
         var spaceId = query.Workspace;

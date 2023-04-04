@@ -193,7 +193,7 @@ export default function Chat() {
 
   const sendHandler = () => {
     if (selectedFilesArray.length <= 0) {
-      console.log(textAreaRef.current?.value);
+      // console.log(textAreaRef.current?.value);
       sendJsonMessage({
         Channel: SelectedChannel.Name,
         username:
@@ -221,7 +221,7 @@ export default function Chat() {
         const ImageKey = crypto.randomBytes(16).toString("hex") + "." + right;
         const key = `${userExistsInSpace.space_id}/${SelectedChannel.Name}/${ImageKey}`;
 
-        console.log(ImageKey);
+        // console.log(ImageKey);
 
         try {
           const parallelUploads3 = new Upload({
@@ -247,18 +247,18 @@ export default function Chat() {
           });
 
           parallelUploads3.on("httpUploadProgress", (progress) => {
-            console.log(progress);
+            // console.log(progress);
           });
 
           await parallelUploads3.done();
           Resolve(key);
         } catch (e) {
-          console.log(e);
+          // console.log(e);
         }
       });
 
       myPromise.then(function (value) {
-        console.log(textAreaRef.current?.value);
+        // console.log(textAreaRef.current?.value);
         sendJsonMessage({
           Channel: SelectedChannel.Name,
           username:
@@ -328,9 +328,9 @@ export default function Chat() {
   const processMessages = (event: any) => {
     var notification: any = JSON.parse(event.data).message;
     if (
-      typeof window !== "undefined"
+      (typeof window !== "undefined"
         ? localStorage.getItem("username")
-        : null !== notification.Username.username
+        : null) !== notification.Username.username
     ) {
       requestPermission(
         notification.Message,

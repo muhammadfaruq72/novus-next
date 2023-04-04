@@ -45,9 +45,9 @@ export default function CreateWorkspace(Close: Close) {
     Mutation,
     {
       onCompleted(data) {
-        console.log(data);
+        // console.log(data);
         if (data.Workspace !== null) {
-          console.log(data.Workspace.spaceId);
+          // console.log(data.Workspace.spaceId);
           CreateDirectory(data.Workspace.spaceId);
           Close.setOpen(false);
           requestPermission();

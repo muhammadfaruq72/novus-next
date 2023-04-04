@@ -68,7 +68,7 @@ export default function AddPeople(Props: People) {
     for (const input of Props.manageMembersState) {
       if (input.isChecked) people.push(input.User.username);
     }
-    console.log("people", people);
+    // console.log("people", people);
 
     let spaceId = userExistsInSpace.space_id;
     if (people.length > 0) mutate({ variables: { people, spaceId } });

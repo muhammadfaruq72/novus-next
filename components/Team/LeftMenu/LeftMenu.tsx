@@ -586,15 +586,14 @@ export default function LeftMenu() {
                       />
                       <div className={styles.greyBody15pxNoHover}>
                         {Member.User.username}{" "}
-                        {typeof window !== "undefined"
+                        {console.log(Member.User.username)}
+                        {(typeof window !== "undefined"
                           ? localStorage.getItem("username")
-                          : null === Member.User.username && (
-                              <span
-                                style={{ fontSize: "11px", fontWeight: "200" }}
-                              >
-                                (you)
-                              </span>
-                            )}
+                          : null) === Member.User.username && (
+                          <span style={{ fontSize: "11px", fontWeight: "200" }}>
+                            (you)
+                          </span>
+                        )}
                       </div>
                     </div>
 

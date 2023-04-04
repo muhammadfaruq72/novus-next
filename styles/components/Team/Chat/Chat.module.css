@@ -155,7 +155,8 @@
 }
 
 .SendBar textarea {
-  /* height: 10px; */
+  /* height: 100% !important; */
+  min-height: 1rem;
   max-height: 250px;
   /* box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.14); */
   border: none;
@@ -475,7 +476,7 @@
     background: transparent;
     padding: 0px;
     border: none;
-    margin-top: 0px;
+    margin-top: 5px;
   }
   .massage {
     gap: 10px;
