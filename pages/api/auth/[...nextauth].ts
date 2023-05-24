@@ -12,7 +12,7 @@ export const authOptions = {
     }),
     // ...add more providers here
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: "ElyBZM9fTANVUOP",
 };
 
 export default NextAuth(authOptions);
