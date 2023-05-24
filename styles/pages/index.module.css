@@ -234,6 +234,7 @@
   display: grid;
   grid-template-columns: 65% 35%;
   padding: 30px;
+  margin-bottom: 20px;
 }
 .ImageSectionThree {
   width: 100%;
@@ -276,6 +277,7 @@
     border-radius: 19px;
     /* height: max(100%, 620px); */
     grid-template-columns: auto;
+    margin-top: 20px;
     /* justify-content: center;
     align-items: center; */
   }
@@ -300,8 +302,13 @@
     border-radius: 19px;
     /* height: max(100%, 620px); */
     grid-template-columns: auto;
+    margin-top: 20px;
     /* justify-content: center;
     align-items: center; */
+  }
+
+  .SectionThree {
+    margin-top: 20px;
   }
 }
 

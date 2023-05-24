@@ -302,10 +302,7 @@ export default function Home({ password }: any) {
             </div>
             <></>
             <></>
-            <div
-              className={styles.SectionThree}
-              style={{ marginBottom: "25px" }}
-            >
+            <div className={styles.SectionThree}>
               <div className={styles.MobSectionThreeContent}>
                 <h5 className={styles.MobSectionHeader}>Chat From Anywhere</h5>
                 <p
