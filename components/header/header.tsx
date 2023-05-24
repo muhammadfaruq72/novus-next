@@ -8,6 +8,7 @@ import SignUp from "../global/signUp";
 
 interface Header {
   setIsLoggedIn: any;
+  password?: any;
 }
 
 export default function Header(header: Header) {
@@ -15,7 +16,7 @@ export default function Header(header: Header) {
   const [openLogIn, setLogIn] = useState<Boolean>(false);
   const [UpOrIn, setUpOrIn] = useState<null | string>(null);
 
-  const { setIsLoggedIn } = header;
+  const { setIsLoggedIn, password } = header;
 
   const LogInOnCluck: any = () => {
     setLogIn(true);
@@ -41,6 +42,7 @@ export default function Header(header: Header) {
           setUpOrIn={setUpOrIn}
           closeSignup={setSignUp}
           setIsLoggedIn={setIsLoggedIn}
+          password={password}
         />
       )}
       {UpOrIn === "signup" && (

@@ -5,6 +5,7 @@ import LogOut from "@/public/LogOut.svg";
 import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 interface props {
   menuIsOpen: any;
@@ -73,12 +74,17 @@ export default function Menu(Props: props) {
         ></div>
       </div>
       {pathname === "/" && (
-        <div onClick={LogOutUser}>
+        <div
+          onClick={() => {
+            LogOutUser();
+            signOut();
+          }}
+        >
           {" "}
           <div className={styles.MenuItem}>
             <LogOut style={{ width: "36px" }} className={styles.Svg} />
 
-            <p className={styles.greyBody16px}>Exit Space</p>
+            <p className={styles.greyBody16px}>Log out</p>
           </div>
           <div className={`${styles.Divider}`}></div>
         </div>
@@ -91,7 +97,7 @@ export default function Menu(Props: props) {
             <div className={styles.MenuItem}>
               <LogOut style={{ width: "36px" }} className={styles.Svg} />
 
-              <p className={styles.greyBody16px}>Log out</p>
+              <p className={styles.greyBody16px}>Exit Space</p>
             </div>
             <div className={`${styles.Divider}`}></div>
           </div>

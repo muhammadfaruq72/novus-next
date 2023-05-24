@@ -33,9 +33,9 @@ export default function InviteCheck() {
       // console.log(query);
 
       if (
-        typeof window !== "undefined"
+        (typeof window !== "undefined"
           ? localStorage.getItem("email")
-          : null === null
+          : null) === null
       ) {
         router.push("/");
         if (typeof window !== "undefined") {

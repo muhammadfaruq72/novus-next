@@ -4,10 +4,12 @@ import miniComponents from "@/styles/miniComponents.module.css";
 import Plus from "@/public/Plus.svg";
 import V_Logo from "@/public/V_Logo.svg";
 import Cross from "@/public/Cross.svg";
+import Google from "@/public/Google.svg";
 import { useEffect, useContext } from "react";
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
+import { useSession, signIn } from "next-auth/react";
 
 var email: string;
 
@@ -17,9 +19,12 @@ interface Close {
   setUpOrIn: any;
   closeSignup: any;
   setIsLoggedIn: any;
+  password?: any;
 }
 
 export default function LogIn(Close: Close) {
+  const { password } = Close;
+  const { data: session } = useSession();
   const [warningBool, setWarningBool] = useState(false);
   const [warningtext, setWarningText] = useState("This is a warning pop up!");
   const [styleSubmit, setStyleSubmit] = useState({});
@@ -100,6 +105,24 @@ export default function LogIn(Close: Close) {
     }
   }, [loading]);
 
+  const GoogleHandler = (event: any) => {
+    event.preventDefault();
+    signIn("google", { callbackUrl: "http://localhost:3000/" });
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (localStorage.getItem("nextauth.message") !== null) {
+        console.log(
+          "session",
+          session,
+          password,
+          localStorage.getItem("nextauth.message")
+        );
+      }
+    }
+  }, []);
+
   return (
     <>
       <div
@@ -167,7 +190,7 @@ export default function LogIn(Close: Close) {
                     style={styleSubmit}
                   ></input>
                 </form>
-                <div className={miniComponents.line}></div>
+
                 <div className={styles.PwithLink}>
                   <p className={fonts.greyBody14px}>
                     Don&apos;t have an account?
@@ -183,6 +206,11 @@ export default function LogIn(Close: Close) {
                   >
                     Sign Up
                   </p>
+                </div>
+                <div className={miniComponents.line}></div>
+                <div onClick={GoogleHandler} className={styles.Google}>
+                  <Google className={styles.Google_SVG} />
+                  <p className={styles.fontBlack15px}>Continue with Google</p>
                 </div>
               </div>
             </div>

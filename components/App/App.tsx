@@ -100,7 +100,7 @@ export default function App(app: App) {
   }
 
   const Clicked = () => {
-    alert("Button triggered");
+    alert("This feature is Coming Soon");
   };
 
   return (
@@ -109,23 +109,6 @@ export default function App(app: App) {
       <AppHeader spaceHeader={true} setIsLoggedIn={setIsLoggedIn} />
       <div className={styles.Wrapper}>
         <div className={styles.ContentWrapper}>
-          <div
-            className={styles.SubWrapper}
-            onClick={() => {
-              setOpen(true);
-              setIsClient(true);
-            }}
-          >
-            <div className={styles.ClientBg}>
-              <Client className={styles.Svg} />
-            </div>
-            <div className={styles.TextWrapper}>
-              <h1 className={styles.Heading24px}>Create Client Workspace</h1>
-              <p className={styles.Body24px}>
-                Want to use Novus with a different Client?
-              </p>
-            </div>
-          </div>
           <div
             className={styles.SubWrapper}
             onClick={() => {
@@ -140,6 +123,23 @@ export default function App(app: App) {
               <h1 className={styles.Heading24px}>Create Team Workspace</h1>
               <p className={styles.Body24px}>
                 Want to use Novus with a different Team?
+              </p>
+            </div>
+          </div>
+          <div
+            className={styles.SubWrapper}
+            onClick={() => {
+              setOpen(true);
+              setIsClient(true);
+            }}
+          >
+            <div className={styles.ClientBg}>
+              <Client className={styles.Svg} />
+            </div>
+            <div className={styles.TextWrapper}>
+              <h1 className={styles.Heading24px}>Create Client Workspace</h1>
+              <p className={styles.Body24px}>
+                Want to use Novus with a different Client?
               </p>
             </div>
           </div>
