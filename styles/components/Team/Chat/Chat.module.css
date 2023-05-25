@@ -500,4 +500,7 @@
     margin-left: 20.5px;
     height: calc(100% - 60px);
   }
+  .hoverMessage:hover {
+    pointer-events: none;
+  }
 }

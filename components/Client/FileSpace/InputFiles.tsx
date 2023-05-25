@@ -19,19 +19,19 @@ export default function InputFiles() {
   async function ManupulateFiles(Files: any) {
     // console.log("ManupulateFiles");
     var selectedFiles: File[] = Array.from(Files);
-    // for (const File of selectedFiles) {
-    //   if (File.size > 1024000) {
-    //     console.log(File.size);
-    //     selectedFiles = [];
-    //     alert(
-    //       `"${File.name}" is larger than 1 Mb. Please, add image less than 1MB.`
-    //     );
-    //   }
-    // }
-    // if (selectedFiles.length > 1) {
-    //   selectedFiles = [];
-    //   alert(`You can only add 1 File at a time.`);
-    // }
+    for (const File of selectedFiles) {
+      if (File.size > 1024000) {
+        console.log(File.size);
+        selectedFiles = [];
+        alert(
+          `"${File.name}" is larger than 1 Mb. Please, add image less than 1MB.`
+        );
+      }
+    }
+    if (selectedFiles.length > 1) {
+      selectedFiles = [];
+      alert(`You can only add 1 File at a time.`);
+    }
 
     setClientsSelectedFilesArray(
       ClientsselectedFilesArray.concat(selectedFiles)
