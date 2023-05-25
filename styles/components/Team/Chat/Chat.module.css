@@ -198,6 +198,7 @@
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
+  -webkit-overflow-scrolling: touch;
 }
 
 .WrapperConversation::-webkit-scrollbar {
@@ -502,5 +503,6 @@
   }
   .hoverMessage:hover {
     background-color: transparent;
+    pointer-events: none;
   }
 }
