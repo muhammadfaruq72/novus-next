@@ -501,6 +501,6 @@
     height: calc(100% - 60px);
   }
   .hoverMessage:hover {
-    pointer-events: none;
+    background-color: transparent;
   }
 }
