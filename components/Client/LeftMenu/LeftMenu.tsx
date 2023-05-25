@@ -278,6 +278,10 @@ export default function LeftMenu() {
 
   const [addSpaceMembers, setAddSpaceMembers] = useState<Boolean>(false);
 
+  useEffect(() => {
+    console.log(ChannelsState);
+  }, [ChannelsState]);
+
   return (
     <>
       <Invite setOpen={setInviteOpen} Open={inviteOpen} />
@@ -355,14 +359,17 @@ export default function LeftMenu() {
                   {channelCount}
                 </p>
               </div>
-              <Plus
-                className={styles.Plus_svg}
-                onClick={(e: any) => {
-                  setAddChannelOpen(!AddChannelOpen);
-                  handleThreedotRef(e.target);
-                  clickPositionAddChannel(e);
-                }}
-              />
+              {LoggedUser.isAdmin && (
+                <Plus
+                  className={styles.Plus_svg}
+                  onClick={(e: any) => {
+                    setAddChannelOpen(!AddChannelOpen);
+                    handleThreedotRef(e.target);
+                    clickPositionAddChannel(e);
+                  }}
+                />
+              )}
+
               {AddChannelOpen && (
                 <ClickAddChannel
                   HamburgerRef={ThreedotRef}
@@ -645,14 +652,14 @@ export default function LeftMenu() {
                       </div>
                     </div>
 
-                    <div className={styles.MemberIconGrid}>
+                    {/* <div className={styles.MemberIconGrid}>
                       {isHoverMemberItemGrid.Bool &&
                       index === isHoverMemberItemGrid.key ? (
                         <Plus className={styles.Cross_svg} />
                       ) : (
                         <div></div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </InfiniteScroll>

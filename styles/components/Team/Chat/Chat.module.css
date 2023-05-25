@@ -263,7 +263,7 @@
 .messageText {
   display: grid;
   grid-template-columns: auto;
-
+  /* background-color: cyan; */
   align-content: start;
   gap: 3px;
 }
@@ -476,7 +476,7 @@
     background: transparent;
     padding: 0px;
     border: none;
-    margin-top: 5px;
+    margin-top: 3px;
   }
   .massage {
     gap: 10px;
@@ -488,11 +488,16 @@
   }
   .Messagereply {
     position: relative;
-    padding: 10px 10px;
+    padding: 6px 10px;
     display: grid;
     justify-content: start;
   }
   .lightBlack16px {
     font-size: 15px;
+  }
+  .Reply_css {
+    margin-top: 42px;
+    margin-left: 20.5px;
+    height: calc(100% - 60px);
   }
 }

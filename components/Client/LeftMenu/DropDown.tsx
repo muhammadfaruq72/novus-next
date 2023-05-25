@@ -63,6 +63,10 @@ export default function DropDown(Props: DropDown) {
     });
   };
 
+  useEffect(() => {
+    setOption({ status: Member.Status, color: "#FC7150" });
+  }, []);
+
   const Color = (status: string) => {
     if (status === "In Queue") {
       return "#FC7150";

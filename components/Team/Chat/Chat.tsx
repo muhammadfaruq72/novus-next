@@ -514,17 +514,17 @@ export default function Chat() {
                               {Chat.Message}
                             </div>
 
-                            <div
-                              style={{
-                                width: `${
-                                  windowSize.innerWidth > 600
-                                    ? 400
-                                    : windowSize.innerWidth - 55
-                                }px`,
-                              }}
-                            >
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+                            {Chat.attachment.Key !== null && (
+                              <div
+                                style={{
+                                  width: `${
+                                    windowSize.innerWidth > 600
+                                      ? 400
+                                      : windowSize.innerWidth - 55
+                                  }px`,
+                                }}
+                              >
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   true,
                                   false,
@@ -539,8 +539,7 @@ export default function Chat() {
                                     alt=""
                                   />
                                 )}
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   false,
                                   true,
@@ -562,8 +561,7 @@ export default function Chat() {
                                     />
                                   </div>
                                 )}
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   false,
                                   false,
@@ -589,7 +587,8 @@ export default function Chat() {
                                     </div>
                                   </div>
                                 )}
-                            </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>

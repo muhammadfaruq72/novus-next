@@ -30,6 +30,7 @@ export default function LeftMenu() {
     setSelectedChannel,
     DeleteMembercount,
     setDeleteMembercount,
+    LoggedUser,
   } = useContext(AuthContext);
 
   const [ChannelsState, setChannelsState] = useState([]);
@@ -326,14 +327,17 @@ export default function LeftMenu() {
                   {channelCount}
                 </p>
               </div>
-              <Plus
-                className={styles.Plus_svg}
-                onClick={(e: any) => {
-                  setAddChannelOpen(!AddChannelOpen);
-                  handleThreedotRef(e.target);
-                  clickPositionAddChannel(e);
-                }}
-              />
+              {LoggedUser.isAdmin && (
+                <Plus
+                  className={styles.Plus_svg}
+                  onClick={(e: any) => {
+                    setAddChannelOpen(!AddChannelOpen);
+                    handleThreedotRef(e.target);
+                    clickPositionAddChannel(e);
+                  }}
+                />
+              )}
+
               {AddChannelOpen && (
                 <ClickAddChannel
                   HamburgerRef={ThreedotRef}
@@ -586,7 +590,7 @@ export default function LeftMenu() {
                       />
                       <div className={styles.greyBody15pxNoHover}>
                         {Member.User.username}{" "}
-                        {console.log(Member.User.username)}
+                        {/* {console.log(Member.User.username)} */}
                         {(typeof window !== "undefined"
                           ? localStorage.getItem("username")
                           : null) === Member.User.username && (
@@ -597,14 +601,14 @@ export default function LeftMenu() {
                       </div>
                     </div>
 
-                    <div className={styles.MemberIconGrid}>
+                    {/* <div className={styles.MemberIconGrid}>
                       {isHoverMemberItemGrid.Bool &&
                       index === isHoverMemberItemGrid.key ? (
                         <Plus className={styles.Cross_svg} />
                       ) : (
                         <div></div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </InfiniteScroll>

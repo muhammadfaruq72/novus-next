@@ -522,17 +522,18 @@ export default function FileSpace(Props: fileSpace) {
                             <div className={fonts.lightBlack16px}>
                               {Chat.Message}
                             </div>
-                            <div
-                              style={{
-                                width: `${
-                                  windowSize.innerWidth > 600
-                                    ? 400
-                                    : windowSize.innerWidth - 55
-                                }px`,
-                              }}
-                            >
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+
+                            {Chat.attachment.Key !== null && (
+                              <div
+                                style={{
+                                  width: `${
+                                    windowSize.innerWidth > 600
+                                      ? 400
+                                      : windowSize.innerWidth - 55
+                                  }px`,
+                                }}
+                              >
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   true,
                                   false,
@@ -547,8 +548,7 @@ export default function FileSpace(Props: fileSpace) {
                                     alt=""
                                   />
                                 )}
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   false,
                                   true,
@@ -570,8 +570,7 @@ export default function FileSpace(Props: fileSpace) {
                                     />
                                   </div>
                                 )}
-                              {Chat.attachment.Key !== null &&
-                                CheckTypes(
+                                {CheckTypes(
                                   Chat.attachment.Key.split(".")[1],
                                   false,
                                   false,
@@ -597,7 +596,8 @@ export default function FileSpace(Props: fileSpace) {
                                     </div>
                                   </div>
                                 )}
-                            </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
