@@ -25,6 +25,7 @@ import { VideoPlayer } from "@videojs-player/react";
 import "video.js/dist/video-js.css";
 import Pdf from "./Pdf";
 import PdfPopup from "./PdfPopup";
+import { error } from "console";
 
 function splitLast(s: string, sep: string = " ") {
   let right = s.split(sep).pop();
@@ -159,10 +160,19 @@ export default function Chat() {
     }
   }, [ChatsLoading]);
 
+  const scrollTop: any = useRef();
+
   useEffect(() => {
     var filteredChat = ChatsState.filter((o: any) => {
       return o.Channel.Name === SelectedChannel.Name;
     });
+
+    try {
+      scrollTop.current.scrollTop = scrollTop.current.scrollHeight;
+    } catch (error) {
+      console.log(error);
+    }
+
     // console.log("ChatsState", filteredChat, hasNextPageChat);
   }, [ChatsState]);
 
@@ -348,6 +358,8 @@ export default function Chat() {
   //   console.log("value", value);
   // }, [value]);
 
+  const [connection, setConnection] = useState("closed");
+
   const {
     sendMessage,
     sendJsonMessage,
@@ -356,9 +368,15 @@ export default function Chat() {
     readyState,
     getWebSocket,
   } = useWebSocket(`${process.env.NEXT_PUBLIC_WSS}`, {
-    onOpen: () => console.log("WebSocket connection opened."),
+    onOpen: () => {
+      console.log("WebSocket connection opened.");
+      setConnection("opened");
+    },
     protocols: userExistsInSpace.space_id,
-    onClose: () => console.log("WebSocket connection closed."),
+    onClose: () => {
+      console.log("WebSocket connection closed.");
+      setConnection("closed");
+    },
     shouldReconnect: (closeEvent) => true,
     onMessage: (event: WebSocketEventMap["message"]) => processMessages(event),
   });
@@ -424,7 +442,8 @@ export default function Chat() {
               {SelectedChannel.members !== 0 && (
                 <p className={fonts.greyBody13px}>
                   {SelectedChannel.members}{" "}
-                  {SelectedChannel.members === 1 ? "member" : "members"}
+                  {SelectedChannel.members === 1 ? "member" : "members"}{" "}
+                  {connection}
                 </p>
               )}
             </div>
@@ -436,7 +455,11 @@ export default function Chat() {
         <div className={styles.Chat}>
           {" "}
           <div className={styles.Conversation}>
-            <div id="scrollableDivChat" className={ConversationStyle}>
+            <div
+              id="scrollableDivChat"
+              className={ConversationStyle}
+              ref={scrollTop}
+            >
               <InfiniteScroll
                 dataLength={ChatsState.length}
                 next={() => {

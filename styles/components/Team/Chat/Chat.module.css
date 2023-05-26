@@ -241,6 +241,7 @@
   overflow: auto;
   display: flex;
   flex-direction: column-reverse;
+  -webkit-overflow-scrolling: touch;
 }
 
 .WrapperConversationselectedImages::-webkit-scrollbar {
@@ -458,16 +459,16 @@
     padding: 10px 0px;
   }
   .WrapperConversation {
-    height: calc(100vh - 113px - 50px + 60px);
+    height: calc(100vh - 113px - 50px - 15px);
   }
   .WrapperConversationReplyTrue {
-    height: calc(100vh - 113px - 50px - 34px + 60px);
+    height: calc(100vh - 113px - 50px - 34px - 15px);
   }
   .WrapperConversationReplyAndselectedImages {
-    height: calc(100vh - 113px - 50px - 34px - 150px + 60px);
+    height: calc(100vh - 113px - 50px - 34px - 150px - 15px);
   }
   .WrapperConversationselectedImages {
-    height: calc(100vh - 113px - 50px - 150px + 60px);
+    height: calc(100vh - 113px - 50px - 150px - 15px);
   }
   .ChatWrapperOnClick {
     border-radius: 0;
@@ -478,6 +479,7 @@
     padding: 0px;
     border: none;
     margin-top: 3px;
+    margin-right: 10px !important;
   }
   .massage {
     gap: 10px;
@@ -501,8 +503,8 @@
     margin-left: 20.5px;
     height: calc(100% - 60px);
   }
-  .hoverMessage:hover {
+  /* .hoverMessage:hover {
     background-color: transparent;
     pointer-events: none;
-  }
+  } */
 }

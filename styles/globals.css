@@ -4,7 +4,13 @@
 */
 
 html,
-body,
+body {
+  /* overscroll-behavior-y: contain; */
+  overscroll-behavior: none;
+  margin-left: 0px !important;
+  margin-top: 0 !important;
+}
+
 div,
 span,
 applet,
