@@ -1,3 +1,12 @@
+
+# Novus | The Chat App Built with Django and Next.js.
+
+Figma - https://www.figma.com/file/GtQLcZOwKV4YEeIJHbnW9g
+Deployed - https://profound-youtiao-419452.netlify.app
+Backend - https://github.com/muhammadfaruq72/novusDjango
+
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
