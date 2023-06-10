@@ -1,12 +1,3 @@
-
-# Sustainee | The AI Tools App Built with Django and Next.js.
-
-Figma - https://www.figma.com/file/lNveGKDHYTPafm0ADrrNgD/
-
-Deployed - https://sustainee.netlify.app/
-
-Backend - https://github.com/muhammadfaruq72/SustaineeDjango
-
 # Novus | The Chat App Built with Django and Next.js.
 
 Figma - https://www.figma.com/file/GtQLcZOwKV4YEeIJHbnW9g
